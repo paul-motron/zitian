@@ -1,5 +1,5 @@
-import { assertFaucetPayment } from "@meridian/stellar-sdk-helpers";
-import { USDC_ISSUER } from "@meridian/shared";
+import { assertFaucetPayment } from "@zitian/stellar-sdk-helpers";
+import { USDC_ISSUER } from "@zitian/shared";
 import { fetchBalances } from "../lib/horizonAccount";
 import { useSignAndSubmit } from "./useSignAndSubmit";
 import { useToastStore } from "../store/toast";
@@ -38,7 +38,7 @@ export function useBlendFaucet() {
 
   // Calls Blend's testnet faucet to fund the wallet with test USDC before the
   // first deposit. Only triggered on testnet when the user has no USDC balance.
-  // The faucet is a third-party endpoint outside Meridian's control, so the
+  // The faucet is a third-party endpoint outside Zitian's control, so the
   // returned transaction is validated before it is ever shown to Freighter:
   // every operation must credit the caller's own address in a known asset,
   // never debit it or touch anything else.

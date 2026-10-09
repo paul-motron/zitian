@@ -31,7 +31,7 @@ import {
 } from "../../lib/wallet";
 
 const ADDRESS = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
-const SELECTED_WALLET_STORAGE_KEY = "meridian-selected-wallet";
+const SELECTED_WALLET_STORAGE_KEY = "zitian-selected-wallet";
 
 afterEach(() => {
   delete (window as unknown as { __E2E_MOCK_WALLET__?: unknown })

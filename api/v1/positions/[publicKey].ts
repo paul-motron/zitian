@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { handleGetPositions } from "@meridian/api-core";
+import { handleGetPositions } from "@zitian/api-core";
 import { applyCors, checkRateLimit } from "../../_lib/middleware.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

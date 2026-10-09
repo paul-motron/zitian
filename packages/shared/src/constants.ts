@@ -1,9 +1,9 @@
-export const DEFAULT_ALLOWED_ORIGIN = "https://usemeridian.vercel.app";
+export const DEFAULT_ALLOWED_ORIGIN = "http://localhost:3000";
 
 export const SUPPORTED_STABLECOINS = ["USDC", "EURC"] as const;
 export type SupportedStablecoin = (typeof SUPPORTED_STABLECOINS)[number];
 
-export const PROTOCOL_IDS = ["blend", "defindex", "meridian"] as const;
+export const PROTOCOL_IDS = ["blend", "defindex", "zitian"] as const;
 export type ProtocolId = (typeof PROTOCOL_IDS)[number];
 
 // Per-network classic Stellar asset issuers. Used for trustline setup and SAC
@@ -69,7 +69,7 @@ export const CONTRACT_ADDRESSES = {
   },
   mainnet: {
     blend: {
-      // Blend mainnet USDC pool (Fixed V2), the pool meridian's mainnet vault
+      // Blend mainnet USDC pool (Fixed V2), the pool zitian's mainnet vault
       // is wired to. Other ranked pools still resolve via DeFiLlama pool
       // UUIDs in KNOWN_POOLS (packages/stellar-sdk-helpers/src/known-pools.ts)
       // rather than a hardcoded address here.

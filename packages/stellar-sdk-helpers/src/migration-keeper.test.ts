@@ -147,24 +147,24 @@ const CONFIG: MigrationKeeperConfig = {
 };
 
 const VAULT: KnownPoolMeta = {
-  id: "meridian-usdc",
-  name: "Meridian",
-  protocol: "meridian",
+  id: "zitian-usdc",
+  name: "Zitian",
+  protocol: "zitian",
   label: "USDC Vault",
   contractId: "CVAULT",
 };
 
 const EURC_VAULT: KnownPoolMeta = {
-  id: "meridian-eurc",
-  name: "Meridian",
-  protocol: "meridian",
+  id: "zitian-eurc",
+  name: "Zitian",
+  protocol: "zitian",
   label: "EURC Vault",
   contractId: "CEURCVAULT",
   assetId: "CEURCASSET",
 };
 
 const DISCOVERED_VAULT: DiscoveredVault = {
-  vaultId: "meridian-usdc",
+  vaultId: "zitian-usdc",
   vaultContractId: "CVAULT",
   currentAdapterId: "CBLENDADAPTER",
   currentProtocol: "blend",
@@ -238,48 +238,48 @@ beforeEach(() => {
 });
 
 describe("loadMigrationKeeperConfig", () => {
-  it("throws when MERIDIAN_MIGRATION_KEEPER_SECRET_KEY is missing", () => {
+  it("throws when ZITIAN_MIGRATION_KEEPER_SECRET_KEY is missing", () => {
     expect(() => loadMigrationKeeperConfig({})).toThrow(
-      "MERIDIAN_MIGRATION_KEEPER_SECRET_KEY is required"
+      "ZITIAN_MIGRATION_KEEPER_SECRET_KEY is required"
     );
   });
 
   it("rejects a slippage above the contract's own hard cap", () => {
     expect(() =>
       loadMigrationKeeperConfig({
-        MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
-        MERIDIAN_MIGRATION_MAX_SLIPPAGE_BPS: "501",
+        ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+        ZITIAN_MIGRATION_MAX_SLIPPAGE_BPS: "501",
       })
     ).toThrow(/InvalidSlippageBps/);
   });
 
   it("accepts the max allowed slippage at the contract's hard cap", () => {
     const config = loadMigrationKeeperConfig({
-      MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
-      MERIDIAN_MIGRATION_MAX_SLIPPAGE_BPS: "500",
+      ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_MIGRATION_MAX_SLIPPAGE_BPS: "500",
     });
     expect(config.maxSlippageBps).toBe(500);
   });
 
   it("defaults to a tight 100 bps slippage and 50 bps improvement threshold", () => {
     const config = loadMigrationKeeperConfig({
-      MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
     });
     expect(config.maxSlippageBps).toBe(100);
     expect(config.minImprovementBps).toBe(50);
   });
 
-  it("reads an explicit MERIDIAN_ADAPTER_<PROTOCOL>_ID override", () => {
+  it("reads an explicit ZITIAN_ADAPTER_<PROTOCOL>_ID override", () => {
     const config = loadMigrationKeeperConfig({
-      MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
-      MERIDIAN_ADAPTER_DEFINDEX_ID: "COVERRIDE",
+      ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_ADAPTER_DEFINDEX_ID: "COVERRIDE",
     });
     expect(config.candidateAdapters.defindex).toBe("COVERRIDE");
   });
 
   it("leaves candidateAdapters empty with no env vars set", () => {
     const config = loadMigrationKeeperConfig({
-      MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
     });
     expect(config.candidateAdapters).toEqual({});
   });
@@ -290,31 +290,31 @@ describe("loadMigrationKeeperConfig", () => {
     // this proves the keeper's own config layer honors that too, a new
     // protocol needs no code change here, only an env var.
     const config = loadMigrationKeeperConfig({
-      MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
-      MERIDIAN_ADAPTER_SOROSWAP_ID: "CSOROSWAPADAPTER",
+      ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_ADAPTER_SOROSWAP_ID: "CSOROSWAPADAPTER",
     });
     expect(config.candidateAdapters).toEqual({ soroswap: "CSOROSWAPADAPTER" });
   });
 
-  it("ignores env vars that don't match the MERIDIAN_ADAPTER_<PROTOCOL>_ID pattern", () => {
+  it("ignores env vars that don't match the ZITIAN_ADAPTER_<PROTOCOL>_ID pattern", () => {
     const config = loadMigrationKeeperConfig({
-      MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
-      MERIDIAN_KEEPER_SECRET_KEY: "S".repeat(56),
-      MERIDIAN_ADAPTER_ID: "CNOTMATCHED",
+      ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_KEEPER_SECRET_KEY: "S".repeat(56),
+      ZITIAN_ADAPTER_ID: "CNOTMATCHED",
     });
     expect(config.candidateAdapters).toEqual({});
   });
 
   it("rejects two case-differing env var names that collide on the same protocol", () => {
-    // Without this check, MERIDIAN_ADAPTER_BLEND_ID and
-    // MERIDIAN_ADAPTER_Blend_ID would both lowercase to "blend", and
+    // Without this check, ZITIAN_ADAPTER_BLEND_ID and
+    // ZITIAN_ADAPTER_Blend_ID would both lowercase to "blend", and
     // whichever Object.entries() happens to visit last would silently
     // overwrite the other with no error or log line.
     expect(() =>
       loadMigrationKeeperConfig({
-        MERIDIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
-        MERIDIAN_ADAPTER_BLEND_ID: "CBLENDADAPTER_A",
-        MERIDIAN_ADAPTER_Blend_ID: "CBLENDADAPTER_B",
+        ZITIAN_MIGRATION_KEEPER_SECRET_KEY: "S".repeat(56),
+        ZITIAN_ADAPTER_BLEND_ID: "CBLENDADAPTER_A",
+        ZITIAN_ADAPTER_Blend_ID: "CBLENDADAPTER_B",
       })
     ).toThrow(/both resolve to the same migration candidate protocol/);
   });
@@ -329,7 +329,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
       logger: logger(),
       sleep: vi.fn(),
     });
@@ -346,7 +346,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-eurc": EURC_VAULT },
+      pools: { "zitian-eurc": EURC_VAULT },
       logger: logger(),
       sleep: vi.fn(),
     });
@@ -354,7 +354,7 @@ describe("discoverMigrationVaults", () => {
     expect(result.failures).toEqual([]);
     expect(result.vaults).toEqual([
       {
-        vaultId: "meridian-eurc",
+        vaultId: "zitian-eurc",
         vaultContractId: "CEURCVAULT",
         currentAdapterId: "CBLENDADAPTER",
         currentProtocol: "blend",
@@ -373,7 +373,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
       logger: logger(),
       sleep: vi.fn(),
     });
@@ -399,7 +399,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
       logger: logger(),
       sleep: vi.fn(),
     });
@@ -441,7 +441,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
       logger: logger(),
       maxAttempts: 3,
       baseDelayMs: 1,
@@ -473,7 +473,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
       logger: logger(),
       maxAttempts: 3,
       baseDelayMs: 1,
@@ -483,7 +483,7 @@ describe("discoverMigrationVaults", () => {
     expect(result.vaults).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         attempts: 1,
         transient: false,
         error: "contract not found",
@@ -498,7 +498,7 @@ describe("discoverMigrationVaults", () => {
 
     const result = await discoverMigrationVaults({
       network: NETWORK,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
       logger: logger(),
       sleep: vi.fn(),
     });
@@ -537,7 +537,7 @@ describe("runMigrationKeeper", () => {
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.migrations).toEqual([]);
     expect(result.skipped).toEqual([
-      { vaultId: "meridian-usdc", reason: "current rate unavailable" },
+      { vaultId: "zitian-usdc", reason: "current rate unavailable" },
     ]);
   });
 
@@ -633,7 +633,7 @@ describe("runMigrationKeeper", () => {
     );
     expect(result.migrations).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         fromAdapterId: "CBLENDADAPTER",
         fromProtocol: "blend",
         toAdapterId: "CDEFINDEXADAPTER",
@@ -666,7 +666,7 @@ describe("runMigrationKeeper", () => {
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "no candidate clears the improvement threshold",
       },
     ]);
@@ -695,7 +695,7 @@ describe("runMigrationKeeper", () => {
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "no candidate rate was available to compare",
       },
     ]);
@@ -719,7 +719,7 @@ describe("runMigrationKeeper", () => {
 
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.skipped).toEqual([
-      { vaultId: "meridian-usdc", reason: "current rate unavailable" },
+      { vaultId: "zitian-usdc", reason: "current rate unavailable" },
     ]);
   });
 
@@ -746,7 +746,7 @@ describe("runMigrationKeeper", () => {
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "no candidate rate was available to compare",
       },
     ]);
@@ -790,7 +790,7 @@ describe("runMigrationKeeper", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "no candidate clears the improvement threshold",
       },
     ]);
@@ -822,7 +822,7 @@ describe("runMigrationKeeper", () => {
     expect(result.migrations).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CDEFINDEXADAPTER",
         protocol: "defindex",
         stage: "submit",
@@ -868,7 +868,7 @@ describe("runMigrationKeeper", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("cooldown"),
       },
     ]);
@@ -925,7 +925,7 @@ describe("runMigrationKeeper", () => {
     expect(rateSource).not.toHaveBeenCalled();
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "every configured candidate is the vault's current adapter",
       },
     ]);
@@ -948,7 +948,7 @@ describe("runMigrationKeeper", () => {
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         stage: "submit",
         attempts: 0,
         transient: true,
@@ -990,7 +990,7 @@ describe("runMigrationKeeper", () => {
     expect(server.sendTransaction).toHaveBeenCalledOnce();
     expect(result.migrations).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         fromAdapterId: "CBLENDADAPTER",
         fromProtocol: "blend",
         toAdapterId: "CDEFINDEXADAPTER",
@@ -1145,7 +1145,7 @@ describe("runMigrationKeeper", () => {
 
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CDEFINDEXADAPTER",
         protocol: "defindex",
         stage: "evaluate",
@@ -1185,7 +1185,7 @@ describe("runMigrationKeeper", () => {
     );
     expect(submitMigration).not.toHaveBeenCalled();
     expect(result.skipped).toMatchObject([
-      { vaultId: "meridian-usdc", reason: "current rate unavailable" },
+      { vaultId: "zitian-usdc", reason: "current rate unavailable" },
     ]);
   });
 
@@ -1292,7 +1292,7 @@ describe("runMigrationKeeper", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("adapter changed since discovery"),
       },
     ]);
@@ -1324,7 +1324,7 @@ describe("runMigrationKeeper", () => {
 
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("adapter changed since discovery"),
       },
     ]);
@@ -1364,7 +1364,7 @@ describe("runMigrationKeeper", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("begin_migration submitted"),
       },
     ]);
@@ -1415,7 +1415,7 @@ describe("runMigrationKeeper", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("begin_migration submitted"),
       },
     ]);
@@ -1458,7 +1458,7 @@ describe("runMigrationKeeper", () => {
     expect(result.skipped).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         transient: true,
         error: expect.stringContaining("could not read the migration snapshot"),
       },
@@ -1492,7 +1492,7 @@ describe("runMigrationKeeper", () => {
     expect(result.migrations).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("begin_migration submitted"),
       },
     ]);
@@ -1558,7 +1558,7 @@ describe("runMigrationKeeper", () => {
     expect(server.sendTransaction).toHaveBeenCalledOnce();
     expect(result.migrations).toHaveLength(1);
     expect(result.migrations[0]).toMatchObject({
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       fromAdapterId: "CBLENDADAPTER",
       toAdapterId: "CBLENDV2ADAPTER",
       toProtocol: "blendv2",
@@ -1618,7 +1618,7 @@ describe("runMigrationKeeper", () => {
     expect(result.migrations).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("begin_migration submitted"),
       },
     ]);
@@ -1665,7 +1665,7 @@ describe("runMigrationKeeper", () => {
     expect(server.sendTransaction).toHaveBeenCalledOnce();
     expect(result.migrations).toHaveLength(1);
     expect(result.migrations[0]).toMatchObject({
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       fromAdapterId: "CBLENDADAPTER",
       toAdapterId: "CBLENDV2ADAPTER",
       toProtocol: "blendv2",
@@ -1775,7 +1775,7 @@ describe("runMigrationKeeper", () => {
     expect(rateSource).not.toHaveBeenCalled();
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "no candidate adapters configured",
       },
     ]);
@@ -1802,7 +1802,7 @@ describe("runMigrationKeeper", () => {
 
     expect(result.skipped).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: "no candidate clears the improvement threshold",
       },
     ]);
@@ -1865,7 +1865,7 @@ describe("runMigrationKeeper", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("begin_migration submitted"),
       },
     ]);
@@ -1900,7 +1900,7 @@ describe("runMigrationKeeper", () => {
     // defindex candidate), not the vault's current (blend) adapter.
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CDEFINDEXADAPTER",
         protocol: "defindex",
         stage: "submit",
@@ -1911,7 +1911,7 @@ describe("runMigrationKeeper", () => {
 });
 
 describe("runMigrationKeeper cross-invocation dedup", () => {
-  const KEY = submissionStateKey("migration", "testnet", "meridian-usdc");
+  const KEY = submissionStateKey("migration", "testnet", "zitian-usdc");
 
   async function store(seed?: SubmissionRecord) {
     const inner = createInMemoryKeeperStateStore();
@@ -1963,7 +1963,7 @@ describe("runMigrationKeeper cross-invocation dedup", () => {
     expect(result.failures).toEqual([]);
     expect(result.skipped).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         reason: expect.stringContaining("still unconfirmed"),
       },
     ]);

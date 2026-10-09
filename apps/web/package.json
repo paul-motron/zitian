@@ -1,5 +1,5 @@
 {
-  "name": "@meridian/web",
+  "name": "@zitian/web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -18,8 +18,8 @@
     "@albedo-link/intent": "^0.13.0",
     "@creit.tech/xbull-wallet-connect": "^0.4.0",
     "@lobstrco/signer-extension-api": "^2.1.0",
-    "@meridian/shared": "workspace:*",
-    "@meridian/stellar-sdk-helpers": "workspace:*",
+    "@zitian/shared": "workspace:*",
+    "@zitian/stellar-sdk-helpers": "workspace:*",
     "@stellar/freighter-api": "^6.0.1",
     "@stellar/stellar-sdk": "^14.6.1",
     "@tanstack/react-query": "^5.103.1",

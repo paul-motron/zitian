@@ -3,12 +3,12 @@ import Fastify from "fastify";
 import { adminRoute } from "../routes/admin.js";
 import { keepersRoute } from "../routes/keepers.js";
 
-vi.mock("@meridian/api-core", () => ({
+vi.mock("@zitian/api-core", () => ({
   handleGetVaultState: vi.fn(),
   handleGetKeeperHealth: vi.fn(),
 }));
 
-import { handleGetVaultState, handleGetKeeperHealth } from "@meridian/api-core";
+import { handleGetVaultState, handleGetKeeperHealth } from "@zitian/api-core";
 
 function buildApp() {
   const app = Fastify({ logger: false });
@@ -53,7 +53,7 @@ describe("GET /api/v1/admin/vault-state", () => {
     const app = buildApp();
     vi.mocked(handleGetVaultState).mockResolvedValue({
       status: 404,
-      body: { error: "No Meridian coordinator vault configured" },
+      body: { error: "No Zitian coordinator vault configured" },
     });
 
     const res = await app.inject({

@@ -1,4 +1,4 @@
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 import {
   consoleLogger,
   fetchCoordinatorState,
@@ -7,7 +7,7 @@ import {
   KEEPER_SCHEDULE_MS,
   KNOWN_POOLS,
   loadKeeperHeartbeatStore,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 import type { RouteResult } from "./types";
 
 export interface KeeperHealthEntry {
@@ -59,7 +59,7 @@ export async function handleGetKeeperHealth(): Promise<RouteResult> {
 }
 
 /**
- * Reads the Meridian coordinator vault's current operational state for the
+ * Reads the Zitian coordinator vault's current operational state for the
  * admin dashboard's Vault State card. There is exactly one coordinator vault
  * per network in KNOWN_POOLS today (see known-pools.ts); if that ever
  * changes, this picks the first one rather than guessing which is "the"
@@ -72,13 +72,13 @@ export async function handleGetVaultState(): Promise<RouteResult> {
       : KNOWN_POOLS.mainnet;
   const entry = Object.values(pools).find(
     (p): p is typeof p & { contractId: string } =>
-      p.protocol === "meridian" && Boolean(p.contractId)
+      p.protocol === "zitian" && Boolean(p.contractId)
   );
   if (!entry) {
     return {
       status: 404,
       body: {
-        error: "No Meridian coordinator vault configured for this network",
+        error: "No Zitian coordinator vault configured for this network",
       },
     };
   }

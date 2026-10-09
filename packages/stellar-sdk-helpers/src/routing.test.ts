@@ -7,7 +7,7 @@ function vault(
 ): ApiVault {
   return {
     id: p.id ?? "v",
-    protocol: (p.protocol ?? "meridian") as ApiVault["protocol"],
+    protocol: (p.protocol ?? "zitian") as ApiVault["protocol"],
     asset: "USDC",
     name: "n",
     label: "l",
@@ -24,9 +24,9 @@ describe("selectBestVault", () => {
   it("picks the highest-APY routable vault", () => {
     const best = selectBestVault(
       [
-        vault({ id: "a", protocol: "meridian", apy: 4 }),
-        vault({ id: "b", protocol: "meridian", apy: 7 }),
-        vault({ id: "c", protocol: "meridian", apy: 6 }),
+        vault({ id: "a", protocol: "zitian", apy: 4 }),
+        vault({ id: "b", protocol: "zitian", apy: 7 }),
+        vault({ id: "c", protocol: "zitian", apy: 6 }),
       ],
       opts
     );
@@ -39,14 +39,14 @@ describe("selectBestVault", () => {
         vault({ id: "ondo", protocol: "ondo", apy: 12 }),
         vault({ id: "blend", protocol: "blend", apy: 10 }),
         vault({ id: "dfx", protocol: "defindex", apy: 9 }),
-        vault({ id: "meridian-usdc", protocol: "meridian", apy: 5 }),
+        vault({ id: "zitian-usdc", protocol: "zitian", apy: 5 }),
       ],
       opts
     );
-    expect(best?.id).toBe("meridian-usdc");
+    expect(best?.id).toBe("zitian-usdc");
   });
 
-  it("excludes third-party pools when no Meridian vault is present", () => {
+  it("excludes third-party pools when no Zitian vault is present", () => {
     const best = selectBestVault(
       [
         vault({ id: "dfx", protocol: "defindex", apy: 9 }),
@@ -62,11 +62,11 @@ describe("selectBestVault", () => {
       [
         vault({
           id: "risky",
-          protocol: "meridian",
+          protocol: "zitian",
           apy: 15,
           riskLevel: "risky",
         }),
-        vault({ id: "safe", protocol: "meridian", apy: 6, riskLevel: "safe" }),
+        vault({ id: "safe", protocol: "zitian", apy: 6, riskLevel: "safe" }),
       ],
       opts
     );
@@ -76,20 +76,20 @@ describe("selectBestVault", () => {
   it("falls back to the best risky pool when nothing safer is routable", () => {
     const best = selectBestVault(
       [
-        vault({ id: "r1", protocol: "meridian", apy: 11, riskLevel: "risky" }),
-        vault({ id: "r2", protocol: "meridian", apy: 14, riskLevel: "risky" }),
+        vault({ id: "r1", protocol: "zitian", apy: 11, riskLevel: "risky" }),
+        vault({ id: "r2", protocol: "zitian", apy: 14, riskLevel: "risky" }),
       ],
       opts
     );
     expect(best?.id).toBe("r2");
   });
 
-  it("routes to the Meridian coordinator vault", () => {
+  it("routes to the Zitian coordinator vault", () => {
     const best = selectBestVault(
-      [vault({ id: "meridian-usdc", protocol: "meridian", apy: 8 })],
+      [vault({ id: "zitian-usdc", protocol: "zitian", apy: 8 })],
       opts
     );
-    expect(best?.id).toBe("meridian-usdc");
+    expect(best?.id).toBe("zitian-usdc");
   });
 
   it("returns null when nothing is routable", () => {
@@ -100,9 +100,9 @@ describe("selectBestVault", () => {
   });
 
   it("breaks APY ties deterministically by vault id regardless of input order", () => {
-    const a = vault({ id: "meridian-eurc", protocol: "meridian", apy: 5 });
-    const b = vault({ id: "meridian-usdc", protocol: "meridian", apy: 5 });
-    expect(selectBestVault([a, b], opts)?.id).toBe("meridian-eurc");
-    expect(selectBestVault([b, a], opts)?.id).toBe("meridian-eurc");
+    const a = vault({ id: "zitian-eurc", protocol: "zitian", apy: 5 });
+    const b = vault({ id: "zitian-usdc", protocol: "zitian", apy: 5 });
+    expect(selectBestVault([a, b], opts)?.id).toBe("zitian-eurc");
+    expect(selectBestVault([b, a], opts)?.id).toBe("zitian-eurc");
   });
 });

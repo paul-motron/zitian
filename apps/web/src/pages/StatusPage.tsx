@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { APP_ADDRESSES, APP_NETWORK } from "@meridian/shared";
+import { APP_ADDRESSES, APP_NETWORK } from "@zitian/shared";
 import { useVaultState } from "../hooks/useVaultState";
 import { VaultStatePanel } from "../components/admin/VaultStatePanel";
 import { AdminActionHistory } from "../components/dashboard/AdminActionHistory";
@@ -134,7 +134,7 @@ export function StatusPage() {
 
         <ErrorBoundary>
           <AdminActionHistory
-            vaultId="meridian-usdc"
+            vaultId="zitian-usdc"
             network={APP_NETWORK.network}
             isAdmin
           />

@@ -14,10 +14,10 @@ import {
   isTimestampOutOfRangeError,
 } from "./index";
 
-describe("@meridian/strategies package", () => {
+describe("@zitian/strategies package", () => {
   it("exports STRATEGY_ENGINE with valid metadata", () => {
     expect(STRATEGY_ENGINE).toBeDefined();
-    expect(STRATEGY_ENGINE.name).toBe("meridian-strategies");
+    expect(STRATEGY_ENGINE.name).toBe("zitian-strategies");
     expect(STRATEGY_ENGINE.version).toBe("0.1.0");
   });
 

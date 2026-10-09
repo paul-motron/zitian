@@ -6,7 +6,7 @@ import {
   SubmitRequestSchema,
   formatZodError,
   sanitizeTxError,
-} from "@meridian/shared";
+} from "@zitian/shared";
 import {
   buildDepositTx,
   buildWithdrawTx,
@@ -15,7 +15,7 @@ import {
   ContractSimulationError,
   assertRequiredTrustlines,
   MissingTrustlineError,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 import type { RouteResult } from "./types";
 
 export async function handleDepositRequest(

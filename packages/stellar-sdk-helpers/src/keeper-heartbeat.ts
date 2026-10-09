@@ -15,7 +15,7 @@
 // Reuses the same UPSTASH_REDIS_REST_URL/TOKEN pair as keeper-state.ts and
 // api/_lib/middleware.ts rather than adding a new store dependency.
 
-import { withRaceTimeout } from "@meridian/shared";
+import { withRaceTimeout } from "@zitian/shared";
 import { errorMessage, type KeeperLogger } from "./keeper-retry";
 
 // Matches .github/workflows/keepers.yml's cron schedule. Used by the health
@@ -46,7 +46,7 @@ export function heartbeatKey(
   keeper: "accrual" | "migration",
   network: string
 ): string {
-  return ["meridian", "keeper", "heartbeat", keeper, network].join(":");
+  return ["zitian", "keeper", "heartbeat", keeper, network].join(":");
 }
 
 /**

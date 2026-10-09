@@ -1,4 +1,4 @@
-import { withRetry } from "@meridian/shared";
+import { withRetry } from "@zitian/shared";
 
 export interface DefiLlamaPool {
   pool: string;

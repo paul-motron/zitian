@@ -17,11 +17,11 @@ vi.mock("../_lib/middleware.js", async () => {
 // Stub the workspace builders/readers — these tests exercise the HTTP handler
 // contract (method guards, field validation, status codes, payload shape), not
 // the Soroban transaction building, which is unit-tested in the helpers package.
-vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
+vi.mock("@zitian/stellar-sdk-helpers", async (importOriginal) => {
   // Keep the real error classes: api-core narrows on `instanceof`, so a
   // stubbed class would stop behaving like the error it maps to an HTTP status.
   const actual =
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>();
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>();
   return {
     ContractSimulationError: actual.ContractSimulationError,
     MissingTrustlineError: actual.MissingTrustlineError,
@@ -55,7 +55,7 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
       blendAdapters: 1,
       successes: [
         {
-          vaultId: "meridian-usdc",
+          vaultId: "zitian-usdc",
           adapterId: "CADAPTER",
           hash: "HASH",
           ledger: 123,
@@ -67,10 +67,10 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
     })),
     isMigrationKeeperConfigured: vi.fn(
       (env: Record<string, string | undefined>) =>
-        Boolean(env.MERIDIAN_MIGRATION_KEEPER_SECRET_KEY?.trim())
+        Boolean(env.ZITIAN_MIGRATION_KEEPER_SECRET_KEY?.trim())
     ),
     isAlertKeeperConfigured: vi.fn((env: Record<string, string | undefined>) =>
-      Boolean(env.MERIDIAN_ALERT_WEBHOOK_URL?.trim())
+      Boolean(env.ZITIAN_ALERT_WEBHOOK_URL?.trim())
     ),
     loadMigrationKeeperConfig: vi.fn(() => ({
       network: {
@@ -92,9 +92,7 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
       finishedAt: "2026-08-06T00:00:01.000Z",
       discoveredVaults: 1,
       migrations: [],
-      skipped: [
-        { vaultId: "meridian-usdc", reason: "current rate unavailable" },
-      ],
+      skipped: [{ vaultId: "zitian-usdc", reason: "current rate unavailable" }],
       failures: [],
     })),
     fetchAllVaults: vi.fn(async () => [
@@ -122,10 +120,10 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
     KEEPER_SCHEDULE_MS: { accrual: 15 * 60_000, migration: 60 * 60_000 },
     KNOWN_POOLS: {
       testnet: {
-        "meridian-usdc": {
-          id: "meridian-usdc",
-          name: "Meridian",
-          protocol: "meridian",
+        "zitian-usdc": {
+          id: "zitian-usdc",
+          name: "Zitian",
+          protocol: "zitian",
           label: "USDC Vault",
           contractId:
             "CBOE7JPROCMUKQ4NJWPKCLBBQGHLTGV4X3463DHK4D7KX6KWXGZETAJL",
@@ -134,10 +132,10 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
         },
       },
       mainnet: {
-        "meridian-usdc": {
-          id: "meridian-usdc",
-          name: "Meridian",
-          protocol: "meridian",
+        "zitian-usdc": {
+          id: "zitian-usdc",
+          name: "Zitian",
+          protocol: "zitian",
           label: "USDC Vault",
           contractId:
             "CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ",
@@ -200,7 +198,7 @@ import {
   runAlertKeeper,
   assertRequiredTrustlines,
   MissingTrustlineError,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 
 // A 56-char Stellar public key shape (only the length is validated).
 const PUBKEY = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
@@ -240,8 +238,8 @@ function makeRes(): FakeRes & VercelResponse {
 beforeEach(() => {
   vi.clearAllMocks();
   process.env.CRON_SECRET = "cron-secret";
-  process.env.MERIDIAN_MIGRATION_KEEPER_SECRET_KEY = "S".repeat(56);
-  process.env.MERIDIAN_ALERT_WEBHOOK_URL = "https://hooks.example.com/webhook";
+  process.env.ZITIAN_MIGRATION_KEEPER_SECRET_KEY = "S".repeat(56);
+  process.env.ZITIAN_ALERT_WEBHOOK_URL = "https://hooks.example.com/webhook";
 });
 
 describe("GET /api/v1/positions/[publicKey]", () => {
@@ -731,7 +729,7 @@ describe("GET /api/v1/keepers/accrue", () => {
       skipped: [],
       failures: [
         {
-          vaultId: "meridian-usdc",
+          vaultId: "zitian-usdc",
           adapterId: "CADAPTER",
           stage: "submit",
           attempts: 3,
@@ -753,7 +751,7 @@ describe("GET /api/v1/keepers/accrue", () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toMatchObject({
-      failures: [{ vaultId: "meridian-usdc", error: "try again later" }],
+      failures: [{ vaultId: "zitian-usdc", error: "try again later" }],
     });
     expect(recordKeeperHeartbeat).not.toHaveBeenCalled();
   });
@@ -870,7 +868,7 @@ describe("GET /api/v1/keepers/alert", () => {
   });
 
   it("reports disabled instead of a noisy 500 when the alert webhook isn't configured", async () => {
-    delete process.env.MERIDIAN_ALERT_WEBHOOK_URL;
+    delete process.env.ZITIAN_ALERT_WEBHOOK_URL;
     const res = makeRes();
     await keepersHandler(
       fakeReq({
@@ -911,7 +909,7 @@ describe("GET /api/v1/keepers/alert", () => {
       alertsSent: [],
       failures: [
         {
-          vaultId: "meridian-usdc",
+          vaultId: "zitian-usdc",
           vaultContractId: "CVAULT",
           stage: "send",
           attempts: 3,
@@ -932,7 +930,7 @@ describe("GET /api/v1/keepers/alert", () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toMatchObject({
-      failures: [{ vaultId: "meridian-usdc" }],
+      failures: [{ vaultId: "zitian-usdc" }],
     });
   });
 
@@ -958,7 +956,7 @@ describe("GET /api/v1/keepers/alert", () => {
 
 describe("GET /api/v1/keepers/rebalance", () => {
   it("reports disabled instead of a noisy 500 when the migration secret key isn't configured", async () => {
-    delete process.env.MERIDIAN_MIGRATION_KEEPER_SECRET_KEY;
+    delete process.env.ZITIAN_MIGRATION_KEEPER_SECRET_KEY;
     const res = makeRes();
     await keepersHandler(
       fakeReq({
@@ -1024,9 +1022,7 @@ describe("GET /api/v1/keepers/rebalance", () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toMatchObject({
-      skipped: [
-        { vaultId: "meridian-usdc", reason: "current rate unavailable" },
-      ],
+      skipped: [{ vaultId: "zitian-usdc", reason: "current rate unavailable" }],
     });
     expect(runMigrationKeeper).toHaveBeenCalledOnce();
     expect(recordKeeperHeartbeat).toHaveBeenCalledWith(
@@ -1047,7 +1043,7 @@ describe("GET /api/v1/keepers/rebalance", () => {
       skipped: [],
       failures: [
         {
-          vaultId: "meridian-usdc",
+          vaultId: "zitian-usdc",
           adapterId: "CDEFINDEXADAPTER",
           stage: "submit",
           attempts: 3,
@@ -1069,7 +1065,7 @@ describe("GET /api/v1/keepers/rebalance", () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toMatchObject({
-      failures: [{ vaultId: "meridian-usdc", error: "try again later" }],
+      failures: [{ vaultId: "zitian-usdc", error: "try again later" }],
     });
     expect(recordKeeperHeartbeat).not.toHaveBeenCalled();
   });

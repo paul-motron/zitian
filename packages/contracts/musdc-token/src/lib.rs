@@ -3,11 +3,11 @@
 // mUSDC as a custom SEP-41 token, replacing the plain Stellar Asset Contract
 // it shipped as. A SAC's `transfer` is the built-in implementation with no
 // hook for the vault to observe — see #504's `hasBasis` guard and
-// `MeridianVault::get_principal`'s doc comment for the honest-`0` degradation
+// `ZitianVault::get_principal`'s doc comment for the honest-`0` degradation
 // that gap forced. This contract exists to close it: `transfer`/
 // `transfer_from` notify the configured vault contract after moving
 // balances, and the vault splits `Principal`/`Entry` between sender and
-// receiver pro-rata (see `MeridianVault::on_transfer`).
+// receiver pro-rata (see `ZitianVault::on_transfer`).
 //
 // The vault is this token's sole admin, set once at `initialize` and never
 // rotated — unlike the vault's own `transfer_admin`/`accept_admin`, there is
@@ -143,7 +143,7 @@ impl MusdcToken {
     }
 
     /// Admin-only (the vault). Mints new shares — called from
-    /// `MeridianVault::deposit`. There is no direct-to-holder mint path:
+    /// `ZitianVault::deposit`. There is no direct-to-holder mint path:
     /// only the vault can grow supply, exactly as only the vault could mint
     /// mUSDC as a SAC via `StellarAssetClient::mint` before this contract
     /// replaced it.
@@ -520,7 +520,7 @@ mod tests {
             (
                 vault_id.clone(),
                 7u32,
-                String::from_str(&env, "Meridian USDC"),
+                String::from_str(&env, "Zitian USDC"),
                 String::from_str(&env, "mUSDC"),
             ),
         );
@@ -815,7 +815,7 @@ mod tests {
     #[test]
     fn name_and_symbol_round_trip() {
         let (env, _vault, _token_id, token) = setup();
-        assert_eq!(token.name(), String::from_str(&env, "Meridian USDC"));
+        assert_eq!(token.name(), String::from_str(&env, "Zitian USDC"));
         assert_eq!(token.symbol(), String::from_str(&env, "mUSDC"));
     }
 }

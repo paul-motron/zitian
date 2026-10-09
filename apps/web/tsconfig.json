@@ -14,10 +14,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "paths": {
-      "@meridian/shared": ["../../packages/shared/src"],
-      "@meridian/stellar-sdk-helpers": [
-        "../../packages/stellar-sdk-helpers/src"
-      ]
+      "@zitian/shared": ["../../packages/shared/src"],
+      "@zitian/stellar-sdk-helpers": ["../../packages/stellar-sdk-helpers/src"]
     }
   },
   "include": ["src", "vite.config.ts", "e2e", "playwright.config.ts"]

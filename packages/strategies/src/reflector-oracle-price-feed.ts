@@ -1,8 +1,5 @@
 import { Address, rpc, xdr } from "@stellar/stellar-sdk";
-import {
-  simulateView,
-  type StellarNetwork,
-} from "@meridian/stellar-sdk-helpers";
+import { simulateView, type StellarNetwork } from "@zitian/stellar-sdk-helpers";
 import { Decimal } from "./decimal";
 import {
   FixedPointDecimal,

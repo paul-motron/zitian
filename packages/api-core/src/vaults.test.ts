@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("@meridian/stellar-sdk-helpers", () => ({
+vi.mock("@zitian/stellar-sdk-helpers", () => ({
   fetchAllVaults: vi.fn(async () => [
     { id: "blend-usdc-fixed", protocol: "blend" },
   ]),
@@ -9,7 +9,7 @@ vi.mock("@meridian/stellar-sdk-helpers", () => ({
 }));
 
 import { handleGetVaults, handleGetVaultById } from "./vaults";
-import { fetchAllVaults, selectBestVault } from "@meridian/stellar-sdk-helpers";
+import { fetchAllVaults, selectBestVault } from "@zitian/stellar-sdk-helpers";
 
 beforeEach(() => vi.clearAllMocks());
 

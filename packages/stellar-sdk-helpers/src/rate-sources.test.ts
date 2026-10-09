@@ -6,7 +6,7 @@ import {
   ReserveV2,
   type Pool,
 } from "@blend-capital/blend-sdk";
-import { CONTRACT_ADDRESSES } from "@meridian/shared";
+import { CONTRACT_ADDRESSES } from "@zitian/shared";
 import type { StellarNetwork } from "./types";
 import type { RateQuery } from "./migration-keeper";
 

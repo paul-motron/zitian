@@ -1,6 +1,6 @@
 import { useWalletStore } from "../../store/wallet";
 import { useToastStore } from "../../store/toast";
-import { shortenAddress } from "@meridian/shared";
+import { shortenAddress } from "@zitian/shared";
 import { useWalletConnect } from "../../hooks/useWalletConnect";
 import { WALLETS, type WalletId } from "../../lib/wallet";
 import { RiskDisclosureModal } from "./RiskDisclosureModal";

@@ -4,7 +4,7 @@ import {
   handleWithdrawRequest,
   handleAddTrustlineRequest,
   handleSubmitRequest,
-} from "@meridian/api-core";
+} from "@zitian/api-core";
 
 export const txRoute: FastifyPluginAsync = async (app) => {
   app.post(

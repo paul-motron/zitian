@@ -1,10 +1,10 @@
 export interface KnownPoolMeta {
   id: string;
   name: string;
-  protocol: "blend" | "defindex" | "meridian";
+  protocol: "blend" | "defindex" | "zitian";
   label: string;
   // The main protocol contract for this vault: lending pool address for Blend,
-  // vault contract address for DeFindex, coordinator vault address for Meridian.
+  // vault contract address for DeFindex, coordinator vault address for Zitian.
   // Optional on mainnet until deployed.
   contractId?: string;
   // Stellar Asset Contract address of the vault's underlying reserve asset
@@ -56,14 +56,14 @@ export const KNOWN_POOLS: {
       protocol: "blend",
       label: "Variable Pool",
     },
-    // Meridian coordinator vault: protocol-agnostic entry point. The vault
+    // Zitian coordinator vault: protocol-agnostic entry point. The vault
     // routes to its active adapter (currently Blend) transparently. Not a
     // DeFiLlama pool, so keyed the same way as the testnet entry rather than
     // by UUID.
-    "meridian-usdc": {
-      id: "meridian-usdc",
-      name: "Meridian",
-      protocol: "meridian",
+    "zitian-usdc": {
+      id: "zitian-usdc",
+      name: "Zitian",
+      protocol: "zitian",
       label: "USDC Vault",
       contractId: "CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ",
       assetId: "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
@@ -71,13 +71,13 @@ export const KNOWN_POOLS: {
     },
   },
   testnet: {
-    // Meridian coordinator vault: protocol-agnostic entry point. The vault
+    // Zitian coordinator vault: protocol-agnostic entry point. The vault
     // routes to its active adapter (Blend or DeFindex) transparently.
     // contractId is updated after each redeployment.
-    "meridian-usdc": {
-      id: "meridian-usdc",
-      name: "Meridian",
-      protocol: "meridian",
+    "zitian-usdc": {
+      id: "zitian-usdc",
+      name: "Zitian",
+      protocol: "zitian",
       label: "USDC Vault",
       contractId: "CAIQBVLBIUWQGE6DQUHDMZ2QWI7QP6KTCN7GP2BIZ6JZC4ES47JO4SSM",
       assetId: "CAQCFVLOBK5GIULPNZRGATJJMIZL5BSP7X5YJVMGCPTUEPFM4AVSRCJU",

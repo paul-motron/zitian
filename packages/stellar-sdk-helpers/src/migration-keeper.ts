@@ -1,5 +1,5 @@
 // Scheduled keeper for #469: periodically compares live rates across the
-// protocols a Meridian vault's adapters can target, and calls the vault's
+// protocols a Zitian vault's adapters can target, and calls the vault's
 // existing migrate_adapter when a candidate clears a configured minimum
 // improvement. migrate_adapter already moves the vault's entire position in
 // one slippage-bounded transaction and never touches individual depositor
@@ -19,7 +19,7 @@ import {
   APP_NETWORK,
   MAX_ADMIN_SLIPPAGE_BPS,
   MIGRATION_DEFAULT_SLIPPAGE_BPS,
-} from "@meridian/shared";
+} from "@zitian/shared";
 import { KNOWN_POOLS, type KnownPoolMeta } from "./known-pools";
 import { getRpcServer } from "./internal";
 import { simulateView } from "./tx";
@@ -262,11 +262,11 @@ export interface MigrationKeeperDeps {
   deadlineAt?: number;
 }
 
-// Scans for MERIDIAN_ADAPTER_<PROTOCOL>_ID rather than one hardcoded env
+// Scans for ZITIAN_ADAPTER_<PROTOCOL>_ID rather than one hardcoded env
 // var per protocol: a new protocol becomes a migration candidate by setting
 // an env var with this name, never by editing this file, matching how
 // RateSourceFn is already pluggable without code changes.
-const CANDIDATE_ADAPTER_ENV_PATTERN = /^MERIDIAN_ADAPTER_(.+)_ID$/;
+const CANDIDATE_ADAPTER_ENV_PATTERN = /^ZITIAN_ADAPTER_(.+)_ID$/;
 
 function parseCandidateAdapters(
   env: Record<string, string | undefined>
@@ -274,7 +274,7 @@ function parseCandidateAdapters(
   const candidates: Record<string, string> = {};
   // Tracks which raw env var name populated each lowercased protocol key,
   // so two case-differing var names for the same protocol (e.g.
-  // MERIDIAN_ADAPTER_BLEND_ID and MERIDIAN_ADAPTER_Blend_ID) fail loudly
+  // ZITIAN_ADAPTER_BLEND_ID and ZITIAN_ADAPTER_Blend_ID) fail loudly
   // instead of one silently overwriting the other with no error, log, or
   // indication that a candidate was dropped.
   const sourceKeyByProtocol: Record<string, string> = {};
@@ -305,31 +305,31 @@ function parseCandidateAdapters(
 export function isMigrationKeeperConfigured(
   env: Record<string, string | undefined>
 ): boolean {
-  return Boolean(env.MERIDIAN_MIGRATION_KEEPER_SECRET_KEY?.trim());
+  return Boolean(env.ZITIAN_MIGRATION_KEEPER_SECRET_KEY?.trim());
 }
 
 export function loadMigrationKeeperConfig(
   env: Record<string, string | undefined>
 ): MigrationKeeperConfig {
-  // Deliberately its own env var, distinct from MERIDIAN_KEEPER_SECRET_KEY
+  // Deliberately its own env var, distinct from ZITIAN_KEEPER_SECRET_KEY
   // (the accrual keeper's key): accrue() is permissionless, but
   // migrate_adapter is admin-gated, so this key carries full vault admin
   // authority. Operators should be able to scope/rotate the two
   // independently rather than share a single key across a low-stakes and a
   // high-stakes job.
-  const secretKey = env.MERIDIAN_MIGRATION_KEEPER_SECRET_KEY?.trim();
+  const secretKey = env.ZITIAN_MIGRATION_KEEPER_SECRET_KEY?.trim();
   if (!secretKey) {
-    throw new Error("MERIDIAN_MIGRATION_KEEPER_SECRET_KEY is required");
+    throw new Error("ZITIAN_MIGRATION_KEEPER_SECRET_KEY is required");
   }
 
   const maxSlippageBps = parseNonNegativeInt(
-    env.MERIDIAN_MIGRATION_MAX_SLIPPAGE_BPS,
+    env.ZITIAN_MIGRATION_MAX_SLIPPAGE_BPS,
     DEFAULT_MAX_SLIPPAGE_BPS,
-    "MERIDIAN_MIGRATION_MAX_SLIPPAGE_BPS"
+    "ZITIAN_MIGRATION_MAX_SLIPPAGE_BPS"
   );
   if (maxSlippageBps > MAX_ADMIN_SLIPPAGE_BPS) {
     throw new Error(
-      `MERIDIAN_MIGRATION_MAX_SLIPPAGE_BPS must be at most ${MAX_ADMIN_SLIPPAGE_BPS} (the contract's own MAX_ADMIN_SLIPPAGE_BPS ceiling; anything above it would make every migrate_adapter submission fail on-chain with InvalidSlippageBps)`
+      `ZITIAN_MIGRATION_MAX_SLIPPAGE_BPS must be at most ${MAX_ADMIN_SLIPPAGE_BPS} (the contract's own MAX_ADMIN_SLIPPAGE_BPS ceiling; anything above it would make every migrate_adapter submission fail on-chain with InvalidSlippageBps)`
     );
   }
 
@@ -337,24 +337,24 @@ export function loadMigrationKeeperConfig(
     network: APP_NETWORK,
     secretKey,
     maxAttempts: parsePositiveInt(
-      env.MERIDIAN_KEEPER_MAX_ATTEMPTS,
+      env.ZITIAN_KEEPER_MAX_ATTEMPTS,
       DEFAULT_MAX_ATTEMPTS,
-      "MERIDIAN_KEEPER_MAX_ATTEMPTS"
+      "ZITIAN_KEEPER_MAX_ATTEMPTS"
     ),
     baseDelayMs: parsePositiveInt(
-      env.MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS,
+      env.ZITIAN_KEEPER_RETRY_BASE_DELAY_MS,
       DEFAULT_BASE_DELAY_MS,
-      "MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS"
+      "ZITIAN_KEEPER_RETRY_BASE_DELAY_MS"
     ),
     rpcTimeoutMs: parsePositiveInt(
-      env.MERIDIAN_KEEPER_RPC_TIMEOUT_MS,
+      env.ZITIAN_KEEPER_RPC_TIMEOUT_MS,
       DEFAULT_RPC_TIMEOUT_MS,
-      "MERIDIAN_KEEPER_RPC_TIMEOUT_MS"
+      "ZITIAN_KEEPER_RPC_TIMEOUT_MS"
     ),
     minImprovementBps: parseNonNegativeInt(
-      env.MERIDIAN_MIGRATION_MIN_IMPROVEMENT_BPS,
+      env.ZITIAN_MIGRATION_MIN_IMPROVEMENT_BPS,
       DEFAULT_MIN_IMPROVEMENT_BPS,
-      "MERIDIAN_MIGRATION_MIN_IMPROVEMENT_BPS"
+      "ZITIAN_MIGRATION_MIN_IMPROVEMENT_BPS"
     ),
     maxSlippageBps,
     submissionTtlMs: parseSubmissionTtlMs(env),
@@ -379,7 +379,7 @@ export async function discoverMigrationVaults(
     ...(options.deadlineAt !== undefined && { deadlineAt: options.deadlineAt }),
   };
   const targets = Object.values(pools).filter(
-    (meta) => meta.protocol === "meridian" && meta.contractId
+    (meta) => meta.protocol === "zitian" && meta.contractId
   );
 
   const settled = await Promise.allSettled(
@@ -562,7 +562,7 @@ async function findBestCandidate(
   // Nothing to compare against: don't pay for a retried rate lookup (up to
   // maxAttempts, with backoff) just to discover there was never a candidate
   // to evaluate. This is the documented default state today (no
-  // MERIDIAN_ADAPTER_<PROTOCOL>_ID configured), not a rare edge case.
+  // ZITIAN_ADAPTER_<PROTOCOL>_ID configured), not a rare edge case.
   if (Object.keys(config.candidateAdapters).length === 0) {
     return {
       best: null,

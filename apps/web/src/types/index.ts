@@ -1,5 +1,5 @@
-export type { StellarNetwork } from "@meridian/stellar-sdk-helpers";
-export type { SupportedStablecoin, ProtocolId } from "@meridian/shared";
+export type { StellarNetwork } from "@zitian/stellar-sdk-helpers";
+export type { SupportedStablecoin, ProtocolId } from "@zitian/shared";
 
 export interface WalletState {
   publicKey: string | null;

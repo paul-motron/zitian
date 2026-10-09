@@ -1,5 +1,5 @@
 {
-  "name": "@meridian/api",
+  "name": "@zitian/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,9 +7,9 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@meridian/api-core": "workspace:*",
-    "@meridian/shared": "workspace:*",
-    "@meridian/stellar-sdk-helpers": "workspace:*",
+    "@zitian/api-core": "workspace:*",
+    "@zitian/shared": "workspace:*",
+    "@zitian/stellar-sdk-helpers": "workspace:*",
     "@stellar/stellar-sdk": "^14.6.1",
     "@upstash/ratelimit": "^2.1.0",
     "@upstash/redis": "^1.38.4"

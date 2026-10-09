@@ -1,11 +1,11 @@
-import type { StellarNetwork } from "@meridian/stellar-sdk-helpers";
+import type { StellarNetwork } from "@zitian/stellar-sdk-helpers";
 
 /**
  * Configuration required to connect a VaultBase instance to an on-chain
- * MeridianVault coordinator contract.
+ * ZitianVault coordinator contract.
  */
 export interface VaultConfig {
-  /** Bech32 contract address (C-address) of the MeridianVault coordinator. */
+  /** Bech32 contract address (C-address) of the ZitianVault coordinator. */
   contractId: string;
   /** Stellar network context (network id, RPC URL, passphrase). */
   network: StellarNetwork;

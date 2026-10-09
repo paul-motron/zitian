@@ -3,7 +3,7 @@ set -euo pipefail
 
 # deploy-external-pinger.sh
 #
-# Drives the Meridian keepers from an external cron/uptime service instead of
+# Drives the Zitian keepers from an external cron/uptime service instead of
 # relying on GitHub Actions' native cron (issue #796), whose scheduled triggers
 # GitHub documents as delayable or droppable under load.
 #
@@ -14,7 +14,7 @@ set -euo pipefail
 #
 # Required environment:
 #   API_BASE_URL   Base URL of the deployed API (no trailing slash),
-#                  e.g. https://meridian.example.com
+#                  e.g. https://zitian.example.com
 #   CRON_SECRET    Bearer token the keeper endpoints authenticate against.
 #
 # Configure three jobs in the external scheduler, one per keeper, each set to

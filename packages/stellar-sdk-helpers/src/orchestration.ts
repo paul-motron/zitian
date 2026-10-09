@@ -19,8 +19,8 @@ function resolveVaultEntry(vaultId: string, network: StellarNetwork) {
   if (!entry) {
     throw new Error(`Vault not found: ${vaultId}`);
   }
-  if (entry.protocol !== "meridian") {
-    throw new Error("Only Meridian vaults supported");
+  if (entry.protocol !== "zitian") {
+    throw new Error("Only Zitian vaults supported");
   }
   if (!entry.contractId) {
     throw new Error(`Vault not deployed: ${vaultId} has no contractId`);
@@ -88,7 +88,7 @@ export async function resolvePositions(
     network.network === "testnet" ? KNOWN_POOLS.testnet : KNOWN_POOLS.mainnet
   ).filter(
     (p): p is typeof p & { contractId: string } =>
-      p.protocol === "meridian" && Boolean(p.contractId)
+      p.protocol === "zitian" && Boolean(p.contractId)
   );
 
   const results = await Promise.allSettled(

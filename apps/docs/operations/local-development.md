@@ -14,8 +14,8 @@ The Rust toolchain and Stellar CLI are only required if you are working on the S
 ## Setup
 
 ```bash
-git clone https://github.com/drydocs/meridian.git
-cd meridian
+git clone https://github.com/paul-motron/zitian.git
+cd zitian
 pnpm install
 ```
 
@@ -37,10 +37,10 @@ The Vite dev server proxies `/api/*` to `http://localhost:3001` and `/docs/*` to
 
 ```bash
 # Web only
-pnpm --filter @meridian/web dev
+pnpm --filter @zitian/web dev
 
 # API only
-pnpm --filter @meridian/api-local dev
+pnpm --filter @zitian/api-local dev
 ```
 
 ## Health check
@@ -59,8 +59,8 @@ pnpm test
 To run tests for a single package:
 
 ```bash
-pnpm --filter @meridian/shared test
-pnpm --filter @meridian/stellar-sdk-helpers test
+pnpm --filter @zitian/shared test
+pnpm --filter @zitian/stellar-sdk-helpers test
 ```
 
 ## Type checking
@@ -86,7 +86,7 @@ pnpm build
 Or build a single package:
 
 ```bash
-pnpm --filter @meridian/shared build
+pnpm --filter @zitian/shared build
 ```
 
 ## Working with the contracts

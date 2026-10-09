@@ -1,5 +1,5 @@
 {
-  "name": "@meridian/api-core",
+  "name": "@zitian/api-core",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@meridian/shared": "workspace:*",
-    "@meridian/stellar-sdk-helpers": "workspace:*",
+    "@zitian/shared": "workspace:*",
+    "@zitian/stellar-sdk-helpers": "workspace:*",
     "zod": "^4.6.5"
   },
   "devDependencies": {

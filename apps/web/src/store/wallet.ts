@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { WalletState } from "../types";
 import { wallet } from "../lib/wallet";
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 
 interface WalletStore extends WalletState {
   connect: (publicKey: string) => void;
@@ -35,7 +35,7 @@ export const useWalletStore = create<WalletStore>()(
       },
     }),
     {
-      name: "meridian-wallet",
+      name: "zitian-wallet",
       storage: createJSONStorage(() => localStorage),
       version: 1,
       // v0 → v1: the `network` field was hardcoded to "testnet" at init time

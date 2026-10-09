@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   DEFAULT_SLIPPAGE_BPS,
   VAULT_PERFORMANCE_FEE_BPS,
-} from "@meridian/shared";
+} from "@zitian/shared";
 import { api, type VaultState } from "../lib/api";
 
 const STALE_TIME_MS = 30_000;

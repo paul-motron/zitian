@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
-import { handleGetKeeperHealth } from "@meridian/api-core";
+import { handleGetKeeperHealth } from "@zitian/api-core";
 
 // Only the read-only health check is mirrored here for local dev — unlike
 // /api/v1/vaults, accrue/rebalance are cron-invoked Vercel functions that

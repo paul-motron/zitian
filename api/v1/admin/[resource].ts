@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { handleGetAdminHistory, handleGetVaultState } from "@meridian/api-core";
+import { handleGetAdminHistory, handleGetVaultState } from "@zitian/api-core";
 import { applyCors, checkRateLimit } from "../../_lib/middleware.js";
 
 const HISTORY_CACHE_CONTROL = "public, s-maxage=30, stale-while-revalidate=120";

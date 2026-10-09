@@ -12,10 +12,10 @@ test.describe("vault list", () => {
         json: {
           vaults: [
             {
-              id: "meridian-usdc",
-              protocol: "meridian",
+              id: "zitian-usdc",
+              protocol: "zitian",
               asset: "USDC",
-              name: "Meridian",
+              name: "Zitian",
               label: "USDC Vault",
               apy: 5.25,
               tvl: 1234567,
@@ -23,7 +23,7 @@ test.describe("vault list", () => {
               riskLevel: "safe",
             },
           ],
-          recommendedVaultId: "meridian-usdc",
+          recommendedVaultId: "zitian-usdc",
           updatedAt: new Date().toISOString(),
           cached: false,
         },
@@ -33,7 +33,7 @@ test.describe("vault list", () => {
     await page.goto("./");
 
     // The stats row renders the recommended vault's APY (5.25%), TVL
-    // ($1.2M), and route ("Meridian" protocol label).
+    // ($1.2M), and route ("Zitian" protocol label).
     await expect(page.getByText("APY")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText("TVL")).toBeVisible();
     await expect(page.getByText("Route")).toBeVisible();

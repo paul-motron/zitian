@@ -33,7 +33,7 @@
 // an assumption. See apps/docs/operations/migration-keeper.md for the state
 // machine.
 
-import { withRaceTimeout, withRetry } from "@meridian/shared";
+import { withRaceTimeout, withRetry } from "@zitian/shared";
 import {
   errorMessage,
   parsePositiveInt,
@@ -135,16 +135,16 @@ export function parseSubmissionTtlMs(
   env: Record<string, string | undefined>
 ): number {
   const ttlMs = parsePositiveInt(
-    env.MERIDIAN_KEEPER_SUBMISSION_TTL_MS,
+    env.ZITIAN_KEEPER_SUBMISSION_TTL_MS,
     DEFAULT_SUBMISSION_TTL_MS,
-    "MERIDIAN_KEEPER_SUBMISSION_TTL_MS"
+    "ZITIAN_KEEPER_SUBMISSION_TTL_MS"
   );
   // A TTL shorter than the transaction's own validity window turns the
   // "aged out, so provably dead" expiry into a duplicate generator: the
   // record would be cleared while the original transaction can still land.
   if (ttlMs < TX_VALIDITY_WINDOW_MS) {
     throw new Error(
-      `MERIDIAN_KEEPER_SUBMISSION_TTL_MS must be at least ${TX_VALIDITY_WINDOW_MS} (a submitted transaction stays valid that long, so a shorter record would expire while it can still land)`
+      `ZITIAN_KEEPER_SUBMISSION_TTL_MS must be at least ${TX_VALIDITY_WINDOW_MS} (a submitted transaction stays valid that long, so a shorter record would expire while it can still land)`
     );
   }
   return ttlMs;
@@ -160,7 +160,7 @@ export function submissionStateKey(
   network: string,
   ...target: string[]
 ): string {
-  return ["meridian", "keeper", keeper, network, ...target].join(":");
+  return ["zitian", "keeper", keeper, network, ...target].join(":");
 }
 
 /**

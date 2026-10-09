@@ -1,6 +1,6 @@
-# @meridian/strategies
+# @zitian/strategies
 
-Strategy engine and simulation library for Meridian.
+Strategy engine and simulation library for Zitian.
 
 ## Simulation boundary
 
@@ -13,7 +13,7 @@ sign or submit a transaction, so an unlaunched strategy cannot reach real funds.
 signing or submission API, a deployed contract address, or the
 `CONTRACT_ADDRESSES` table appears in them.
 
-Live execution stays off unless `MERIDIAN_STRATEGIES_LIVE_EXECUTION` is exactly
+Live execution stays off unless `ZITIAN_STRATEGIES_LIVE_EXECUTION` is exactly
 `true`. That variable is the single place a launch flips the boundary, and any
 other value leaves the engine in simulation mode.
 
@@ -23,7 +23,7 @@ Monetary values use `Decimal`, a fixed-point type backed by `bigint` that stores
 a value as `raw / 10^scale`. The default scale is 7, matching Stellar stroops.
 
 ```ts
-import { Decimal } from "@meridian/strategies";
+import { Decimal } from "@zitian/strategies";
 
 const a = Decimal.fromString("100.25");
 const b = Decimal.fromStroops(500_000_000n); // 50.0000000
@@ -51,14 +51,14 @@ one self-repaying loan run, so an unintended change to interest accrual,
 amortisation, or close behaviour fails the suite instead of passing quietly.
 
 To regenerate it after an intentional change, run
-`UPDATE_GOLDEN=true pnpm --filter @meridian/strategies test` and review the diff
+`UPDATE_GOLDEN=true pnpm --filter @zitian/strategies test` and review the diff
 before committing. The suite refuses to regenerate under `CI`, so a stale
 fixture can never be blessed by a pipeline run.
 
 ## Installation
 
 ```bash
-pnpm add @meridian/strategies
+pnpm add @zitian/strategies
 ```
 
 ## License

@@ -1,4 +1,4 @@
-import { SupportedStablecoin } from "@meridian/shared";
+import { SupportedStablecoin } from "@zitian/shared";
 
 export const STROOPS_PER_UNIT = 10_000_000n;
 

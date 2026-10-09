@@ -1,6 +1,6 @@
 # Migration Keeper
 
-Meridian vaults are protocol-agnostic: `migrate_adapter` already exists
+Zitian vaults are protocol-agnostic: `migrate_adapter` already exists
 (`packages/contracts/vault/src/lib.rs`) and atomically moves a vault's entire
 position to a new adapter in one slippage-bounded transaction. Nothing calls
 it automatically today, an admin has to notice a rate change and trigger it
@@ -9,7 +9,7 @@ across the protocols a vault's adapters can target, and calls
 `migrate_adapter` when a candidate clears a configured minimum improvement.
 
 See [#469](https://github.com/drydocs/meridian/issues/469) for the full background, including why an earlier per-user
-delegated-authorization design (`MeridianRouter`) was abandoned: Stellar's
+delegated-authorization design (`ZitianRouter`) was abandoned: Stellar's
 token contracts require the token holder's own signature for any transfer or
 burn, with no allowance/delegation primitive, so a keeper could never act on
 a depositor's behalf directly. `migrate_adapter` sidesteps that entirely: it
@@ -97,16 +97,16 @@ hasn't accumulated a second snapshot yet, see above), but there is no reason
 to poll faster than the decision needs.
 
 The schedule runs unconditionally, independent of whether the feature is
-actually ready ([#514](https://github.com/drydocs/meridian/issues/514)). If `MERIDIAN_MIGRATION_KEEPER_SECRET_KEY`
+actually ready ([#514](https://github.com/drydocs/meridian/issues/514)). If `ZITIAN_MIGRATION_KEEPER_SECRET_KEY`
 isn't set, the endpoint returns `200 { status: "disabled" }` rather than
 throwing, so an intentionally-unfinished feature doesn't produce an hourly
 false alarm.
 
 ## Signing Key And Trust Model
 
-Set `MERIDIAN_MIGRATION_KEEPER_SECRET_KEY` in the deployment secret store.
+Set `ZITIAN_MIGRATION_KEEPER_SECRET_KEY` in the deployment secret store.
 
-This is deliberately **not** the same key as `MERIDIAN_KEEPER_SECRET_KEY`
+This is deliberately **not** the same key as `ZITIAN_KEEPER_SECRET_KEY`
 (the accrue keeper's key). `accrue()` is permissionless, any account can call
 it. `migrate_adapter` is admin-gated (`Self::require_admin`), so this key
 must be the vault's actual admin address and carries full vault admin
@@ -119,9 +119,9 @@ key you'd hand to a low-trust automation path.
 The vault contract itself does not restrict which address `migrate_adapter`
 can be pointed at beyond `require_admin`, `max_slippage_bps <= 10000`, and
 `new_adapter != old_adapter`; there is no on-chain allowlist of permitted
-adapter addresses. This differs from the deleted `MeridianRouter`'s
+adapter addresses. This differs from the deleted `ZitianRouter`'s
 `add_vault`/`remove_vault` allowlist model. The admin gate is the entire
-safety boundary: this keeper's config (`MERIDIAN_ADAPTER_<PROTOCOL>_ID`)
+safety boundary: this keeper's config (`ZITIAN_ADAPTER_<PROTOCOL>_ID`)
 is what actually constrains which adapters get considered, not the
 contract.
 
@@ -131,7 +131,7 @@ deployments fail closed when it's missing, only true local dev is permissive.
 
 ## Slippage And Improvement Thresholds
 
-- `MERIDIAN_MIGRATION_MAX_SLIPPAGE_BPS` default `100` (1%). Passed directly
+- `ZITIAN_MIGRATION_MAX_SLIPPAGE_BPS` default `100` (1%). Passed directly
   to `migrate_adapter`'s `max_slippage_bps` argument. The config loader
   rejects only the literal `10000` (unlimited slippage): an unbounded
   tolerance would accept a migration that loses an arbitrary fraction of
@@ -140,7 +140,7 @@ deployments fail closed when it's missing, only true local dev is permissive.
   the check stops one integer short of the guarantee its own reasoning
   states. Not tightened here since picking a real ceiling below "unlimited"
   is a policy call, not a bug fix, flagging so it isn't mistaken for closed.
-- `MERIDIAN_MIGRATION_MIN_IMPROVEMENT_BPS` default `50` (0.5%). A candidate
+- `ZITIAN_MIGRATION_MIN_IMPROVEMENT_BPS` default `50` (0.5%). A candidate
   protocol's rate must exceed the vault's current rate by at least this
   much before a migration is triggered, avoiding fee-losing churn between
   two protocols whose rates are within noise of each other.
@@ -161,8 +161,8 @@ assumption today.
 `migrate_adapter(new_adapter, max_slippage_bps)` takes the address of an
 already-deployed adapter contract; there is no on-chain registry of adapters
 a vault could migrate to, only its single current one. Candidates are
-configured out-of-band via `MERIDIAN_ADAPTER_<PROTOCOL>_ID`, one env var per
-protocol (e.g. `MERIDIAN_ADAPTER_BLEND_ID`, `MERIDIAN_ADAPTER_DEFINDEX_ID`),
+configured out-of-band via `ZITIAN_ADAPTER_<PROTOCOL>_ID`, one env var per
+protocol (e.g. `ZITIAN_ADAPTER_BLEND_ID`, `ZITIAN_ADAPTER_DEFINDEX_ID`),
 all unset by default; an unconfigured protocol is silently excluded from
 consideration, not an error. `CandidateProtocol` deliberately doesn't exist
 as a fixed type anywhere in this file: `migrate_adapter` itself has no
@@ -172,10 +172,10 @@ whose job is protocol-agnostic routing, exactly the coupling adapters exist
 to avoid. A new protocol becomes a candidate by setting its env var, never
 by editing this codebase.
 
-A `MeridianDefindexAdapter` is deployed on testnet
+A `ZitianDefindexAdapter` is deployed on testnet
 (`CAJVTA7EC3ZL3G4WSU4QIRB7RU7SUFUUJDEB7JE6CQQNPE7QC5OBSAM6`), initialized
-against the live Meridian vault and the existing Paltalabs DeFindex testnet
-vault, so there's a real candidate to point `MERIDIAN_ADAPTER_DEFINDEX_ID`
+against the live Zitian vault and the existing Paltalabs DeFindex testnet
+vault, so there's a real candidate to point `ZITIAN_ADAPTER_DEFINDEX_ID`
 at once the other gaps above close. It is deliberately not wired into
 `packages/shared/src/constants.ts`: that file gates a required CI check
 (`.github/workflows/verify-contract-addresses.yml`) that verifies the vault
@@ -188,15 +188,15 @@ Only the exact adapter address, not protocol identity, excludes a candidate
 from consideration (see "Only excludes the vault's literal current adapter"
 in `migration-keeper.ts`). After redeploying an adapter
 (`scripts/redeploy-blend-adapter.sh`), update the corresponding
-`MERIDIAN_ADAPTER_<PROTOCOL>_ID` to the new address: a stale entry still
+`ZITIAN_ADAPTER_<PROTOCOL>_ID` to the new address: a stale entry still
 pointing at an old, already-abandoned adapter is silently treated as a
 legitimate candidate again, since it's no longer the vault's _current_
 adapter either.
 
 `config.candidateAdapters` is also a single global map applied identically
 to every discovered vault, not scoped per vault. The deployed
-`MeridianDefindexAdapter` above is only initialized against one specific
-vault; if a second Meridian vault is ever added to `KNOWN_POOLS`, this
+`ZitianDefindexAdapter` above is only initialized against one specific
+vault; if a second Zitian vault is ever added to `KNOWN_POOLS`, this
 would need to become per-vault-scoped first (tracked on [#511](https://github.com/drydocs/meridian/issues/511) alongside the
 rate source work, since both matter most once a second vault is likely).
 
@@ -277,7 +277,7 @@ Two guards close that, and they cover different failure windows.
 ### 1. A shared submission lease
 
 Held in Upstash Redis (`packages/stellar-sdk-helpers/src/keeper-state.ts`),
-one record per vault, keyed `meridian:keeper:migration:<network>:<vaultId>`.
+one record per vault, keyed `zitian:keeper:migration:<network>:<vaultId>`.
 It is taken in two steps:
 
 1. **Claim** (`SET NX`) **before the transaction is built.** A plain "is
@@ -319,7 +319,7 @@ network**, never trusted on its own word:
 | the store or the lookup itself errored          | unknown                              | **skip this vault this run** |
 
 So a record can never block a vault indefinitely: it either resolves to a
-real outcome or ages out. `MERIDIAN_KEEPER_SUBMISSION_TTL_MS` defaults to
+real outcome or ages out. `ZITIAN_KEEPER_SUBMISSION_TTL_MS` defaults to
 `360000` (the 300s transaction validity window plus 60s of clock-skew
 margin) and is **rejected below 300000**: a shorter TTL would clear the
 record while its transaction could still land, turning the expiry rule into

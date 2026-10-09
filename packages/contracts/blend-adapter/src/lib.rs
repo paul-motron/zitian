@@ -32,10 +32,10 @@ const TOTAL_KEY: Symbol = symbol_short!("TOTAL");
 // ---------------------------------------------------------------------------
 
 #[contract]
-pub struct MeridianBlendAdapter;
+pub struct ZitianBlendAdapter;
 
 #[contractimpl]
-impl MeridianBlendAdapter {
+impl ZitianBlendAdapter {
     /// Links the adapter to its vault, Blend pool, and USDC token.
     ///
     /// Runs inside the `CreateContract` host operation that deploys this
@@ -497,7 +497,7 @@ mod tests {
         Env,
         Address,
         Address,
-        MeridianBlendAdapterClient<'static>,
+        ZitianBlendAdapterClient<'static>,
         MockBlendPoolClient<'static>,
     ) {
         let env = Env::default();
@@ -518,10 +518,10 @@ mod tests {
         // deployment of this contract is now wired: there is no
         // deploy-then-initialize path left to exercise.
         let adapter_id = env.register(
-            MeridianBlendAdapter,
+            ZitianBlendAdapter,
             (vault.clone(), pool_id.clone(), usdc_id.clone()),
         );
-        let adapter = MeridianBlendAdapterClient::new(&env, &adapter_id);
+        let adapter = ZitianBlendAdapterClient::new(&env, &adapter_id);
 
         // Fund the vault (the caller of deposit) with USDC, then act as the
         // vault transferring into the adapter, matching real vault behaviour.
@@ -540,7 +540,7 @@ mod tests {
         Address,
         Address,
         Address,
-        MeridianBlendAdapterClient<'static>,
+        ZitianBlendAdapterClient<'static>,
         MockBlendPoolClient<'static>,
     ) {
         let env = Env::default();
@@ -556,10 +556,10 @@ mod tests {
         pool.initialize(&SCALAR, &RESERVE_INDEX);
 
         let adapter_id = env.register(
-            MeridianBlendAdapter,
+            ZitianBlendAdapter,
             (vault.clone(), pool_id.clone(), usdc_id.clone()),
         );
-        let adapter = MeridianBlendAdapterClient::new(&env, &adapter_id);
+        let adapter = ZitianBlendAdapterClient::new(&env, &adapter_id);
 
         (env, admin, vault, usdc_id, adapter, pool)
     }

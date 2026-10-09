@@ -28,10 +28,10 @@ rm -rf "$OUT"
 mkdir -p "$OUT"
 
 echo "▶ Building React app (base: /app/)…"
-pnpm --filter @meridian/web build
+pnpm --filter @zitian/web build
 
 echo "▶ Building docs (base: /docs/)…"
-pnpm --filter @meridian/docs build
+pnpm --filter @zitian/docs build
 
 echo "▶ Assembling combined output…"
 # Landing page → dist/index.html

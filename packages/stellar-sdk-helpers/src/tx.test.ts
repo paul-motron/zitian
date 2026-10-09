@@ -27,7 +27,7 @@ import {
 } from "./tx";
 import type { StellarNetwork } from "./types";
 import { isMigrationCooldownError } from "./keeper-tx";
-import { CONTRACT_ADDRESSES, USDC_ISSUER } from "@meridian/shared";
+import { CONTRACT_ADDRESSES, USDC_ISSUER } from "@zitian/shared";
 
 const { SUCCESS, FAILED, NOT_FOUND } = rpc.Api.GetTransactionStatus;
 
@@ -708,7 +708,7 @@ describe("assertSubmittable", () => {
       .build();
   }
 
-  it("allows a transaction invoking a known Meridian contract", () => {
+  it("allows a transaction invoking a known Zitian contract", () => {
     const contract = new Contract(KNOWN_VAULT);
     const tx = buildTx(contract.call("deposit"));
     expect(() => assertSubmittable(tx, network)).not.toThrow();

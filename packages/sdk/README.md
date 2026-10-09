@@ -1,13 +1,13 @@
-# @meridian/sdk
+# @zitian/sdk
 
-TypeScript SDK for building on Meridian: vault deposits and withdrawals, keeper transaction submission with retry and fee escalation, and the Blend adapter client. It runs on top of `@stellar/stellar-sdk`.
+TypeScript SDK for building on Zitian: vault deposits and withdrawals, keeper transaction submission with retry and fee escalation, and the Blend adapter client. It runs on top of `@stellar/stellar-sdk`.
 
 The package is at `0.1.0` and only exports `SDK_VERSION` for now. The keeper, adapter and vault modules are tracked in #803 to #807.
 
 ## Install
 
 ```bash
-pnpm add @meridian/sdk @stellar/stellar-sdk
+pnpm add @zitian/sdk @stellar/stellar-sdk
 ```
 
 `@stellar/stellar-sdk` is a peer dependency, so your app and the SDK share one copy.
@@ -17,7 +17,7 @@ Inside this monorepo, depend on it through the workspace:
 ```json
 {
   "dependencies": {
-    "@meridian/sdk": "workspace:*"
+    "@zitian/sdk": "workspace:*"
   }
 }
 ```
@@ -27,19 +27,19 @@ Inside this monorepo, depend on it through the workspace:
 The package ships both ESM and CommonJS builds with type declarations:
 
 ```ts
-import { SDK_VERSION } from "@meridian/sdk";
+import { SDK_VERSION } from "@zitian/sdk";
 ```
 
 ```js
-const { SDK_VERSION } = require("@meridian/sdk");
+const { SDK_VERSION } = require("@zitian/sdk");
 ```
 
 ## Development
 
 ```bash
-pnpm --filter @meridian/sdk build      # dist/ with .js, .cjs, .d.ts and .d.cts
-pnpm --filter @meridian/sdk test
-pnpm --filter @meridian/sdk typecheck
+pnpm --filter @zitian/sdk build      # dist/ with .js, .cjs, .d.ts and .d.cts
+pnpm --filter @zitian/sdk test
+pnpm --filter @zitian/sdk typecheck
 ```
 
 ## Versioning

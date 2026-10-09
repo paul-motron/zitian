@@ -39,13 +39,13 @@ importers:
 
   api:
     dependencies:
-      '@meridian/api-core':
+      '@zitian/api-core':
         specifier: workspace:*
         version: link:../packages/api-core
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../packages/shared
-      '@meridian/stellar-sdk-helpers':
+      '@zitian/stellar-sdk-helpers':
         specifier: workspace:*
         version: link:../packages/stellar-sdk-helpers
       '@stellar/stellar-sdk':
@@ -73,13 +73,13 @@ importers:
       '@fastify/rate-limit':
         specifier: ^11.2.0
         version: 11.2.0
-      '@meridian/api-core':
+      '@zitian/api-core':
         specifier: workspace:*
         version: link:../../packages/api-core
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      '@meridian/stellar-sdk-helpers':
+      '@zitian/stellar-sdk-helpers':
         specifier: workspace:*
         version: link:../../packages/stellar-sdk-helpers
       '@stellar/stellar-sdk':
@@ -128,7 +128,7 @@ importers:
 
   apps/strategies:
     dependencies:
-      '@meridian/strategies':
+      '@zitian/strategies':
         specifier: workspace:*
         version: link:../../packages/strategies
       react:
@@ -177,10 +177,10 @@ importers:
       '@lobstrco/signer-extension-api':
         specifier: ^2.1.0
         version: 2.1.0
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      '@meridian/stellar-sdk-helpers':
+      '@zitian/stellar-sdk-helpers':
         specifier: workspace:*
         version: link:../../packages/stellar-sdk-helpers
       '@stellar/freighter-api':
@@ -277,10 +277,10 @@ importers:
 
   packages/api-core:
     dependencies:
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../shared
-      '@meridian/stellar-sdk-helpers':
+      '@zitian/stellar-sdk-helpers':
         specifier: workspace:*
         version: link:../stellar-sdk-helpers
       zod:
@@ -298,10 +298,10 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../shared
-      '@meridian/stellar-sdk-helpers':
+      '@zitian/stellar-sdk-helpers':
         specifier: workspace:*
         version: link:../stellar-sdk-helpers
     devDependencies:
@@ -336,7 +336,7 @@ importers:
       '@blend-capital/blend-sdk':
         specifier: 3.3.1
         version: 3.3.1
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../shared
       '@stellar/stellar-sdk':
@@ -358,10 +358,10 @@ importers:
 
   packages/strategies:
     dependencies:
-      '@meridian/shared':
+      '@zitian/shared':
         specifier: workspace:*
         version: link:../shared
-      '@meridian/stellar-sdk-helpers':
+      '@zitian/stellar-sdk-helpers':
         specifier: workspace:*
         version: link:../stellar-sdk-helpers
       '@stellar/stellar-sdk':

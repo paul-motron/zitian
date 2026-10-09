@@ -206,7 +206,7 @@ describe("fetchCoordinatorPosition", () => {
 
     const positions = await fetchCoordinatorPosition(
       { contractId: CONTRACT_ID, network },
-      "meridian-usdc",
+      "zitian-usdc",
       WALLET
     );
 
@@ -228,13 +228,13 @@ describe("fetchCoordinatorPosition", () => {
 
     const positions = await fetchCoordinatorPosition(
       { contractId: CONTRACT_ID, network },
-      "meridian-usdc",
+      "zitian-usdc",
       WALLET
     );
 
     expect(positions).toHaveLength(1);
     const [position] = positions;
-    expect(position!.vaultId).toBe("meridian-usdc");
+    expect(position!.vaultId).toBe("zitian-usdc");
     expect(position!.shares).toBeCloseTo(0.00001, 8); // stroopsToUnits(100n)
     expect(position!.entryTime).toBe(1_700_000_000);
     expect(position!.deposited).toBeGreaterThan(0);
@@ -254,7 +254,7 @@ describe("fetchCoordinatorPosition", () => {
 
     const positions = await fetchCoordinatorPosition(
       { contractId: CONTRACT_ID, network },
-      "meridian-usdc",
+      "zitian-usdc",
       WALLET
     );
 
@@ -269,7 +269,7 @@ describe("fetchCoordinatorPosition", () => {
 
     const positions = await fetchCoordinatorPosition(
       { contractId: CONTRACT_ID, network },
-      "meridian-usdc",
+      "zitian-usdc",
       WALLET
     );
 
@@ -291,7 +291,7 @@ describe("fetchCoordinatorPosition", () => {
 
     const positions = await fetchCoordinatorPosition(
       { contractId: CONTRACT_ID, network },
-      "meridian-usdc",
+      "zitian-usdc",
       WALLET
     );
 

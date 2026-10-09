@@ -1,9 +1,9 @@
 # Monorepo Structure
 
-Meridian is a pnpm workspace managed by Turborepo.
+Zitian is a pnpm workspace managed by Turborepo.
 
 ```
-meridian/
+zitian/
 ├── api/                          # Vercel serverless functions (production API)
 │   ├── _lib/
 │   │   └── middleware.ts         # CORS + rate-limit helpers shared by handlers
@@ -67,7 +67,7 @@ meridian/
 │   │       └── utils.ts          # Pure utility functions
 │   │
 │   └── contracts/                # Rust/Soroban smart contracts
-│       ├── vault/src/lib.rs           # MeridianVault: protocol-agnostic coordinator
+│       ├── vault/src/lib.rs           # ZitianVault: protocol-agnostic coordinator
 │       ├── blend-adapter/src/lib.rs   # Supplies USDC into a Blend lending pool
 │       └── defindex-adapter/src/lib.rs # Deposits USDC into a DeFindex vault
 │
@@ -79,12 +79,12 @@ meridian/
 
 ## Key boundaries
 
-| Boundary                        | Rule                                                                                                                                                                                                                                                    |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `api/` serverless functions     | Imports from `@meridian/shared` and `@meridian/stellar-sdk-helpers` via pre-built `dist/` bundles. `scripts/build-vercel.sh` runs esbuild on each package before the Vercel build so the handlers can import compiled JS rather than TypeScript source. |
-| `apps/api-local` Fastify server | Imports the same workspace packages directly via `tsx` (TypeScript-native). Used for local development only.                                                                                                                                            |
-| `apps/web`                      | No direct Soroban SDK usage. All blockchain interaction goes through the API.                                                                                                                                                                           |
-| `packages/contracts`            | Rust only. No TypeScript.                                                                                                                                                                                                                               |
+| Boundary                        | Rule                                                                                                                                                                                                                                                |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `api/` serverless functions     | Imports from `@zitian/shared` and `@zitian/stellar-sdk-helpers` via pre-built `dist/` bundles. `scripts/build-vercel.sh` runs esbuild on each package before the Vercel build so the handlers can import compiled JS rather than TypeScript source. |
+| `apps/api-local` Fastify server | Imports the same workspace packages directly via `tsx` (TypeScript-native). Used for local development only.                                                                                                                                        |
+| `apps/web`                      | No direct Soroban SDK usage. All blockchain interaction goes through the API.                                                                                                                                                                       |
+| `packages/contracts`            | Rust only. No TypeScript.                                                                                                                                                                                                                           |
 
 ## Task pipeline
 
@@ -94,4 +94,4 @@ dev   → persistent, no cache
 test  → depends on ^build
 ```
 
-Run any task across all packages with `pnpm <task>` (e.g. `pnpm typecheck`, `pnpm test`). Run for a single package with `pnpm --filter @meridian/<package> <task>`.
+Run any task across all packages with `pnpm <task>` (e.g. `pnpm typecheck`, `pnpm test`). Run for a single package with `pnpm --filter @zitian/<package> <task>`.

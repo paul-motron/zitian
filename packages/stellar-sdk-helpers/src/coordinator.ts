@@ -160,7 +160,7 @@ export async function fetchVaultAdmin(
 export interface CoordinatorState {
   // The adapter's own reported protocol id (e.g. "blend", "defindex"),
   // discovered on-chain via get_adapter -> get_protocol rather than tracked
-  // in config — see fetchMeridianApy in vaults.ts for why that matters: it
+  // in config — see fetchZitianApy in vaults.ts for why that matters: it
   // self-updates if the adapter is ever swapped via set_adapter or
   // migrate_adapter, with nothing that could drift out of sync.
   protocol: string;

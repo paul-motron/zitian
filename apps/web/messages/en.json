@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Meridian"
+    "title": "Zitian"
   },
 
   "walletConnect": {
@@ -54,8 +54,8 @@
 
   "riskDisclosure": {
     "title": "Before you continue",
-    "description": "Meridian is a non-custodial smart-contract product, not a bank. Using it, including connecting a wallet or making a deposit, means accepting the risks below.",
-    "smartContractRisk": "Smart-contract risk: bugs or exploits in Meridian's contracts could affect funds held through the product.",
+    "description": "Zitian is a non-custodial smart-contract product, not a bank. Using it, including connecting a wallet or making a deposit, means accepting the risks below.",
+    "smartContractRisk": "Smart-contract risk: bugs or exploits in Zitian's contracts could affect funds held through the product.",
     "adapterRisk": "Adapter/protocol risk: funds are routed through external lending protocols and adapters, so their performance or failures can affect your balance and returns.",
     "acknowledgement": "I understand this is a smart-contract-risk product and accept these risks.",
     "continue": "Accept & Continue",

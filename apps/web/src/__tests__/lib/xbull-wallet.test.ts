@@ -50,7 +50,7 @@ describe("XBullWallet — real xBull path (no mock wallet present)", () => {
   // installed + a public key stored by a prior connect()" as authorized.
   it("isAuthorized returns true when installed and a key was stored by connect", async () => {
     setXBullSDKPresent(true);
-    window.sessionStorage.setItem("meridian-xbull-public-key", ADDRESS);
+    window.sessionStorage.setItem("zitian-xbull-public-key", ADDRESS);
     await expect(xbull.isAuthorized()).resolves.toBe(true);
     expect(xBullWalletConnect).not.toHaveBeenCalled();
   });
@@ -63,7 +63,7 @@ describe("XBullWallet — real xBull path (no mock wallet present)", () => {
 
   it("isAuthorized returns false when window.xBullSDK is absent", async () => {
     setXBullSDKPresent(false);
-    window.sessionStorage.setItem("meridian-xbull-public-key", ADDRESS);
+    window.sessionStorage.setItem("zitian-xbull-public-key", ADDRESS);
     await expect(xbull.isAuthorized()).resolves.toBe(false);
     expect(xBullWalletConnect).not.toHaveBeenCalled();
   });
@@ -84,7 +84,7 @@ describe("XBullWallet — real xBull path (no mock wallet present)", () => {
     });
 
     await expect(xbull.connect()).resolves.toBe(ADDRESS);
-    expect(window.sessionStorage.getItem("meridian-xbull-public-key")).toBe(
+    expect(window.sessionStorage.getItem("zitian-xbull-public-key")).toBe(
       ADDRESS
     );
     expect(closeConnections).toHaveBeenCalledTimes(1);
@@ -135,7 +135,7 @@ describe("XBullWallet — real xBull path (no mock wallet present)", () => {
   });
 
   it("sign passes xdr, network, and the stored public key to the bridge", async () => {
-    window.sessionStorage.setItem("meridian-xbull-public-key", ADDRESS);
+    window.sessionStorage.setItem("zitian-xbull-public-key", ADDRESS);
     const sign = vi.fn().mockResolvedValue("SIGNED_XDR");
     const closeConnections = vi.fn();
     vi.mocked(xBullWalletConnect).mockImplementation(function () {

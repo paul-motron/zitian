@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
+vi.mock("@zitian/stellar-sdk-helpers", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>();
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>();
   return {
     ...actual,
     getAdminActionHistory: vi.fn(async () => [
@@ -19,7 +19,7 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
   };
 });
 
-import { handleGetAdminHistory } from "@meridian/api-core";
+import { handleGetAdminHistory } from "@zitian/api-core";
 
 describe("handleGetAdminHistory", () => {
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe("handleGetAdminHistory", () => {
   });
 
   it("returns 200 with actions for a known vault", async () => {
-    const result = await handleGetAdminHistory("meridian-usdc");
+    const result = await handleGetAdminHistory("zitian-usdc");
     expect(result.status).toBe(200);
     const body = result.body as { actions: Array<{ type: string }> };
     expect(body.actions).toHaveLength(1);

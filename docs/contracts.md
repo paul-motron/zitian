@@ -1,6 +1,6 @@
 # Contracts
 
-Meridian ships one Soroban contract: a **vault** that holds user USDC and mints
+Zitian ships one Soroban contract: a **vault** that holds user USDC and mints
 share tokens, protocol-specific work is delegated to a swappable adapter, not
 a second contract.
 
@@ -8,7 +8,7 @@ The vault lives under `packages/contracts/vault/` and is built with the
 Stellar CLI (`stellar contract build`). The deploy script at
 `scripts/deploy-testnet.sh` builds, uploads, and deploys it.
 
-## Vault (`meridian-vault`)
+## Vault (`zitian-vault`)
 
 Source: [`packages/contracts/vault/src/lib.rs`](../packages/contracts/vault/src/lib.rs)
 
@@ -44,10 +44,10 @@ that page is the canonical, detailed reference.
 
 ## Contract immutability
 
-None of Meridian's contracts — vault or adapters — expose an
+None of Zitian's contracts — vault or adapters — expose an
 `update_current_contract_wasm` (or any other upgrade) entry point. This is a
 deliberate security property, not an omission: **once deployed, no one,
-including Meridian, can rewrite the contract logic.** For a savings product,
+including Zitian, can rewrite the contract logic.** For a savings product,
 users must be able to trust the code itself rather than its maintainers, and an
 immutable contract is the strongest way to offer that guarantee.
 

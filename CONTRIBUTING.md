@@ -1,6 +1,6 @@
-# Contributing to Meridian
+# Contributing to Zitian
 
-Thank you for considering a contribution to Meridian. Meridian is an open-source stablecoin yield aggregator on Stellar and Soroban, and contributions across TypeScript, Rust, and frontend UI are welcome.
+Thank you for considering a contribution to Zitian. Zitian is an open-source stablecoin yield aggregator on Stellar and Soroban, and contributions across TypeScript, Rust, and frontend UI are welcome.
 
 This document is the single source of truth for contributing. Please read it in full before opening an issue or pull request.
 
@@ -27,7 +27,7 @@ This document is the single source of truth for contributing. Please read it in 
 
 ## Code of Conduct
 
-Participation in this project is governed by the [Meridian Code of Conduct](CODE_OF_CONDUCT.md). By contributing, you agree to uphold it. Violations may be reported via [GitHub Discussions](https://github.com/drydocs/meridian/discussions) (select the Q&A category and mark it private if needed).
+Participation in this project is governed by the [Zitian Code of Conduct](CODE_OF_CONDUCT.md). By contributing, you agree to uphold it.
 
 ---
 
@@ -57,7 +57,7 @@ If you are unsure whether a contribution fits, open a GitHub Discussion before w
 
 If this is your first open-source contribution, start here:
 
-1. Filter issues by [`good first issue`](https://github.com/drydocs/meridian/issues?q=is%3Aopen+label%3A%22good+first+issue%22) -- these are fully isolated tasks that do not require deep knowledge of Stellar or Soroban.
+1. Filter issues by [`good first issue`](https://github.com/paul-motron/zitian/issues?q=is%3Aopen+label%3A%22good+first+issue%22) -- these are fully isolated tasks that do not require deep knowledge of Stellar or Soroban.
 2. Comment on the issue to signal you are picking it up before starting.
 3. Follow the [Getting Started](#getting-started) guide below to set up the project.
 4. When your PR is ready, follow the [Pull Request Process](#pull-request-process) section exactly.
@@ -90,14 +90,14 @@ npm install -g pnpm@9
 1. Fork the repo on GitHub, then clone your fork:
 
    ```bash
-   git clone https://github.com/<your-username>/meridian.git
-   cd meridian
+   git clone https://github.com/<your-username>/zitian.git
+   cd zitian
    ```
 
 2. Add the upstream remote so you can keep your fork in sync:
 
    ```bash
-   git remote add upstream https://github.com/drydocs/meridian.git
+   git remote add upstream https://github.com/paul-motron/zitian.git
    ```
 
 3. Before starting any work, sync your fork with upstream:
@@ -152,10 +152,10 @@ npm install -g pnpm@9
 
 ## Project Structure
 
-Meridian is a pnpm monorepo managed with Turborepo:
+Zitian is a pnpm monorepo managed with Turborepo:
 
 ```text
-meridian/
+zitian/
   apps/
     web/        -- Vite + React frontend (Freighter wallet, yield dashboard)
     api-local/  -- Fastify API, local dev only (yield aggregation, Soroban tx building)
@@ -217,7 +217,7 @@ Use `good first issue` in place of a complexity label for tasks that are fully i
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
-Report security issues via [GitHub's private vulnerability reporting](https://github.com/drydocs/meridian/security/advisories/new). Include:
+Report security issues via [GitHub's private vulnerability reporting](https://github.com/paul-motron/zitian/security/advisories/new). Include:
 
 - A description of the vulnerability
 - Steps to reproduce
@@ -253,7 +253,7 @@ Branches that do not match this pattern will fail the branch naming ruleset and 
 
 ## Commit Convention
 
-Meridian uses [Conventional Commits](https://www.conventionalcommits.org/). Every commit must follow this format:
+Zitian uses [Conventional Commits](https://www.conventionalcommits.org/). Every commit must follow this format:
 
 ```text
 <type>[(<scope>)]: <subject>
@@ -376,7 +376,7 @@ pnpm coverage      # Vitest with coverage thresholds across all packages
 pnpm format        # Prettier (auto-fix)
 
 # Run tests for a single package
-pnpm --filter @meridian/stellar-sdk-helpers test
+pnpm --filter @zitian/stellar-sdk-helpers test
 
 # Run a single test file
 pnpm test -- packages/stellar-sdk-helpers/src/__tests__/tx.test.ts
@@ -393,13 +393,13 @@ The e2e suite (`apps/web/e2e/`) drives the real `apps/web` and `apps/api-local` 
 
 ```bash
 # One-time: install the browser binary
-pnpm --filter @meridian/web exec playwright install chromium
+pnpm --filter @zitian/web exec playwright install chromium
 
 # Run the full suite (boots both dev servers automatically)
-pnpm --filter @meridian/web test:e2e
+pnpm --filter @zitian/web test:e2e
 
 # Interactive UI mode, useful for debugging a failing spec
-pnpm --filter @meridian/web test:e2e:ui
+pnpm --filter @zitian/web test:e2e:ui
 ```
 
 This suite is a blocking CI check. Tests that depend on live testnet RPC or other external services
@@ -415,8 +415,8 @@ accept valid RPC failure states as expected outcomes. Before merging a PR, this 
 - **Dev setup broken?** Open a GitHub Discussion under the Q&A category.
 - **Found a bug not covered by an existing issue?** Open a new issue using the Bug Report template before starting any work.
 - **Have a feature idea?** Open a Discussion first. Do not open a PR for a feature that has not been discussed and approved.
-- **Security issue?** Use [GitHub private vulnerability reporting](https://github.com/drydocs/meridian/security/advisories/new) -- do not open a public issue.
+- **Security issue?** Use [GitHub private vulnerability reporting](https://github.com/paul-motron/zitian/security/advisories/new) -- do not open a public issue.
 
 ---
 
-By contributing to Meridian, you agree that your contributions will be licensed under the project's [MIT License](LICENSE).
+By contributing to Zitian, you agree that your contributions will be licensed under the project's [MIT License](LICENSE).

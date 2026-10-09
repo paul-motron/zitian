@@ -5,7 +5,7 @@ describe("PROTOCOL_LABEL", () => {
   it.each([
     ["blend", "Blend Capital"],
     ["defindex", "DeFindex"],
-    ["meridian", "Meridian"],
+    ["zitian", "Zitian"],
   ])("maps %s to %s", (key, label) => {
     expect(PROTOCOL_LABEL[key]).toBe(label);
   });
@@ -14,7 +14,7 @@ describe("PROTOCOL_LABEL", () => {
     expect(Object.keys(PROTOCOL_LABEL).sort()).toEqual([
       "blend",
       "defindex",
-      "meridian",
+      "zitian",
     ]);
   });
 

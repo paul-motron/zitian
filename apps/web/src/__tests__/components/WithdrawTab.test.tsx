@@ -10,10 +10,10 @@ vi.mock("react-i18next", () => ({
 }));
 
 const VAULT = {
-  id: "meridian-usdc",
-  protocol: "meridian" as const,
+  id: "zitian-usdc",
+  protocol: "zitian" as const,
   asset: "USDC",
-  name: "Meridian",
+  name: "Zitian",
   label: "USDC Vault",
   apy: 8,
   tvl: 10_000,
@@ -22,7 +22,7 @@ const VAULT = {
 };
 
 const POSITION = {
-  vaultId: "meridian-usdc",
+  vaultId: "zitian-usdc",
   shares: 50,
   deposited: 100,
   earned: 5,

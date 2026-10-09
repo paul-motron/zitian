@@ -1,5 +1,5 @@
-import { APP_NETWORK, isValidStellarAddress } from "@meridian/shared";
-import { resolvePositions } from "@meridian/stellar-sdk-helpers";
+import { APP_NETWORK, isValidStellarAddress } from "@zitian/shared";
+import { resolvePositions } from "@zitian/stellar-sdk-helpers";
 import type { RouteResult } from "./types";
 
 export async function handleGetPositions(

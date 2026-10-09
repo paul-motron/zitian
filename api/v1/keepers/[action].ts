@@ -12,9 +12,9 @@ import {
   runAlertKeeper,
   runBlendAccrualKeeper,
   runMigrationKeeper,
-} from "@meridian/stellar-sdk-helpers";
-import { handleGetKeeperHealth } from "@meridian/api-core";
-import { APP_NETWORK } from "@meridian/shared";
+} from "@zitian/stellar-sdk-helpers";
+import { handleGetKeeperHealth } from "@zitian/api-core";
+import { APP_NETWORK } from "@zitian/shared";
 import {
   applyCors,
   checkRateLimit,
@@ -111,7 +111,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!isAlertKeeperConfigured(process.env)) {
       return res.status(200).json({
         status: "disabled",
-        message: "MERIDIAN_ALERT_WEBHOOK_URL is not configured",
+        message: "ZITIAN_ALERT_WEBHOOK_URL is not configured",
       });
     }
     try {
@@ -145,7 +145,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!isMigrationKeeperConfigured(process.env)) {
     return res.status(200).json({
       status: "disabled",
-      message: "MERIDIAN_MIGRATION_KEEPER_SECRET_KEY is not configured",
+      message: "ZITIAN_MIGRATION_KEEPER_SECRET_KEY is not configured",
     });
   }
 

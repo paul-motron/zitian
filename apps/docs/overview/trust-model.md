@@ -1,6 +1,6 @@
 # Trust model
 
-Meridian's vault holds real user USDC. This page states, in one place, what
+Zitian's vault holds real user USDC. This page states, in one place, what
 the `ADMIN` key can and cannot do, what happens if it's lost or compromised,
 and what that means for a depositor or an auditor evaluating custody risk.
 The goal is to save the reader from reconstructing it from `docs/contracts.md`,
@@ -8,16 +8,12 @@ The goal is to save the reader from reconstructing it from `docs/contracts.md`,
 particular). Nothing here is new policy: it's a consolidation of decisions
 already made and already implemented, with citations back to the source.
 
-**Current status, stated plainly:** Meridian is live on Stellar mainnet (see
-[Mainnet Deployment](../operations/mainnet-deployment.md#mainnet-deployment-record))
-holding real depositor funds. Per that page's own go-live checklist, as of
-this writing **no independent security audit has been commissioned, and
-`ADMIN` key custody has not yet been finalized to the hardware-backed or
-multisig standard the mainnet prerequisites call for.** This page describes
-what the contract's code enforces regardless of who holds `ADMIN` or how
-well; it does not represent that those two items are resolved. Check
-[Mainnet Deployment](../operations/mainnet-deployment.md#go-live-checklist)
-for their current status before relying on this page for a custody decision.
+**Current status, stated plainly:** Zitian is not deployed yet, and **no
+independent security audit has been commissioned.** This page describes what
+the contract's code enforces regardless of who holds `ADMIN` or how well; any
+deployment should settle `ADMIN` key custody (hardware-backed or multisig, see
+[Mainnet Deployment](../operations/mainnet-deployment.md#prerequisites-specific-to-mainnet))
+before relying on this page for a custody decision.
 
 ## What the admin key can do
 
@@ -90,7 +86,7 @@ the vault.
   `set_adapter`/`migrate_adapter` move the vault's _aggregate_ adapter
   position; per-depositor accounting (`Principal`, `Entry`, mUSDC balances)
   is denominated in vault shares and is untouched by either call. See
-  "Vault (`meridian-vault`)" in `docs/contracts.md`.
+  "Vault (`zitian-vault`)" in `docs/contracts.md`.
   There is no admin call that debits one depositor's shares or mints
   uncollateralized ones.
 - **`migrate_adapter` cannot move funds with unlimited loss, and cannot

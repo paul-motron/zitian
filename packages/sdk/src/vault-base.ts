@@ -5,8 +5,8 @@ import {
   rpc as SorobanRpc,
   xdr,
 } from "@stellar/stellar-sdk";
-import { MAX_ADMIN_SLIPPAGE_BPS } from "@meridian/shared";
-import { prepareSorobanTx, simulateView } from "@meridian/stellar-sdk-helpers";
+import { MAX_ADMIN_SLIPPAGE_BPS } from "@zitian/shared";
+import { prepareSorobanTx, simulateView } from "@zitian/stellar-sdk-helpers";
 import type {
   VaultConfig,
   Position,
@@ -120,7 +120,7 @@ export function convertSharesToAssets(
 // ---------------------------------------------------------------------------
 
 /**
- * Abstract base class for MeridianVault coordinator contracts.
+ * Abstract base class for ZitianVault coordinator contracts.
  *
  * Subclasses supply the `caller` property (a Stellar G-address) to identify
  * which account signs the built transaction, then inherit:
@@ -229,7 +229,7 @@ export abstract class VaultBase {
    * Withdraw USDC equivalent to `assets` from the vault, burning the
    * corresponding shares from `owner`.
    *
-   * MeridianVault has no separate payout address: `withdraw` authorises
+   * ZitianVault has no separate payout address: `withdraw` authorises
    * `owner` and pays USDC to that same account, so `receiver` must equal
    * `owner` and a mismatch is rejected rather than silently ignored.
    *
@@ -250,7 +250,7 @@ export abstract class VaultBase {
     if (assets <= 0n) throw new Error("assets must be positive");
     if (receiver !== owner) {
       throw new Error(
-        "receiver must equal owner: MeridianVault pays USDC to the account that authorises the withdrawal"
+        "receiver must equal owner: ZitianVault pays USDC to the account that authorises the withdrawal"
       );
     }
     const [totalAssets, totalSupply] = await Promise.all([

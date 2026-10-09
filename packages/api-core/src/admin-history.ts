@@ -1,7 +1,7 @@
 import type { RouteResult } from "./types";
-import { getAdminActionHistory } from "@meridian/stellar-sdk-helpers";
-import { APP_NETWORK } from "@meridian/shared";
-import { KNOWN_POOLS } from "@meridian/stellar-sdk-helpers";
+import { getAdminActionHistory } from "@zitian/stellar-sdk-helpers";
+import { APP_NETWORK } from "@zitian/shared";
+import { KNOWN_POOLS } from "@zitian/stellar-sdk-helpers";
 
 export async function handleGetAdminHistory(
   vaultId: string

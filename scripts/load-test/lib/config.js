@@ -1,17 +1,17 @@
-// Shared config for the Meridian load-testing suite (issue #719).
+// Shared config for the Zitian load-testing suite (issue #719).
 //
 // Every script reads its target and tunables from environment variables so
 // the same script runs unmodified against any throwaway testnet deployment.
 // Pass them with k6's `-e`, e.g.:
 //
-//   k6 run -e BASE_URL=https://meridian-git-my-branch.vercel.app scripts/load-test/positions.js
+//   k6 run -e BASE_URL=https://zitian-git-my-branch.vercel.app scripts/load-test/positions.js
 
 export const BASE_URL = (__ENV.BASE_URL || "http://localhost:3001").replace(
   /\/+$/,
   ""
 );
 
-// Meridian's default live testnet vault (packages/shared/src/constants.ts,
+// Zitian's default live testnet vault (packages/shared/src/constants.ts,
 // CONTRACT_ADDRESSES.testnet.vault). Fine to load-test against directly: the
 // vault contract is exercised the same way whether it holds real deposits or
 // not, and these scripts never submit signed transactions, only build them.

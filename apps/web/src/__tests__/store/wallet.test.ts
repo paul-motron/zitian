@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useWalletStore } from "../../store/wallet";
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 
 vi.mock("../../lib/wallet", () => ({
   wallet: {

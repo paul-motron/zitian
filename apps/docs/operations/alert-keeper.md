@@ -20,13 +20,13 @@ same staleness budget as a TVL/APY cache.
 
 ## Alert Destination
 
-Set `MERIDIAN_ALERT_WEBHOOK_URL` to a Slack or Discord incoming-webhook URL.
+Set `ZITIAN_ALERT_WEBHOOK_URL` to a Slack or Discord incoming-webhook URL.
 Every alert POSTs a JSON body containing both `text` (Slack's field) and
 `content` (Discord's field), so the same configuration works against either
 service without picking a payload shape up front; whichever field a service
 doesn't recognise is ignored.
 
-`MERIDIAN_ALERT_WEBHOOK_URL` is unset in production as of the mainnet launch
+`ZITIAN_ALERT_WEBHOOK_URL` is unset in production as of the mainnet launch
 (2026-09-07): the keeper's cron runs on schedule, but `isAlertKeeperConfigured`
 makes it a clean no-op (`{status: "disabled"}`, not an error) until this is
 set. Discord is the intended destination, not yet wired up. Nothing is
@@ -40,11 +40,11 @@ already-alerted `transfer_admin` nomination, not a new risk on its own.
 
 ## Cursor Tracking
 
-Each known vault (`KNOWN_POOLS` entries with `protocol: "meridian"` and a
+Each known vault (`KNOWN_POOLS` entries with `protocol: "zitian"` and a
 `contractId` set for the running network, the same filter the accrual
 keeper's discovery uses) has its own last-processed-ledger cursor, stored in
 the shared Upstash Redis store under
-`meridian:keeper:alert:cursor:<network>:<vaultContractId>`. Every run reads
+`zitian:keeper:alert:cursor:<network>:<vaultContractId>`. Every run reads
 that cursor, fetches admin events since it via `getRpcAdminHistory`, and
 advances the cursor only as far as the last event it actually alerted on (or
 that needed no alert, e.g. `accept_admin`). This is the same store
@@ -67,9 +67,9 @@ loses one.
 
 Configure the same knobs the other keepers share:
 
-- `MERIDIAN_KEEPER_MAX_ATTEMPTS` default `3`
-- `MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS` default `1000`
-- `MERIDIAN_KEEPER_RPC_TIMEOUT_MS` default `10000` (also used as the webhook
+- `ZITIAN_KEEPER_MAX_ATTEMPTS` default `3`
+- `ZITIAN_KEEPER_RETRY_BASE_DELAY_MS` default `1000`
+- `ZITIAN_KEEPER_RPC_TIMEOUT_MS` default `10000` (also used as the webhook
   request timeout)
 
 Failures are logged with the vault id, contract id, stage (`discover` or

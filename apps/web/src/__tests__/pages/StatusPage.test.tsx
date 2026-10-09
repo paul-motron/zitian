@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { StatusPage } from "../../pages/StatusPage";
 import { useVaultState } from "../../hooks/useVaultState";
-import { APP_ADDRESSES } from "@meridian/shared";
+import { APP_ADDRESSES } from "@zitian/shared";
 
 vi.mock("../../hooks/useVaultState", () => ({
   useVaultState: vi.fn(),

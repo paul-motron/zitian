@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Lock, LockOpen } from "lucide-react";
-import { fetchVaultAdmin } from "@meridian/stellar-sdk-helpers";
-import { APP_ADDRESSES, APP_NETWORK, shortenAddress } from "@meridian/shared";
+import { fetchVaultAdmin } from "@zitian/stellar-sdk-helpers";
+import { APP_ADDRESSES, APP_NETWORK, shortenAddress } from "@zitian/shared";
 import { useWalletStore } from "../store/wallet";
 import { useWalletConnect } from "../hooks/useWalletConnect";
 import { AdminDashboard } from "./AdminDashboard";

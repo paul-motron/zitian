@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Address } from "@stellar/stellar-sdk";
-import { simulateView } from "@meridian/stellar-sdk-helpers";
+import { simulateView } from "@zitian/stellar-sdk-helpers";
 import {
   ReflectorOraclePriceFeed,
   ReflectorOracleError,
@@ -19,9 +19,9 @@ import {
   type PriceFeed,
   type SimulationTimestamp,
 } from "./types";
-import type { StellarNetwork } from "@meridian/stellar-sdk-helpers";
+import type { StellarNetwork } from "@zitian/stellar-sdk-helpers";
 
-vi.mock("@meridian/stellar-sdk-helpers", () => ({
+vi.mock("@zitian/stellar-sdk-helpers", () => ({
   simulateView: vi.fn(),
 }));
 

@@ -22,7 +22,7 @@ const DFX_VAULT: Symbol = symbol_short!("DFXVAULT");
 /// Maximum tolerated execution-price slippage on either leg of a DeFindex
 /// interaction, in basis points. #117 and #432 established this floor
 /// off-chain in stellar-sdk-helpers/src/defindex.ts, but the on-chain path
-/// MeridianVault::deposit/withdraw actually invokes still passed a literal 0
+/// ZitianVault::deposit/withdraw actually invokes still passed a literal 0
 /// minimum, accepting any price the DeFindex vault happened to offer (#558).
 /// A floor set to the exact expected amount would revert on ordinary
 /// rounding, so this leaves headroom rather than demanding an exact match.
@@ -113,10 +113,10 @@ impl adapter_common::NotInitializedError for ContractError {
 // ---------------------------------------------------------------------------
 
 #[contract]
-pub struct MeridianDefindexAdapter;
+pub struct ZitianDefindexAdapter;
 
 #[contractimpl]
-impl MeridianDefindexAdapter {
+impl ZitianDefindexAdapter {
     /// Links the adapter to its vault, DeFindex vault contract, and USDC
     /// token.
     ///
@@ -467,7 +467,7 @@ mod tests {
         Env,
         Address,
         Address,
-        MeridianDefindexAdapterClient<'static>,
+        ZitianDefindexAdapterClient<'static>,
         MockDefindexVaultClient<'static>,
     ) {
         let env = Env::default();
@@ -485,10 +485,10 @@ mod tests {
         dfx.initialize(&usdc_id);
 
         let adapter_id = env.register(
-            MeridianDefindexAdapter,
+            ZitianDefindexAdapter,
             (vault.clone(), dfx_id.clone(), usdc_id.clone()),
         );
-        let adapter = MeridianDefindexAdapterClient::new(&env, &adapter_id);
+        let adapter = ZitianDefindexAdapterClient::new(&env, &adapter_id);
 
         // Fund the vault (the caller of deposit) with USDC, then act as the
         // vault transferring into the adapter, matching real vault behaviour.
@@ -759,10 +759,10 @@ mod tests {
         let dfx_id = env.register(MockDefindexVault, ());
         MockDefindexVaultClient::new(&env, &dfx_id).initialize(&usdc_id);
         let adapter_id = env.register(
-            MeridianDefindexAdapter,
+            ZitianDefindexAdapter,
             (vault.clone(), dfx_id.clone(), usdc_id.clone()),
         );
-        let adapter = MeridianDefindexAdapterClient::new(&env, &adapter_id);
+        let adapter = ZitianDefindexAdapterClient::new(&env, &adapter_id);
 
         adapter.deposit(&100_0000000_i128);
     }
@@ -779,10 +779,10 @@ mod tests {
         let dfx_id = env.register(MockDefindexVault, ());
         MockDefindexVaultClient::new(&env, &dfx_id).initialize(&usdc_id);
         let adapter_id = env.register(
-            MeridianDefindexAdapter,
+            ZitianDefindexAdapter,
             (vault.clone(), dfx_id.clone(), usdc_id.clone()),
         );
-        let adapter = MeridianDefindexAdapterClient::new(&env, &adapter_id);
+        let adapter = ZitianDefindexAdapterClient::new(&env, &adapter_id);
 
         let recipient = Address::generate(&env);
         adapter.withdraw(&100_0000000_i128, &recipient);

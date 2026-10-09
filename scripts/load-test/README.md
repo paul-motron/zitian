@@ -27,7 +27,7 @@ the keeper's own key — see the safety warning below before running it.
 in-memory rate-limit fallback (`rate-limit-fallback.js`'s whole reason for
 existing) only shows its per-instance behavior when a client's requests can
 actually land on more than one warm serverless instance. `pnpm --filter
-@meridian/api-local dev` is a single long-lived process — it cannot
+@zitian/api-local dev` is a single long-lived process — it cannot
 reproduce that bug even if the code path is broken, so a clean run there
 proves nothing about production behavior.
 
@@ -49,13 +49,13 @@ match `.env.example`:
   limiter instead, for comparison.
 - `CRON_SECRET` — only needed for `keepers.js`. Set it to a throwaway value
   you generate yourself, never a real project's secret.
-- `MERIDIAN_KEEPER_SECRET_KEY` — only needed to test `accrue` for real.
+- `ZITIAN_KEEPER_SECRET_KEY` — only needed to test `accrue` for real.
   Generate and fund a throwaway key (`stellar keys generate ... --fund
 --network testnet`); it only needs to call the vault's permissionless
   `accrue()`, not admin authority.
 
 You don't need to deploy your own vault contract: these scripts default to
-Meridian's existing live testnet vault
+Zitian's existing live testnet vault
 (`CONTRACT_ADDRESSES.testnet.vault` in `packages/shared/src/constants.ts`).
 Override `VAULT_ID` if you'd rather stand up your own throwaway vault via
 `scripts/deploy-testnet.sh` (see

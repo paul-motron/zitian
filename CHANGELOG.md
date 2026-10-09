@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Meridian will be documented in this file.
+All notable changes to Zitian will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **MeridianVault: per-user deposit entry time.** The contract now stamps
+- **ZitianVault: per-user deposit entry time.** The contract now stamps
   `env.ledger().timestamp()` on a user's first deposit (top-ups keep the original;
   a full withdrawal clears it) and exposes it via `get_entry_time`. The
   `/api/v1/positions` endpoint (and the local Fastify route) now return the real
@@ -21,12 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- **MeridianVault: add admin safety rails.** New `set_paused`/`is_paused` emergency
+- **ZitianVault: add admin safety rails.** New `set_paused`/`is_paused` emergency
   switch halts deposits during an incident, while withdrawals stay open so a pause can
   never trap user funds. Added `set_admin`/`get_admin` for admin key rotation without
   redeploying. Covered by `paused_blocks_deposit`, `withdraw_works_while_paused`,
   `unpause_re_enables_deposits`, and `set_admin_rotates_admin`.
-- **MeridianVault: fix first-depositor share inflation attack.** Share price is now
+- **ZitianVault: fix first-depositor share inflation attack.** Share price is now
   computed against a virtual shares/assets offset (OpenZeppelin ERC-4626 mitigation)
   instead of the raw on-chain USDC balance, so an attacker can no longer donate USDC
   directly to the contract to skim later depositors via rounding. Added the
@@ -135,5 +135,5 @@ s-maxage=60, stale-while-revalidate=300` so the aggregated vault list is served
 
 ---
 
-[Unreleased]: https://github.com/drydocs/meridian/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/drydocs/meridian/releases/tag/v0.1.0
+[Unreleased]: https://github.com/paul-motron/zitian/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/paul-motron/zitian/releases/tag/v0.1.0

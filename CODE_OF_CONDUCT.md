@@ -2,11 +2,11 @@
 
 ## Our Commitment
 
-Meridian is an open-source project serving contributors and users across the Stellar ecosystem, with a particular focus on emerging markets in West Africa. We are committed to maintaining a welcoming, professional, and respectful community for everyone regardless of background, experience level, nationality, or identity.
+Zitian is an open-source project serving contributors and users across the Stellar ecosystem, with a particular focus on emerging markets in West Africa. We are committed to maintaining a welcoming, professional, and respectful community for everyone regardless of background, experience level, nationality, or identity.
 
 ## Expected Behaviour
 
-All participants in Meridian's community — contributors, maintainers, and users — are expected to:
+All participants in Zitian's community — contributors, maintainers, and users — are expected to:
 
 - Communicate respectfully and constructively in all project spaces (issues, pull requests, discussions, and any other channels)
 - Provide and receive feedback professionally — critique code and ideas, not people
@@ -26,11 +26,11 @@ The following will not be tolerated in any project space:
 
 ## Scope
 
-This Code of Conduct applies to all Meridian project spaces including GitHub Issues, Pull Requests, Discussions, the repository wiki, and any other official communication channels. It also applies when a contributor is officially representing the project in public forums.
+This Code of Conduct applies to all Zitian project spaces including GitHub Issues, Pull Requests, the repository wiki, and any other official communication channels. It also applies when a contributor is officially representing the project in public forums.
 
 ## Enforcement
 
-Instances of unacceptable behaviour may be reported via [GitHub Discussions](https://github.com/drydocs/meridian/discussions) (select Q&A and mark private if needed)
+Instances of unacceptable behaviour may be reported by opening an issue on the repository.
 
 All reports will be reviewed promptly and handled with discretion. The maintainer is obligated to keep reporter information confidential.
 

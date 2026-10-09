@@ -20,7 +20,7 @@ import {
   USDC_ISSUER,
   MUSDC_ISSUER,
   CONTRACT_ADDRESSES,
-} from "@meridian/shared";
+} from "@zitian/shared";
 import { buildHorizonServer } from "./horizon";
 import { KNOWN_POOLS } from "./known-pools";
 
@@ -445,8 +445,8 @@ function allowedTrustlineIssuers(network: StellarNetwork): Set<string> {
 /**
  * Guards `/tx/submit` against being used as an open relay for arbitrary
  * Stellar transactions: submitting a signed XDR that has nothing to do with
- * Meridian would otherwise cost the caller only a rate-limit slot. Every
- * operation must either invoke a known Meridian/Blend/DeFindex contract or
+ * Zitian would otherwise cost the caller only a rate-limit slot. Every
+ * operation must either invoke a known Zitian/Blend/DeFindex contract or
  * open a trustline to a known USDC/mUSDC issuer; anything else is rejected
  * before it reaches the network.
  */
@@ -532,7 +532,7 @@ const FAUCET_MAX_AMOUNT = 100_000;
 /**
  * Validates a transaction returned by a third-party testnet faucet before it
  * is handed to the wallet for signing. The faucet is an HTTP endpoint outside
- * Meridian's control; without this check, a compromised or rotated URL could
+ * Zitian's control; without this check, a compromised or rotated URL could
  * return an arbitrary transaction and the caller would sign it blind. Every
  * operation must either be a `payment` crediting `expectedPublicKey` in the
  * known USDC asset within a sane amount, or a `changeTrust` to the known

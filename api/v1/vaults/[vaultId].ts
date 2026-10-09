@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { KNOWN_POOLS } from "@meridian/stellar-sdk-helpers";
-import { handleGetVaultById } from "@meridian/api-core";
+import { KNOWN_POOLS } from "@zitian/stellar-sdk-helpers";
+import { handleGetVaultById } from "@zitian/api-core";
 import { applyCors, checkRateLimit } from "../../_lib/middleware.js";
 
 const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=300";

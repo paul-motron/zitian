@@ -9,7 +9,7 @@
  * the contributor deployed themselves. Reviewing the source diff alone cannot
  * catch that.
  *
- * Meridian's vault is immutable (no update_current_contract_wasm), so the
+ * Zitian's vault is immutable (no update_current_contract_wasm), so the
  * bytecode at a recorded address never changes once deployed. That lets the
  * check separate two cases instead of rebuilding on every PR:
  *
@@ -51,7 +51,7 @@ const BUILT_WASM_PATH = join(
   "target",
   "wasm32v1-none",
   "release",
-  "meridian_vault.wasm"
+  "zitian_vault.wasm"
 );
 const DEPLOY_RECORD_PATH = join(
   REPO_ROOT,
@@ -111,7 +111,7 @@ async function fetchOnChainHash(
   address: string,
   network: Network
 ): Promise<string> {
-  const dir = mkdtempSync(join(tmpdir(), "meridian-verify-"));
+  const dir = mkdtempSync(join(tmpdir(), "zitian-verify-"));
   const outFile = join(dir, `${address}.wasm`);
   // stellar-cli's built-in "mainnet" network preset has no default RPC
   // endpoint (there is no SDF-run public mainnet RPC the way there is for
@@ -192,11 +192,11 @@ function readVaultAddressesAt(sha: string): Record<Network, string> | null {
 
 function checkInternalConsistency(): string | null {
   const constantsVault = CONTRACT_ADDRESSES.testnet.vault;
-  const knownPoolVault = KNOWN_POOLS.testnet["meridian-usdc"]?.contractId;
+  const knownPoolVault = KNOWN_POOLS.testnet["zitian-usdc"]?.contractId;
   if (knownPoolVault && constantsVault && knownPoolVault !== constantsVault) {
     return (
       "CONTRACT_ADDRESSES.testnet.vault and " +
-      'KNOWN_POOLS.testnet["meridian-usdc"].contractId disagree on the vault ' +
+      'KNOWN_POOLS.testnet["zitian-usdc"].contractId disagree on the vault ' +
       `address: ${constantsVault} vs ${knownPoolVault}`
     );
   }

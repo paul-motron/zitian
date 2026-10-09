@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
-import { handleGetVaultState } from "@meridian/api-core";
+import { handleGetVaultState } from "@zitian/api-core";
 
 export const adminRoute: FastifyPluginAsync = async (app) => {
   app.get("/vault-state", async (_req, reply) => {

@@ -16,10 +16,10 @@ import { z } from "zod";
  * digits, matching the vault's on-chain 7-decimal stroop scale.
  *
  * Validation uses `zod`, the same runtime validator the rest of the repo
- * (`@meridian/shared`, `@meridian/api-core`, `@meridian/stellar-sdk-helpers`)
+ * (`@zitian/shared`, `@zitian/api-core`, `@zitian/stellar-sdk-helpers`)
  * already uses. This package declares its own `zod` dependency rather than
  * importing the shared `formatZodError`, so `pnpm --filter
- * @meridian/strategies test` works without first building `@meridian/shared`.
+ * @zitian/strategies test` works without first building `@zitian/shared`.
  */
 
 /** Schema revision. Bump when the shape changes in a breaking way. */

@@ -80,7 +80,7 @@ pub trait YieldAdapterInterface {
 
 /// The subset of the mUSDC token's admin-only surface the vault calls into.
 /// Kept minimal and local to this crate, mirroring `YieldAdapterInterface`
-/// above: the vault never depends on `meridian-musdc-token` directly, in
+/// above: the vault never depends on `zitian-musdc-token` directly, in
 /// production or in tests — `MockMusdc` in the test module below stands in
 /// for it the same way `MockAdapter` stands in for a real adapter crate
 /// (see `MockMusdc`'s doc comment for why: a real cross-crate dependency
@@ -103,10 +103,10 @@ pub trait MusdcAdminInterface {
 // ---------------------------------------------------------------------------
 
 #[contract]
-pub struct MeridianVault;
+pub struct ZitianVault;
 
 #[contractimpl]
-impl MeridianVault {
+impl ZitianVault {
     /// Sets the admin, USDC token address, mUSDC share token address, initial
     /// yield adapter, and performance-fee treasury inside the deploying
     /// transaction's own `CreateContract` operation. Unlike a separate `initialize()` call,
@@ -540,7 +540,7 @@ impl MeridianVault {
     /// `sender_balance_before`/`receiver_balance_before` are `from`'s/`to`'s
     /// mUSDC balances immediately before this transfer, supplied by the
     /// token since it already has both on hand from computing the transfer
-    /// itself — see `meridian-musdc-token`'s `VaultCallback` trait doc
+    /// itself — see `zitian-musdc-token`'s `VaultCallback` trait doc
     /// comment (`packages/contracts/musdc-token/src/lib.rs`).
     pub fn on_transfer(
         env: Env,
@@ -1253,7 +1253,7 @@ mod tests {
     }
 
     // -----------------------------------------------------------------------
-    // MockMusdc: a minimal stand-in for the real `meridian-musdc-token`
+    // MockMusdc: a minimal stand-in for the real `zitian-musdc-token`
     // crate (#578), used instead of a genuine cross-crate dependency for
     // the same reason `MockAdapter` below stands in for a real adapter
     // crate rather than depending on one: the vault crate shouldn't need to
@@ -1320,7 +1320,7 @@ mod tests {
                 Self::write_balance(&env, &to, to_balance + amount);
 
                 let admin: Address = env.storage().instance().get(&MM_ADMIN).unwrap();
-                MeridianVaultClient::new(&env, &admin).on_transfer(
+                ZitianVaultClient::new(&env, &admin).on_transfer(
                     &from,
                     &to,
                     &amount,
@@ -1716,7 +1716,7 @@ mod tests {
         Address,
         Address,
         Address,
-        MeridianVaultClient<'static>,
+        ZitianVaultClient<'static>,
     ) {
         let env = Env::default();
         env.mock_all_auths();
@@ -1741,10 +1741,10 @@ mod tests {
 
         env.register_at(
             &vault_id,
-            MeridianVault,
+            ZitianVault,
             (&admin, &usdc_id, &musdc_id, &adapter_id, &admin),
         );
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
 
         StellarAssetClient::new(&env, &usdc_id).mint(&user, &10_000_000_000_i128);
 
@@ -1759,7 +1759,7 @@ mod tests {
         Address,
         Address,
         Address,
-        MeridianVaultClient<'static>,
+        ZitianVaultClient<'static>,
     ) {
         let env = Env::default();
         env.mock_all_auths();
@@ -1768,7 +1768,7 @@ mod tests {
         let user = Address::generate(&env);
 
         // Deploy mock USDC and mUSDC. mUSDC here is MockMusdc (#578), a
-        // minimal stand-in for the real `meridian-musdc-token` crate — see
+        // minimal stand-in for the real `zitian-musdc-token` crate — see
         // its doc comment above for why this crate uses a local mock
         // instead of a genuine cross-crate dependency. It calls
         // `on_transfer` the same way the real token does: a direct,
@@ -1796,10 +1796,10 @@ mod tests {
 
         env.register_at(
             &vault_id,
-            MeridianVault,
+            ZitianVault,
             (&admin, &usdc_id, &musdc_id, &adapter_id, &admin),
         );
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
 
         // Fund the user with 1000 USDC (7 decimal places: 1000 * 10^7).
         StellarAssetClient::new(&env, &usdc_id).mint(&user, &10_000_000_000_i128);
@@ -2738,10 +2738,10 @@ mod tests {
             .register_stellar_asset_contract_v2(admin.clone())
             .address();
         let vault_id = env.register(
-            MeridianVault,
+            ZitianVault,
             (&admin, &usdc, &musdc_id, &zero_share_adapter_id, &admin),
         );
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
 
         // Attempt deposit and assert it returns AdapterCreditedNothing
         let result = vault.try_deposit(&user, &amount, &0_i128);
@@ -3046,7 +3046,7 @@ mod tests {
         let usdc = Address::generate(env);
         let musdc = Address::generate(env);
         let adapter = Address::generate(env);
-        let vault_id = env.register(MeridianVault, (&admin, &usdc, &musdc, &adapter, &admin));
+        let vault_id = env.register(ZitianVault, (&admin, &usdc, &musdc, &adapter, &admin));
         env.as_contract(&vault_id, || {
             env.storage().instance().remove(&ADMIN);
             env.storage().instance().remove(&USDC);
@@ -3061,7 +3061,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let result = vault.try_get_admin();
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
     }
@@ -3071,7 +3071,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let result = vault.try_get_adapter();
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
     }
@@ -3081,7 +3081,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let result = vault.try_get_total_assets();
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
     }
@@ -3091,7 +3091,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let result = vault.try_set_paused(&true);
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
     }
@@ -3101,7 +3101,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let new_admin = Address::generate(&env);
         let result = vault.try_transfer_admin(&new_admin);
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
@@ -3112,7 +3112,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let new_adapter = Address::generate(&env);
         let result = vault.try_set_adapter(&new_adapter);
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
@@ -3123,7 +3123,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let user = Address::generate(&env);
         let result = vault.try_deposit(&user, &100_0000000_i128, &0_i128);
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
@@ -3134,7 +3134,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let vault_id = register_uninitialized_vault(&env);
-        let vault = MeridianVaultClient::new(&env, &vault_id);
+        let vault = ZitianVaultClient::new(&env, &vault_id);
         let user = Address::generate(&env);
         let result = vault.try_withdraw(&user, &100_0000000_i128, &0_i128);
         assert_eq!(result, Err(Ok(ContractError::NotInitialized)));
@@ -3391,7 +3391,7 @@ mod tests {
             Env,
             Address,
             Address,
-            MeridianVaultClient<'static>,
+            ZitianVaultClient<'static>,
             Address,
             Address,
             i128,
@@ -3418,10 +3418,10 @@ mod tests {
 
             env.register_at(
                 &vault_id,
-                MeridianVault,
+                ZitianVault,
                 (&admin, &usdc_id, &musdc_id, &adapter_id, &admin),
             );
-            let vault = MeridianVaultClient::new(&env, &vault_id);
+            let vault = ZitianVaultClient::new(&env, &vault_id);
 
             StellarAssetClient::new(&env, &usdc_id).mint(&user_a, &10_000_000_i128);
             StellarAssetClient::new(&env, &usdc_id).mint(&user_b, &10_000_i128);

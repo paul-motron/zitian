@@ -6,12 +6,12 @@ import {
   acknowledgeRiskDisclosure,
 } from "./fixtures";
 
-// meridian-usdc is the real testnet-deployed coordinator vault (see
+// zitian-usdc is the real testnet-deployed coordinator vault (see
 // packages/stellar-sdk-helpers/src/known-pools.ts). blend-usdc-fixed and
 // similar ids only exist under KNOWN_POOLS.mainnet for display/APY purposes,
 // resolveVaultEntry rejects them on testnet with "Vault not configured".
 const FAKE_POSITION = {
-  vaultId: "meridian-usdc",
+  vaultId: "zitian-usdc",
   shares: 42,
   deposited: 42,
   earned: 1.5,
@@ -32,7 +32,7 @@ test.describe("withdraw", () => {
     // deposited into the live vault: InsufficientShares (#7) if the vault
     // has other depositors and only this account holds none, or
     // NoSharesOutstanding (#6) if the vault is empty of deposits entirely
-    // (see MeridianVault::withdraw's total_shares <= 0 check, which runs
+    // (see ZitianVault::withdraw's total_shares <= 0 check, which runs
     // before the per-caller check). Either is the correct "nothing to
     // withdraw" rejection this test cares about, so accept both rather than
     // pin to whichever the live vault's deposit history happens to produce.

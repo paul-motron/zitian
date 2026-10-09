@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => ({
+vi.mock("@zitian/stellar-sdk-helpers", async (importOriginal) => ({
   ContractSimulationError: (
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>()
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>()
   ).ContractSimulationError,
   MissingTrustlineError: (
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>()
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>()
   ).MissingTrustlineError,
   buildDepositTx: vi.fn(async () => ({ xdr: "DEPOSIT_XDR", fee: "100" })),
   buildWithdrawTx: vi.fn(async () => ({ xdr: "WITHDRAW_XDR", fee: "100" })),
@@ -28,7 +28,7 @@ import {
   ContractSimulationError,
   assertRequiredTrustlines,
   MissingTrustlineError,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 
 const PUBKEY = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 
@@ -66,7 +66,7 @@ describe.each([
       vi.mocked(builder).mockRejectedValueOnce(err);
       const result = await handler({
         walletAddress: PUBKEY,
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         amount: "10",
         shares: "5",
         riskAcknowledged: true,

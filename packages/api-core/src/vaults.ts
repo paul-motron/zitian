@@ -1,9 +1,9 @@
-import { isDefindexConfigured, APP_NETWORK } from "@meridian/shared";
+import { isDefindexConfigured, APP_NETWORK } from "@zitian/shared";
 import {
   fetchAllVaults,
   selectBestVault,
   isVaultCacheWarm,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 import type { RouteResult } from "./types";
 
 export async function handleGetVaults(): Promise<RouteResult> {

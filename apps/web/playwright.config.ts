@@ -22,13 +22,13 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: "pnpm --filter @meridian/api-local dev",
+      command: "pnpm --filter @zitian/api-local dev",
       url: "http://localhost:3001/health",
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
     },
     {
-      command: "pnpm --filter @meridian/web dev",
+      command: "pnpm --filter @zitian/web dev",
       url: "http://localhost:3000/app/",
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,

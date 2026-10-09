@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
+vi.mock("@zitian/stellar-sdk-helpers", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>();
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>();
   return {
     ...actual,
     fetchCoordinatorState: vi.fn(async () => ({
@@ -22,7 +22,7 @@ import {
   fetchCoordinatorState,
   getKeeperHeartbeat,
   KNOWN_POOLS,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 
 beforeEach(() => vi.clearAllMocks());
 
@@ -93,18 +93,18 @@ describe("handleGetVaultState", () => {
     expect(result.error).toBe(err);
   });
 
-  it("returns 404 when no Meridian coordinator vault is configured for this network", async () => {
+  it("returns 404 when no Zitian coordinator vault is configured for this network", async () => {
     // No mocking hook exists for "no configured vault" today, so simulate it
     // directly: temporarily strip the one field handleGetVaultState's find()
-    // requires (a "meridian" protocol entry with a contractId) and restore
+    // requires (a "zitian" protocol entry with a contractId) and restore
     // it after, so this test doesn't leak state into any other test.
     // Targets mainnet, not testnet: APP_NETWORK defaults to mainnet (the
     // live deployment) unless STELLAR_NETWORK=testnet is set at import
     // time, which it isn't in this test run.
     const entry = Object.values(KNOWN_POOLS.mainnet).find(
-      (p) => p.protocol === "meridian"
+      (p) => p.protocol === "zitian"
     );
-    if (!entry) throw new Error("expected a mainnet meridian pool to exist");
+    if (!entry) throw new Error("expected a mainnet zitian pool to exist");
     const originalContractId = entry.contractId;
     delete entry.contractId;
 
@@ -112,7 +112,7 @@ describe("handleGetVaultState", () => {
       const result = await handleGetVaultState();
       expect(result.status).toBe(404);
       expect(result.body).toEqual({
-        error: "No Meridian coordinator vault configured for this network",
+        error: "No Zitian coordinator vault configured for this network",
       });
     } finally {
       entry.contractId = originalContractId;

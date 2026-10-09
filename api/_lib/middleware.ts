@@ -1,6 +1,6 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { DEFAULT_ALLOWED_ORIGIN } from "@meridian/shared";
+import { DEFAULT_ALLOWED_ORIGIN } from "@zitian/shared";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 

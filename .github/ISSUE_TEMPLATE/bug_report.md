@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in Meridian — include enough detail to reproduce it
+about: Report a bug in Zitian — include enough detail to reproduce it
 title: "[Bug] "
 labels: bug
 assignees: ""

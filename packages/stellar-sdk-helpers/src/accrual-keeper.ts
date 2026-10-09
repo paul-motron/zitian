@@ -1,4 +1,4 @@
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 import { KNOWN_POOLS, type KnownPoolMeta } from "./known-pools";
 import { getRpcServer } from "./internal";
 import { simulateView } from "./tx";
@@ -43,7 +43,7 @@ const DEFAULT_BASE_DELAY_MS = 1_000;
 // regardless of what's configured here. Submission-side calls in
 // submitAccrualTransaction use config.rpcTimeoutMs directly via
 // withRaceTimeout and are not subject to this cap, only discovery is.
-// A configured MERIDIAN_KEEPER_RPC_TIMEOUT_MS above 10_000 still fully
+// A configured ZITIAN_KEEPER_RPC_TIMEOUT_MS above 10_000 still fully
 // governs submission; it's silently capped at 10s for discovery only.
 const DEFAULT_RPC_TIMEOUT_MS = 10_000;
 
@@ -152,28 +152,28 @@ export function loadBlendAccrualKeeperConfig(
   env: Record<string, string | undefined>
 ): BlendAccrualKeeperConfig {
   const secretKey =
-    env.MERIDIAN_KEEPER_SECRET_KEY?.trim() || env.KEEPER_SECRET_KEY?.trim();
+    env.ZITIAN_KEEPER_SECRET_KEY?.trim() || env.KEEPER_SECRET_KEY?.trim();
   if (!secretKey) {
-    throw new Error("MERIDIAN_KEEPER_SECRET_KEY is required");
+    throw new Error("ZITIAN_KEEPER_SECRET_KEY is required");
   }
 
   return {
     network: APP_NETWORK,
     secretKey,
     maxAttempts: parsePositiveInt(
-      env.MERIDIAN_KEEPER_MAX_ATTEMPTS,
+      env.ZITIAN_KEEPER_MAX_ATTEMPTS,
       DEFAULT_MAX_ATTEMPTS,
-      "MERIDIAN_KEEPER_MAX_ATTEMPTS"
+      "ZITIAN_KEEPER_MAX_ATTEMPTS"
     ),
     baseDelayMs: parsePositiveInt(
-      env.MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS,
+      env.ZITIAN_KEEPER_RETRY_BASE_DELAY_MS,
       DEFAULT_BASE_DELAY_MS,
-      "MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS"
+      "ZITIAN_KEEPER_RETRY_BASE_DELAY_MS"
     ),
     rpcTimeoutMs: parsePositiveInt(
-      env.MERIDIAN_KEEPER_RPC_TIMEOUT_MS,
+      env.ZITIAN_KEEPER_RPC_TIMEOUT_MS,
       DEFAULT_RPC_TIMEOUT_MS,
-      "MERIDIAN_KEEPER_RPC_TIMEOUT_MS"
+      "ZITIAN_KEEPER_RPC_TIMEOUT_MS"
     ),
     submissionTtlMs: parseSubmissionTtlMs(env),
   };
@@ -196,7 +196,7 @@ export async function discoverLiveAdapters(
     ...(options.deadlineAt !== undefined && { deadlineAt: options.deadlineAt }),
   };
   const targets = Object.values(pools).filter(
-    (meta) => meta.protocol === "meridian" && meta.contractId
+    (meta) => meta.protocol === "zitian" && meta.contractId
   );
 
   // Vaults are independent of each other, so discover them concurrently

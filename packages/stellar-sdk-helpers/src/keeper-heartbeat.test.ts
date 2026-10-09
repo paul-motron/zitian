@@ -20,10 +20,10 @@ function logger(): KeeperLogger {
 describe("heartbeatKey", () => {
   it("namespaces by keeper and network", () => {
     expect(heartbeatKey("accrual", "testnet")).toBe(
-      "meridian:keeper:heartbeat:accrual:testnet"
+      "zitian:keeper:heartbeat:accrual:testnet"
     );
     expect(heartbeatKey("migration", "mainnet")).toBe(
-      "meridian:keeper:heartbeat:migration:mainnet"
+      "zitian:keeper:heartbeat:migration:mainnet"
     );
   });
 });

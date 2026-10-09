@@ -1,4 +1,4 @@
-import { DEFINDEX_SLIPPAGE_BPS } from "@meridian/shared";
+import { DEFINDEX_SLIPPAGE_BPS } from "@zitian/shared";
 import {
   Address,
   Contract,

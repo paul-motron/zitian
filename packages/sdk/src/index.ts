@@ -1,5 +1,5 @@
 /**
- * @meridian/sdk: TypeScript client for Meridian vaults, keepers and the
+ * @zitian/sdk: TypeScript client for Zitian vaults, keepers and the
  * Blend adapter. The keeper and adapter modules land in follow-up issues;
  * this entry point is where they will be re-exported.
  */

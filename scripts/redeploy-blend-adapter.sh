@@ -40,7 +40,7 @@ cd "$(dirname "$0")/../packages/contracts"
 stellar contract build
 
 # `stellar contract build` targets wasm32v1-none, not wasm32-unknown-unknown.
-WASM_ADAPTER="target/wasm32v1-none/release/meridian_blend_adapter.wasm"
+WASM_ADAPTER="target/wasm32v1-none/release/zitian_blend_adapter.wasm"
 
 echo "Uploading blend-adapter WASM..."
 ADAPTER_HASH=$(stellar contract upload \

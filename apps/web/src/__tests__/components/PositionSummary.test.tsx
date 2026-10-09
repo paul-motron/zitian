@@ -10,7 +10,7 @@ vi.mock("react-i18next", () => ({
 }));
 
 const POSITION = {
-  vaultId: "meridian-usdc",
+  vaultId: "zitian-usdc",
   shares: 50,
   deposited: 100,
   earned: 5,

@@ -1,6 +1,6 @@
 # Blend Accrual Keeper
 
-Meridian Blend adapters cache `total_assets()`. Deposits and withdrawals update
+Zitian Blend adapters cache `total_assets()`. Deposits and withdrawals update
 that cache, but passive Blend interest is only reflected after a real
 `accrue()` transaction lands on-chain. Read-only simulations do not persist
 state, so the production deployment runs a scheduled keeper.
@@ -21,27 +21,27 @@ timing is also best-effort, not exact-to-the-minute, acceptable for a
 from the nominal window below.
 
 With successful runs, the expected maximum TVL/APY staleness window for
-Blend-backed Meridian vaults is one keeper interval: 15 minutes. Dashboard HTTP
+Blend-backed Zitian vaults is one keeper interval: 15 minutes. Dashboard HTTP
 caching may add up to another 60 seconds on mainnet responses. If a keeper run
 fails, values can remain stale until the next successful run; failed runs return
 a non-2xx status so hosting alerts and cron logs can detect them.
 
 This guarantee only covers vaults the keeper actually discovers, `KNOWN_POOLS`
-entries with `protocol: "meridian"` and a `contractId` set for the running
-network. `KNOWN_POOLS.mainnet` now has a `meridian-usdc` entry (see
+entries with `protocol: "zitian"` and a `contractId` set for the running
+network. `KNOWN_POOLS.mainnet` now has a `zitian-usdc` entry (see
 `apps/docs/operations/mainnet-deployment.md`'s deployment record), and the
 keeper's own secret key is funded and configured in production, so mainnet
 runs actually cover the live vault, not an empty discovery result.
 
 ## Signing Key
 
-Set `MERIDIAN_KEEPER_SECRET_KEY` in the deployment secret store. It must be the
+Set `ZITIAN_KEEPER_SECRET_KEY` in the deployment secret store. It must be the
 Stellar secret seed for a funded keeper account that can pay Soroban fees. The
 key is read from environment variables injected by the platform; never commit
 it to source control.
 
 The legacy fallback name `KEEPER_SECRET_KEY` is also accepted, but new
-deployments should use `MERIDIAN_KEEPER_SECRET_KEY`.
+deployments should use `ZITIAN_KEEPER_SECRET_KEY`.
 
 Set `CRON_SECRET` as a separate secret, in both Vercel's environment
 variables (what the endpoint itself checks) and as a GitHub Actions
@@ -59,7 +59,7 @@ secret, it's just the deployment's public URL) to the production domain
 
 ## Discovery
 
-The keeper discovers adapters from live Meridian coordinator vault entries in
+The keeper discovers adapters from live Zitian coordinator vault entries in
 `KNOWN_POOLS`:
 
 1. Call `vault.get_adapter()`.
@@ -77,9 +77,9 @@ to the next adapter. Rebuilding on retry avoids reusing stale sequence numbers.
 
 Transient submission failures retry with exponential backoff. Configure:
 
-- `MERIDIAN_KEEPER_MAX_ATTEMPTS` default `3`
-- `MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS` default `1000`
-- `MERIDIAN_KEEPER_RPC_TIMEOUT_MS` default `10000`
+- `ZITIAN_KEEPER_MAX_ATTEMPTS` default `3`
+- `ZITIAN_KEEPER_RETRY_BASE_DELAY_MS` default `1000`
+- `ZITIAN_KEEPER_RPC_TIMEOUT_MS` default `10000`
 
 Failures are logged with the vault id, adapter id, protocol, stage, attempt
 count, and error summary. Any discovery or submission failure is also included
@@ -92,12 +92,12 @@ sending a new one, within a single run.
 
 That tracking also persists **across** invocations ([#515](https://github.com/drydocs/meridian/issues/515)). The submitted
 hash is recorded in the shared store (Upstash Redis, keyed
-`meridian:keeper:accrual:<network>:<vaultId>:<adapterId>`) as soon as the
+`zitian:keeper:accrual:<network>:<vaultId>:<adapterId>`) as soon as the
 transaction is broadcast, and every run resolves an existing record against
 the network before submitting anything: landed, failed, or aged out past the
 transaction's validity window clears it, and only a genuinely still-in-flight
 one skips the adapter for that run. The mechanism, its state machine, and
-`MERIDIAN_KEEPER_SUBMISSION_TTL_MS` are documented in full in
+`ZITIAN_KEEPER_SUBMISSION_TTL_MS` are documented in full in
 [Migration Keeper](./migration-keeper.md#cross-invocation-duplicate-protection);
 this keeper uses exactly the same code path, deliberately, so both keepers'
 execution model is the same thing to reason about.

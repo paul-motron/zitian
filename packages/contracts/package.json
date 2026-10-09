@@ -1,5 +1,5 @@
 {
-  "name": "@meridian/contracts",
+  "name": "@zitian/contracts",
   "version": "0.1.0",
   "scripts": {
     "build": "stellar contract build",

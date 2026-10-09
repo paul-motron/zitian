@@ -85,9 +85,9 @@ deploy_vault_stack() {
 
   # `stellar contract build` targets wasm32v1-none, not wasm32-unknown-unknown.
   local wasm_dir="target/wasm32v1-none/release"
-  local wasm_vault="$wasm_dir/meridian_vault.wasm"
-  local wasm_blend_adapter="$wasm_dir/meridian_blend_adapter.wasm"
-  local wasm_musdc_token="$wasm_dir/meridian_musdc_token.wasm"
+  local wasm_vault="$wasm_dir/zitian_vault.wasm"
+  local wasm_blend_adapter="$wasm_dir/zitian_blend_adapter.wasm"
+  local wasm_musdc_token="$wasm_dir/zitian_musdc_token.wasm"
 
   echo "Uploading vault WASM..."
   local vault_hash
@@ -144,7 +144,7 @@ deploy_vault_stack() {
   # adapter gap was.
   echo "Deploying mUSDC token (admin=$VAULT_ID)..."
   MUSDC_ID=$(deploy "$musdc_token_hash" "" "$DEPLOYER" \
-    -- --admin "$VAULT_ID" --decimals 7 --name "Meridian USDC" --symbol mUSDC)
+    -- --admin "$VAULT_ID" --decimals 7 --name "Zitian USDC" --symbol mUSDC)
   echo "mUSDC contract ID: $MUSDC_ID"
 
   # Deploying with the same salt used to reserve VAULT_ID above lands the

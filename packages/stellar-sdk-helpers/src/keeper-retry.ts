@@ -2,7 +2,7 @@
 // Kept generic: transient-error classification is protocol/keeper-specific
 // and is passed in by the caller rather than hardcoded here.
 
-import { sanitizeTxError, withRetry } from "@meridian/shared";
+import { sanitizeTxError, withRetry } from "@zitian/shared";
 
 export interface KeeperLogger {
   info(message: string, context?: Record<string, unknown>): void;
@@ -166,7 +166,7 @@ export function retryOutcome(
 // attempt number straight into fee escalation without an off-by-one
 // adjustment.
 //
-// A thin, keeper-specific wrapper over the shared withRetry (@meridian/shared):
+// A thin, keeper-specific wrapper over the shared withRetry (@zitian/shared):
 // the core retry/backoff loop lives in one place, this only adds what's
 // keeper-specific on top (structured KeeperLogger logging, the deadline
 // check, attempt-count tracking, and wrapping the final failure in a

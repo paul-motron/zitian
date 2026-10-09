@@ -18,7 +18,7 @@ code, it's [#706](https://github.com/drydocs/meridian/issues/706)'s page; if it 
 ## Detection: what's actually watching right now
 
 **Read this before assuming an alert will tell you something is wrong.** As
-of this writing, `MERIDIAN_ALERT_WEBHOOK_URL` is unset in production (see
+of this writing, `ZITIAN_ALERT_WEBHOOK_URL` is unset in production (see
 [Admin-Event Alert Keeper](./alert-keeper.md#alert-destination)). The alert
 keeper's cron runs on schedule but is a clean no-op, and **nothing is
 currently watching the live mainnet vault for admin actions.** Configuring
@@ -32,9 +32,9 @@ webhook required):
 - The vault's admin events (`paused`, `transfer`, `accept`, `adapter`,
   `migrate`; see [Admin-Event Alert Keeper](./alert-keeper.md#which-events-alert))
   are visible on any Stellar block explorer against the mainnet vault
-  address (`CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ`, see
+  address (`CONTRACT_ADDRESSES.mainnet.vault` in
   `packages/shared/src/constants.ts`), for example
-  `stellar.expert/explorer/public/contract/CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ`.
+  `stellar.expert/explorer/public/contract/<VAULT_ID>`.
   No code or RPC access needed, and this works even if every other tool on
   this page is unavailable.
 - `getRpcAdminHistory` (`packages/stellar-sdk-helpers/src/admin-history.ts`)
@@ -54,7 +54,7 @@ webhook required):
 ## Using `set_paused` to halt deposits
 
 ```sh
-stellar contract invoke --id CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ \
+stellar contract invoke --id <VAULT_ID> \
   --source-account "$ADMIN_KEY" --network mainnet -- set_paused --paused true
 ```
 
@@ -83,11 +83,11 @@ have is measured in exactly what this page exists to prevent.
 
 ```sh
 # Current admin nominates a successor. Authority does NOT move yet.
-stellar contract invoke --id CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ \
+stellar contract invoke --id <VAULT_ID> \
   --source-account "$ADMIN_KEY" --network mainnet -- transfer_admin --new_admin "$NEW_ADMIN"
 
 # The nominee accepts with their own signature -- the old admin cannot do this step.
-stellar contract invoke --id CBRAD5MD7CCXNXRLRGTRKG4NNZKR3N643VUEBNJGWB2L6KLZDLFWMXHQ \
+stellar contract invoke --id <VAULT_ID> \
   --source-account "$NEW_ADMIN_KEY" --network mainnet -- accept_admin
 ```
 
@@ -130,12 +130,12 @@ Three keepers, three different secrets, and three very different stakes if
 one leaks. Treat them accordingly rather than as one undifferentiated
 "rotate the keeper key" task:
 
-- **`MERIDIAN_KEEPER_SECRET_KEY`** (accrue keeper). `accrue()` is
+- **`ZITIAN_KEEPER_SECRET_KEY`** (accrue keeper). `accrue()` is
   permissionless, so this key only needs to be a funded Stellar account,
   not anything vault-privileged. Rotation is low-stakes: generate a new funded
   key, update the secret in your deployment's secret store, redeploy.
   Nothing vault-side changes; the old key simply stops being used.
-- **`MERIDIAN_MIGRATION_KEEPER_SECRET_KEY`** (migration keeper). Per
+- **`ZITIAN_MIGRATION_KEEPER_SECRET_KEY`** (migration keeper). Per
   [Migration Keeper](./migration-keeper.md#signing-key-and-trust-model),
   **this key must be the vault's actual admin address**, because
   `migrate_adapter` is admin-gated, so this secret _is_ the admin key in
@@ -143,11 +143,11 @@ one leaks. Treat them accordingly rather than as one undifferentiated
   "Rotating the migration keeper's secret" and "rotating the vault admin"
   are the same operation here, not two separate ones: follow the admin key
   rotation procedure above, then update
-  `MERIDIAN_MIGRATION_KEEPER_SECRET_KEY` in the deployment secret store to
+  `ZITIAN_MIGRATION_KEEPER_SECRET_KEY` in the deployment secret store to
   the new admin's secret once `accept_admin` has landed. Treat any suspected
   leak of this specific secret with the same urgency as a suspected admin
   key compromise, because that is exactly what it is.
-- **`MERIDIAN_ALERT_WEBHOOK_URL`** (alert keeper). Lowest stakes of the
+- **`ZITIAN_ALERT_WEBHOOK_URL`** (alert keeper). Lowest stakes of the
   three: it's a destination URL, not a signing key, and per "Detection"
   above it isn't even configured in production yet. If it leaks (posted
   somewhere public, a former team member retains it), anyone with it can

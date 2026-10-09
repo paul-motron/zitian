@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Deploy a full, freshly-wired Meridian coordinator vault stack to Stellar
+# Deploy a full, freshly-wired Zitian coordinator vault stack to Stellar
 # testnet: vault, a BlendAdapter, and the mUSDC share token, initialized and
 # linked together. Use this to stand up a brand new environment. To push new
 # adapter code to an ALREADY-LIVE vault without redeploying the vault itself,

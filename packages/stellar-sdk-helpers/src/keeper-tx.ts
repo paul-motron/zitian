@@ -10,7 +10,7 @@ import {
   rpc,
   xdr,
 } from "@stellar/stellar-sdk";
-import { withRaceTimeout } from "@meridian/shared";
+import { withRaceTimeout } from "@zitian/shared";
 import {
   describeSendError,
   simErrorMessage,

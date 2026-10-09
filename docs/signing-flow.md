@@ -1,6 +1,6 @@
 # Transaction signing flow
 
-Meridian's core security property is simple: **the API never holds or sees a private key.**
+Zitian's core security property is simple: **the API never holds or sees a private key.**
 It builds an _unsigned_ Soroban transaction, returns it as a base64 XDR string, and the
 browser hands that XDR to the user's connected wallet for signing, via the `WalletAdapter`
 interface (`isInstalled` / `isAuthorized` / `connect` / `sign`) described below. The signed
@@ -17,7 +17,7 @@ right.
 sequenceDiagram
     actor User
     participant Browser as Browser (React app)
-    participant API as Meridian API (/api/v1/tx)
+    participant API as Zitian API (/api/v1/tx)
     participant Wallet as Connected wallet (WalletAdapter)
     participant RPC as Stellar Soroban RPC
 

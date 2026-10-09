@@ -1,6 +1,6 @@
 import { xdr } from "@stellar/stellar-sdk";
 import { PoolContractV2, PoolV2, RequestType } from "@blend-capital/blend-sdk";
-import { withRetry, withRaceTimeout } from "@meridian/shared";
+import { withRetry, withRaceTimeout } from "@zitian/shared";
 import { prepareSorobanTx } from "./tx";
 import type { StellarNetwork } from "./types";
 import type { PositionInfo } from "./positions";
@@ -27,7 +27,7 @@ export interface BlendPoolConfig {
 }
 
 /**
- * Map a Meridian vault ID (e.g. "blend-usdc-fixed") to the reserve asset whose
+ * Map a Zitian vault ID (e.g. "blend-usdc-fixed") to the reserve asset whose
  * Stellar Asset Contract the deposit supplies. Pure function, no I/O.
  */
 export function blendAssetForVault(vaultId: string): "usdc" | "eurc" {
@@ -63,7 +63,7 @@ async function buildPoolRequestTx(
  *
  * Non-custodial: the user's wallet signs the returned XDR and the frontend
  * submits it. The resulting bToken position is held by the user directly —
- * funds never pass through a Meridian-controlled contract. A missing USDC/EURC
+ * funds never pass through a Zitian-controlled contract. A missing USDC/EURC
  * trustline or balance surfaces as a simulation error.
  */
 export function buildBlendDepositTx(
@@ -100,7 +100,7 @@ export function buildBlendWithdrawTx(
 export interface BlendReserveRef {
   // Reserve asset contract (the USDC/EURC Stellar Asset Contract).
   assetId: string;
-  // Meridian vault id the resulting position is reported under.
+  // Zitian vault id the resulting position is reported under.
   vaultId: string;
 }
 
@@ -109,7 +109,7 @@ export interface BlendReserveRef {
  * user holds. The pool ledger state is loaded once and each reserve is valued
  * via the SDK in underlying asset units.
  *
- * `shares` is the collateral-only balance because Meridian withdrawals use
+ * `shares` is the collateral-only balance because Zitian withdrawals use
  * RequestType.WithdrawCollateral; including plain-supply in `shares` would cause
  * the withdraw-max flow to submit an amount the pool contract would reject.
  * `deposited` is the full balance (collateral + plain supply) for display.
@@ -152,7 +152,7 @@ export async function fetchBlendPositions(
 }
 
 // ---------------------------------------------------------------------------
-// Blend adapter client (@meridian SDK surface for issue #805)
+// Blend adapter client (@zitian SDK surface for issue #805)
 // ---------------------------------------------------------------------------
 
 export interface BlendTx {
@@ -179,7 +179,7 @@ export interface BlendUserPosition {
 export interface BlendAdapterConfig extends BlendPoolConfig {}
 
 /**
- * High-level Blend Capital adapter used by Meridian callers.
+ * High-level Blend Capital adapter used by Zitian callers.
  * Builds unsigned Soroban transactions for supply / borrow / repay / withdraw
  * and reads pool + health data over RPC.
  */

@@ -6,7 +6,7 @@
 // for alerting until now: an unexpected pause or an adapter migration was
 // only noticed by whoever happened to check the app.
 //
-// This keeper polls getRpcAdminHistory per known Meridian vault, starting
+// This keeper polls getRpcAdminHistory per known Zitian vault, starting
 // from a persisted "last-processed ledger" cursor so a restart never
 // replays events it already alerted on, and posts one webhook message per
 // qualifying action. It deliberately reuses keeper-heartbeat.ts's
@@ -23,8 +23,8 @@
 // migrate only).
 
 import { rpc } from "@stellar/stellar-sdk";
-import { withRaceTimeout, withRetry } from "@meridian/shared";
-import { APP_NETWORK } from "@meridian/shared";
+import { withRaceTimeout, withRetry } from "@zitian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 import {
   getRpcAdminHistory,
   type RpcAdminAction,
@@ -71,34 +71,34 @@ export interface AlertKeeperConfig {
 export function isAlertKeeperConfigured(
   env: Record<string, string | undefined>
 ): boolean {
-  return Boolean(env.MERIDIAN_ALERT_WEBHOOK_URL?.trim());
+  return Boolean(env.ZITIAN_ALERT_WEBHOOK_URL?.trim());
 }
 
 export function loadAlertKeeperConfig(
   env: Record<string, string | undefined>
 ): AlertKeeperConfig {
-  const webhookUrl = env.MERIDIAN_ALERT_WEBHOOK_URL?.trim();
+  const webhookUrl = env.ZITIAN_ALERT_WEBHOOK_URL?.trim();
   if (!webhookUrl) {
-    throw new Error("MERIDIAN_ALERT_WEBHOOK_URL is required");
+    throw new Error("ZITIAN_ALERT_WEBHOOK_URL is required");
   }
 
   return {
     network: APP_NETWORK,
     webhookUrl,
     maxAttempts: parsePositiveInt(
-      env.MERIDIAN_KEEPER_MAX_ATTEMPTS,
+      env.ZITIAN_KEEPER_MAX_ATTEMPTS,
       DEFAULT_MAX_ATTEMPTS,
-      "MERIDIAN_KEEPER_MAX_ATTEMPTS"
+      "ZITIAN_KEEPER_MAX_ATTEMPTS"
     ),
     baseDelayMs: parsePositiveInt(
-      env.MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS,
+      env.ZITIAN_KEEPER_RETRY_BASE_DELAY_MS,
       DEFAULT_BASE_DELAY_MS,
-      "MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS"
+      "ZITIAN_KEEPER_RETRY_BASE_DELAY_MS"
     ),
     rpcTimeoutMs: parsePositiveInt(
-      env.MERIDIAN_KEEPER_RPC_TIMEOUT_MS,
+      env.ZITIAN_KEEPER_RPC_TIMEOUT_MS,
       DEFAULT_RPC_TIMEOUT_MS,
-      "MERIDIAN_KEEPER_RPC_TIMEOUT_MS"
+      "ZITIAN_KEEPER_RPC_TIMEOUT_MS"
     ),
   };
 }
@@ -108,7 +108,7 @@ export interface AlertVaultTarget {
   vaultContractId: string;
 }
 
-/** Every known Meridian vault on `network`, the same protocol/contractId
+/** Every known Zitian vault on `network`, the same protocol/contractId
  *  filter accrual-keeper.ts's discovery uses. */
 export function discoverAlertVaultTargets(
   network: StellarNetwork
@@ -116,7 +116,7 @@ export function discoverAlertVaultTargets(
   const networkKey = network.network === "mainnet" ? "mainnet" : "testnet";
   const pools = KNOWN_POOLS[networkKey];
   return Object.entries(pools)
-    .filter(([, meta]) => meta.protocol === "meridian" && meta.contractId)
+    .filter(([, meta]) => meta.protocol === "zitian" && meta.contractId)
     .map(([vaultId, meta]) => ({
       vaultId,
       vaultContractId: meta.contractId as string,
@@ -129,14 +129,9 @@ export function alertCursorKey(
   vaultContractId: string,
   network: string
 ): string {
-  return [
-    "meridian",
-    "keeper",
-    "alert",
-    "cursor",
-    network,
-    vaultContractId,
-  ].join(":");
+  return ["zitian", "keeper", "alert", "cursor", network, vaultContractId].join(
+    ":"
+  );
 }
 
 function shortAddr(address: string): string {
@@ -159,34 +154,34 @@ export function formatAlertMessage(
     case "paused": {
       const { paused } = action.payload as { paused: boolean };
       return paused
-        ? `[meridian] ${vaultId}: deposits PAUSED at ${at}`
-        : `[meridian] ${vaultId}: deposits unpaused at ${at}`;
+        ? `[zitian] ${vaultId}: deposits PAUSED at ${at}`
+        : `[zitian] ${vaultId}: deposits unpaused at ${at}`;
     }
     case "transfer": {
       const { newAdmin } = action.payload as { newAdmin: string };
-      return `[meridian] ${vaultId}: admin transfer nominated to ${shortAddr(newAdmin)} at ${at}`;
+      return `[zitian] ${vaultId}: admin transfer nominated to ${shortAddr(newAdmin)} at ${at}`;
     }
     case "accept": {
       const { newAdmin } = action.payload as { newAdmin: string };
-      return `[meridian] ${vaultId}: admin transfer to ${shortAddr(newAdmin)} accepted at ${at}`;
+      return `[zitian] ${vaultId}: admin transfer to ${shortAddr(newAdmin)} accepted at ${at}`;
     }
     case "adapter": {
       const { newAdapter } = action.payload as { newAdapter: string };
-      return `[meridian] ${vaultId}: adapter switched to ${shortAddr(newAdapter)} at ${at}`;
+      return `[zitian] ${vaultId}: adapter switched to ${shortAddr(newAdapter)} at ${at}`;
     }
     case "migrate": {
       const { oldAdapter, newAdapter } = action.payload as {
         oldAdapter: string;
         newAdapter: string;
       };
-      return `[meridian] ${vaultId}: migrated adapter from ${shortAddr(oldAdapter)} to ${shortAddr(newAdapter)} at ${at}`;
+      return `[zitian] ${vaultId}: migrated adapter from ${shortAddr(oldAdapter)} to ${shortAddr(newAdapter)} at ${at}`;
     }
     case "mig_begin": {
       const { newAdapter, earliestLedger } = action.payload as {
         newAdapter: string;
         earliestLedger: number;
       };
-      return `[meridian] ${vaultId}: migration cooldown started for ${shortAddr(newAdapter)} at ${at} (earliest completion ledger ${earliestLedger})`;
+      return `[zitian] ${vaultId}: migration cooldown started for ${shortAddr(newAdapter)} at ${at} (earliest completion ledger ${earliestLedger})`;
     }
   }
 }
@@ -267,7 +262,7 @@ export interface AlertKeeperDeps {
 }
 
 /**
- * Runs one alerting pass over every known Meridian vault: reads each
+ * Runs one alerting pass over every known Zitian vault: reads each
  * vault's admin-event history since its last-processed ledger, posts a
  * webhook alert for every qualifying action, and advances the cursor only
  * as far as the last action it successfully alerted on (or that needed no

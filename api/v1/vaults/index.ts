@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { handleGetVaults } from "@meridian/api-core";
-import { APP_NETWORK } from "@meridian/shared";
+import { handleGetVaults } from "@zitian/api-core";
+import { APP_NETWORK } from "@zitian/shared";
 import { applyCors, checkRateLimit } from "../../_lib/middleware.js";
 
 // Cache the aggregated vault list at the Vercel CDN. APY/TVL move slowly on

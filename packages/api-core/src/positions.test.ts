@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("@meridian/stellar-sdk-helpers", () => ({
+vi.mock("@zitian/stellar-sdk-helpers", () => ({
   resolvePositions: vi.fn(async () => [
     {
       vaultId: "blend-usdc-fixed",
@@ -13,7 +13,7 @@ vi.mock("@meridian/stellar-sdk-helpers", () => ({
 }));
 
 import { handleGetPositions } from "./positions";
-import { resolvePositions } from "@meridian/stellar-sdk-helpers";
+import { resolvePositions } from "@zitian/stellar-sdk-helpers";
 
 const PUBKEY = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 

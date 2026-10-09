@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Address, nativeToScVal } from "@stellar/stellar-sdk";
 
 // ---------------------------------------------------------------------------
-// Mock @meridian/stellar-sdk-helpers before importing the module under test.
+// Mock @zitian/stellar-sdk-helpers before importing the module under test.
 // The entire network layer is behind prepareSorobanTx and simulateView, so
 // mocking both is sufficient to isolate all tests from the Stellar network.
 // ---------------------------------------------------------------------------
-vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
+vi.mock("@zitian/stellar-sdk-helpers", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>();
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>();
   return {
     ...actual,
     prepareSorobanTx: vi.fn(),
@@ -16,7 +16,7 @@ vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
   };
 });
 
-import { prepareSorobanTx, simulateView } from "@meridian/stellar-sdk-helpers";
+import { prepareSorobanTx, simulateView } from "@zitian/stellar-sdk-helpers";
 import {
   VaultBase,
   VIRTUAL_OFFSET,

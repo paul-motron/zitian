@@ -1,6 +1,6 @@
 #![no_std]
 
-//! Shared scaffolding for Meridian yield adapters.
+//! Shared scaffolding for Zitian yield adapters.
 //!
 //! This module provides common storage key definitions, initialization logic,
 //! and error types used across all adapters (blend-adapter, defindex-adapter,

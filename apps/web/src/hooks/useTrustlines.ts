@@ -1,4 +1,4 @@
-import { USDC_ISSUER, MUSDC_ISSUER } from "@meridian/shared";
+import { USDC_ISSUER, MUSDC_ISSUER } from "@zitian/shared";
 import { useWalletStore } from "../store/wallet";
 import { api } from "../lib/api";
 import { fetchBalances } from "../lib/horizonAccount";

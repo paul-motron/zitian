@@ -38,7 +38,7 @@ describe("AlbedoWallet — real Albedo path (no mock wallet present)", () => {
   // isAuthorized must not call publicKey() (which opens the popup) — it
   // checks sessionStorage for a key stored by a prior connect().
   it("isAuthorized returns true when a key was stored by connect", async () => {
-    window.sessionStorage.setItem("meridian-albedo-public-key", ADDRESS);
+    window.sessionStorage.setItem("zitian-albedo-public-key", ADDRESS);
     await expect(albedoWallet.isAuthorized()).resolves.toBe(true);
     expect(vi.mocked(albedo.publicKey)).not.toHaveBeenCalled();
   });
@@ -60,7 +60,7 @@ describe("AlbedoWallet — real Albedo path (no mock wallet present)", () => {
       signature: "sig",
     });
     await expect(albedoWallet.connect()).resolves.toBe(ADDRESS);
-    expect(window.sessionStorage.getItem("meridian-albedo-public-key")).toBe(
+    expect(window.sessionStorage.getItem("zitian-albedo-public-key")).toBe(
       ADDRESS
     );
 

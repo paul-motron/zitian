@@ -1,4 +1,4 @@
-import type { ApiVault, PositionInfo } from "@meridian/stellar-sdk-helpers";
+import type { ApiVault, PositionInfo } from "@zitian/stellar-sdk-helpers";
 
 export type { ApiVault };
 export type ApiPosition = PositionInfo;

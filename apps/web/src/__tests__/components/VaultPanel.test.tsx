@@ -15,10 +15,10 @@ const acceptRiskDisclosure = vi.fn();
 const cancelRiskDisclosure = vi.fn();
 
 const VAULT = {
-  id: "meridian-usdc",
-  protocol: "meridian",
+  id: "zitian-usdc",
+  protocol: "zitian",
   asset: "USDC",
-  name: "Meridian",
+  name: "Zitian",
   label: "USDC Vault",
   apy: 8,
   tvl: 10_000,
@@ -27,7 +27,7 @@ const VAULT = {
 };
 
 const POSITION = {
-  vaultId: "meridian-usdc",
+  vaultId: "zitian-usdc",
   shares: 50,
   deposited: 100,
   earned: 5,
@@ -51,7 +51,7 @@ vi.mock("react-i18next", () => ({
 
 function mockVaultsLoaded() {
   vi.mocked(useVaults).mockReturnValue({
-    data: { vaults: [VAULT], recommendedVaultId: "meridian-usdc" },
+    data: { vaults: [VAULT], recommendedVaultId: "zitian-usdc" },
     isLoading: false,
   } as ReturnType<typeof useVaults>);
 }
@@ -188,7 +188,7 @@ describe("VaultPanel — deposit", () => {
     // Deposit tests exercise the state after the disclosure is already
     // accepted; the case where it isn't (e.g. a wallet connected elsewhere,
     // skipping the gate) is covered separately below.
-    window.localStorage.setItem("meridian-risk-disclosure-accepted", "true");
+    window.localStorage.setItem("zitian-risk-disclosure-accepted", "true");
   });
 
   it("omits a panel-side slippage floor for a first-time depositor", async () => {
@@ -204,7 +204,7 @@ describe("VaultPanel — deposit", () => {
     await waitFor(() => {
       expect(deposit).toHaveBeenCalledWith(
         "25",
-        "meridian-usdc",
+        "zitian-usdc",
         "USDC",
         undefined,
         true
@@ -229,7 +229,7 @@ describe("VaultPanel — deposit", () => {
       // action hook fetches live totalAssets/totalShares at build time.
       expect(deposit).toHaveBeenCalledWith(
         "25",
-        "meridian-usdc",
+        "zitian-usdc",
         "USDC",
         undefined,
         true
@@ -254,7 +254,7 @@ describe("VaultPanel — deposit", () => {
     await waitFor(() => {
       expect(deposit).toHaveBeenCalledWith(
         "25",
-        "meridian-usdc",
+        "zitian-usdc",
         "USDC",
         undefined,
         true
@@ -280,7 +280,7 @@ describe("VaultPanel — deposit", () => {
     await waitFor(() => {
       expect(deposit).toHaveBeenCalledWith(
         "25",
-        "meridian-usdc",
+        "zitian-usdc",
         "USDC",
         undefined,
         true
@@ -321,7 +321,7 @@ describe("VaultPanel — withdraw", () => {
     await waitFor(() => {
       expect(withdraw).toHaveBeenCalledWith(
         "10",
-        "meridian-usdc",
+        "zitian-usdc",
         "USDC",
         undefined
       );
@@ -356,7 +356,7 @@ describe("VaultPanel — withdraw", () => {
     await waitFor(() => {
       expect(withdraw).toHaveBeenCalledWith(
         "10",
-        "meridian-usdc",
+        "zitian-usdc",
         "USDC",
         undefined
       );

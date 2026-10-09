@@ -84,7 +84,7 @@ jobs:
       - run: pnpm typecheck:api
       - name: Verify apps/api-local build output is flat
         run: |
-          pnpm --filter @meridian/api-local build
+          pnpm --filter @zitian/api-local build
           test -f apps/api-local/dist/index.js
 
   vercel-build:
@@ -104,7 +104,7 @@ jobs:
         run: |
           for pkg in shared stellar-sdk-helpers api-core; do
             if [ ! -f "packages/$pkg/dist/index.js" ]; then
-              echo "::error::packages/$pkg/dist/index.js was not produced by scripts/build-vercel.sh, but api/v1/* imports @meridian/$pkg. This is the exact failure mode from #398 (ERR_MODULE_NOT_FOUND in production)."
+              echo "::error::packages/$pkg/dist/index.js was not produced by scripts/build-vercel.sh, but api/v1/* imports @zitian/$pkg. This is the exact failure mode from #398 (ERR_MODULE_NOT_FOUND in production)."
               exit 1
             fi
           done
@@ -171,13 +171,13 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # apps/api-local imports its workspace deps (@meridian/shared etc.) by
+      # apps/api-local imports its workspace deps (@zitian/shared etc.) by
       # package resolution, which needs their dist/ output built first - the
       # dev server doesn't build them itself. Scoped to api-local's own
       # dependency graph so this doesn't also try to build contracts/docs.
-      - run: pnpm exec turbo run build --filter=@meridian/api-local...
-      - run: pnpm --filter @meridian/web exec playwright install --with-deps chromium
-      - run: pnpm --filter @meridian/web test:e2e
+      - run: pnpm exec turbo run build --filter=@zitian/api-local...
+      - run: pnpm --filter @zitian/web exec playwright install --with-deps chromium
+      - run: pnpm --filter @zitian/web test:e2e
 
   contracts:
     name: Soroban Contract Tests
@@ -207,9 +207,9 @@ jobs:
         working-directory: packages/contracts
         run: >-
           cargo llvm-cov
-          --package meridian-vault
-          --package meridian-blend-adapter
-          --package meridian-defindex-adapter
+          --package zitian-vault
+          --package zitian-blend-adapter
+          --package zitian-defindex-adapter
           --package adapter-common
           --summary-only
           --fail-under-lines 97.5

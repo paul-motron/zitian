@@ -16,10 +16,10 @@ describe("known-pools", () => {
     }
   });
 
-  it("contains valid mainnet meridian-usdc metadata with asset, contractId, and assetId", () => {
-    const pool = KNOWN_POOLS.mainnet["meridian-usdc"];
+  it("contains valid mainnet zitian-usdc metadata with asset, contractId, and assetId", () => {
+    const pool = KNOWN_POOLS.mainnet["zitian-usdc"];
     expect(pool).toBeDefined();
-    expect(pool.protocol).toBe("meridian");
+    expect(pool.protocol).toBe("zitian");
     expect(pool.asset).toBe("USDC");
     expect(pool.contractId).toBeTruthy();
     expect(pool.assetId).toBeTruthy();

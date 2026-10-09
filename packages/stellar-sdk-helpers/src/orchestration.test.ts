@@ -12,16 +12,16 @@ const VAULT_CONTRACT =
 const VAULT2_CONTRACT =
   "CCEBVDYM32YNYCVNRXQKDFFPISJJCV557CDZEIRBEE4NCV4KHPQ44HGF";
 
-const MERIDIAN_USDC: PositionInfo = {
-  vaultId: "meridian-usdc",
+const ZITIAN_USDC: PositionInfo = {
+  vaultId: "zitian-usdc",
   shares: 10,
   deposited: 10,
   earned: 0,
   entryTime: 0,
 };
 
-const MERIDIAN_EURC: PositionInfo = {
-  vaultId: "meridian-eurc",
+const ZITIAN_EURC: PositionInfo = {
+  vaultId: "zitian-eurc",
   shares: 5,
   deposited: 5,
   earned: 0,
@@ -31,16 +31,16 @@ const MERIDIAN_EURC: PositionInfo = {
 vi.mock("./known-pools", () => ({
   KNOWN_POOLS: {
     testnet: {
-      "meridian-usdc": {
-        id: "meridian-usdc",
-        protocol: "meridian",
+      "zitian-usdc": {
+        id: "zitian-usdc",
+        protocol: "zitian",
         contractId: "CBK5RI4BCA7TLSD2S5Q5TH2LUQAT55GF34OBTWPFUKWZ5O6YXSQDAWOJ",
         assetId: "CAQCFVLOBK5GIULPNZRGATJJMIZL5BSP7X5YJVMGCPTUEPFM4AVSRCJU",
         asset: "USDC",
       },
-      "meridian-eurc": {
-        id: "meridian-eurc",
-        protocol: "meridian",
+      "zitian-eurc": {
+        id: "zitian-eurc",
+        protocol: "zitian",
         contractId: "CCEBVDYM32YNYCVNRXQKDFFPISJJCV557CDZEIRBEE4NCV4KHPQ44HGF",
         assetId: "CCUUDM434BMZMYWYDITHFXHDMIVTGGD6T2I5UKNX5BSLXLW7HVR4MCGZ",
         asset: "EURC",
@@ -60,7 +60,7 @@ vi.mock("./coordinator", () => ({
     fee: "200",
   })),
   fetchCoordinatorPosition: vi.fn(async (_config: unknown, vaultId: string) =>
-    vaultId === "meridian-usdc" ? [MERIDIAN_USDC] : [MERIDIAN_EURC]
+    vaultId === "zitian-usdc" ? [ZITIAN_USDC] : [ZITIAN_EURC]
   ),
 }));
 
@@ -81,8 +81,8 @@ const WALLET = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 beforeEach(() => vi.clearAllMocks());
 
 describe("buildDepositTx", () => {
-  it("routes a meridian vault deposit through buildCoordinatorDepositTx", async () => {
-    const result = await buildDepositTx("meridian-usdc", WALLET, "10", network);
+  it("routes a zitian vault deposit through buildCoordinatorDepositTx", async () => {
+    const result = await buildDepositTx("zitian-usdc", WALLET, "10", network);
     expect(result).toEqual({ xdr: "COORDINATOR_DEPOSIT_XDR", fee: "200" });
     expect(buildCoordinatorDepositTx).toHaveBeenCalledWith(
       { contractId: VAULT_CONTRACT, network },
@@ -93,7 +93,7 @@ describe("buildDepositTx", () => {
   });
 
   it("passes minSharesOut when supplied", async () => {
-    await buildDepositTx("meridian-usdc", WALLET, "10", network, "9.5");
+    await buildDepositTx("zitian-usdc", WALLET, "10", network, "9.5");
     expect(buildCoordinatorDepositTx).toHaveBeenCalledWith(
       { contractId: VAULT_CONTRACT, network },
       WALLET,
@@ -110,8 +110,8 @@ describe("buildDepositTx", () => {
 });
 
 describe("buildWithdrawTx", () => {
-  it("routes a meridian vault withdrawal through buildCoordinatorWithdrawTx", async () => {
-    const result = await buildWithdrawTx("meridian-usdc", WALLET, "5", network);
+  it("routes a zitian vault withdrawal through buildCoordinatorWithdrawTx", async () => {
+    const result = await buildWithdrawTx("zitian-usdc", WALLET, "5", network);
     expect(result).toEqual({ xdr: "COORDINATOR_WITHDRAW_XDR", fee: "200" });
     expect(buildCoordinatorWithdrawTx).toHaveBeenCalledWith(
       { contractId: VAULT_CONTRACT, network },
@@ -122,7 +122,7 @@ describe("buildWithdrawTx", () => {
   });
 
   it("forwards min_usdc_out as stroops to buildCoordinatorWithdrawTx", async () => {
-    await buildWithdrawTx("meridian-usdc", WALLET, "5", network, "4.8");
+    await buildWithdrawTx("zitian-usdc", WALLET, "5", network, "4.8");
     expect(buildCoordinatorWithdrawTx).toHaveBeenCalledWith(
       { contractId: VAULT_CONTRACT, network },
       WALLET,
@@ -139,20 +139,20 @@ describe("buildWithdrawTx", () => {
 });
 
 describe("resolvePositions", () => {
-  it("calls fetchCoordinatorPosition for every meridian vault in KNOWN_POOLS", async () => {
+  it("calls fetchCoordinatorPosition for every zitian vault in KNOWN_POOLS", async () => {
     const positions = await resolvePositions(WALLET, network);
     expect(fetchCoordinatorPosition).toHaveBeenCalledWith(
       { contractId: VAULT_CONTRACT, network },
-      "meridian-usdc",
+      "zitian-usdc",
       WALLET
     );
     expect(fetchCoordinatorPosition).toHaveBeenCalledWith(
       { contractId: VAULT2_CONTRACT, network },
-      "meridian-eurc",
+      "zitian-eurc",
       WALLET
     );
-    expect(positions).toContainEqual(MERIDIAN_USDC);
-    expect(positions).toContainEqual(MERIDIAN_EURC);
+    expect(positions).toContainEqual(ZITIAN_USDC);
+    expect(positions).toContainEqual(ZITIAN_EURC);
   });
 
   it("returns partial results when one vault fetch fails", async () => {

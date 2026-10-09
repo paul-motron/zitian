@@ -1,6 +1,6 @@
 # Vault Contract
 
-The `MeridianVault` contract is a Soroban smart contract written in Rust, located at `packages/contracts/vault/src/lib.rs`. It is a protocol-agnostic coordinator: it holds no direct opinion about where funds actually earn yield. Instead it delegates all protocol-specific work to a swappable **adapter** contract (see [Adapter Contracts](#adapter-contracts) below).
+The `ZitianVault` contract is a Soroban smart contract written in Rust, located at `packages/contracts/vault/src/lib.rs`. It is a protocol-agnostic coordinator: it holds no direct opinion about where funds actually earn yield. Instead it delegates all protocol-specific work to a swappable **adapter** contract (see [Adapter Contracts](#adapter-contracts) below).
 
 ## Tokens
 
@@ -174,7 +174,7 @@ This is a real, load-bearing trade-off, not a formality: anything depending on m
 
 **Migration for an already-live SAC mUSDC.** If a vault has already been deployed and initialized against the old SAC-based mUSDC before this change ships to that environment, the SAC and the new SEP-41 token are two different contracts with two different balances, and there is no in-place upgrade between them. The migration path is: deploy the new mUSDC token and a new vault instance wired to it (mirroring how [Testnet Deployment](../operations/testnet-deployment.md) already documents a vault cutover with no automatic migration of positions), snapshot every SAC mUSDC holder's balance, mint the new token 1:1 to each holder against that snapshot, and point the frontend/API at the new vault and token addresses. Existing holders on the old vault withdraw there as normal; nothing forces a cutover deadline. As of this change landing, no environment has live third-party mUSDC transfers to migrate (testnet-only, not yet used as collateral anywhere), so this is documented as the path to follow before a listing or collateral integration, not something this PR executes.
 
-**Sequencing risk:** once mUSDC is accepted as collateral on any third-party lending market, an ordinary liquidation transfers mUSDC to a liquidator with no relationship to Meridian, turning the still-open transfer desync into unrecoverable third-party value destruction rather than a two-party problem. This adds pressure to complete the custom token migration ([#504](https://github.com/drydocs/meridian/issues/504) scope) before such integrations go live.
+**Sequencing risk:** once mUSDC is accepted as collateral on any third-party lending market, an ordinary liquidation transfers mUSDC to a liquidator with no relationship to Zitian, turning the still-open transfer desync into unrecoverable third-party value destruction rather than a two-party problem. This adds pressure to complete the custom token migration ([#504](https://github.com/drydocs/meridian/issues/504) scope) before such integrations go live.
 
 ## Adapter contracts
 

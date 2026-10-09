@@ -177,7 +177,7 @@ function storePublicKey(storageKey: string, publicKey: string): void {
   window.sessionStorage.setItem(storageKey, publicKey);
 }
 
-const LOBSTR_PUBLIC_KEY_STORAGE_KEY = "meridian-lobstr-public-key";
+const LOBSTR_PUBLIC_KEY_STORAGE_KEY = "zitian-lobstr-public-key";
 
 // LOBSTR uses a browser extension that pairs with the LOBSTR mobile app.
 // It differs from Freighter in two ways:
@@ -240,7 +240,7 @@ export class LobstrWallet implements WalletAdapter {
 }
 
 // xBull's own public key/pairing signal, kept separate from LOBSTR's.
-const XBULL_PUBLIC_KEY_STORAGE_KEY = "meridian-xbull-public-key";
+const XBULL_PUBLIC_KEY_STORAGE_KEY = "zitian-xbull-public-key";
 
 // The extension injects this global for its own "direct" SDK (separate from
 // the xbull-wallet-connect bridge library used below for connect/sign). Its
@@ -332,7 +332,7 @@ export class XBullWallet implements WalletAdapter {
 // isAuthorized() is treated the same way as for LOBSTR/xBull: installed plus
 // a public key stored by a prior connect(). The key is kept in sessionStorage
 // so a returning session re-validates instead of trusting a stale value.
-const ALBEDO_PUBLIC_KEY_STORAGE_KEY = "meridian-albedo-public-key";
+const ALBEDO_PUBLIC_KEY_STORAGE_KEY = "zitian-albedo-public-key";
 
 function albedoNetworkFromPassphrase(passphrase: string): string {
   if (passphrase === "Public Global Stellar Network ; September 2015")
@@ -439,7 +439,7 @@ export const WALLETS: WalletMeta[] = [
 ];
 
 const DEFAULT_WALLET_ID: WalletId = "freighter";
-const SELECTED_WALLET_STORAGE_KEY = "meridian-selected-wallet";
+const SELECTED_WALLET_STORAGE_KEY = "zitian-selected-wallet";
 
 export function isWalletId(value: string | null): value is WalletId {
   return WALLETS.some((w) => w.id === value);
@@ -460,7 +460,7 @@ export function setSelectedWalletId(id: WalletId): void {
 // A general usage acknowledgement (#720), shown before any wallet is
 // chosen, so there is no wallet identity yet to key it to. One flag per
 // browser rather than per wallet.
-const RISK_DISCLOSURE_STORAGE_KEY = "meridian-risk-disclosure-accepted";
+const RISK_DISCLOSURE_STORAGE_KEY = "zitian-risk-disclosure-accepted";
 
 export function hasAcceptedRiskDisclosure(): boolean {
   if (typeof window === "undefined") return false;

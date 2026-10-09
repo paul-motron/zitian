@@ -1,6 +1,6 @@
 # Security Policy
 
-Meridian is a DeFi application that routes real user funds through Soroban smart contracts on the Stellar network. We take security seriously. If you discover a vulnerability, please follow this policy rather than opening a public issue.
+Zitian is a DeFi application that routes real user funds through Soroban smart contracts on the Stellar network. We take security seriously. If you discover a vulnerability, please follow this policy rather than opening a public issue.
 
 ---
 
@@ -48,11 +48,9 @@ The following are explicitly out of scope:
 
 Use **GitHub's private vulnerability reporting**:
 
-1. Go to [https://github.com/drydocs/meridian/security/advisories/new](https://github.com/drydocs/meridian/security/advisories/new)
+1. Go to [https://github.com/paul-motron/zitian/security/advisories/new](https://github.com/paul-motron/zitian/security/advisories/new)
 2. Fill in the advisory form with as much detail as possible (see below)
 3. Submit — this creates a private draft advisory visible only to you and the maintainer
-
-Alternatively, open a thread in [GitHub Discussions](https://github.com/drydocs/meridian/discussions) with the subject line `[SECURITY] Meridian — <brief description>`.
 
 ### What to Include in Your Report
 
@@ -74,9 +72,9 @@ Alternatively, open a thread in [GitHub Discussions](https://github.com/drydocs/
 | Fix or mitigation for Critical/High    | Within **14 days** where technically feasible |
 | Public disclosure                      | Coordinated with reporter after fix deploys   |
 
-¹ Meridian is solo-maintained. For Critical reports, open a GitHub Discussions thread in addition to the advisory to improve response time.
+¹ Zitian is solo-maintained, so response times are best effort.
 
-We will keep you informed at each stage. If you do not receive an acknowledgement within 48 hours, follow up via GitHub Discussions.
+We will keep you informed at each stage. If you do not receive an acknowledgement within 48 hours, add a comment to the advisory.
 
 ---
 
@@ -95,7 +93,7 @@ We will keep you informed at each stage. If you do not receive an acknowledgemen
 
 ## Disclosure Policy
 
-Meridian follows **coordinated disclosure**:
+Zitian follows **coordinated disclosure**:
 
 - We ask reporters to allow us reasonable time to fix the issue before public disclosure
 - We will not take legal action against researchers acting in good faith under this policy
@@ -106,4 +104,4 @@ Meridian follows **coordinated disclosure**:
 
 ## Known Limitations (Current Development Phase)
 
-Meridian `v0.1.0` is a pre-mainnet scaffold. No real user funds are at risk in the current release. However, smart contract code merged into `main` that is intended for mainnet deployment must be reviewed as if funds are already at stake.
+Zitian `v0.1.0` is a pre-mainnet scaffold. No real user funds are at risk in the current release. However, smart contract code merged into `main` that is intended for mainnet deployment must be reviewed as if funds are already at stake.

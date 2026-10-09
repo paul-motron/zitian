@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "Meridian",
+  title: "Zitian",
   description:
     "Stablecoin yield aggregator on Stellar, built for emerging market savers.",
   base: "/docs/",
@@ -20,15 +20,14 @@ export default defineConfig({
       { text: "Overview", link: "/overview/introduction" },
       { text: "Architecture", link: "/architecture/monorepo" },
       { text: "Operations", link: "/operations/local-development" },
-      { text: "App", link: "https://meridian-web.vercel.app/app/" },
-      { text: "GitHub", link: "https://github.com/drydocs/meridian" },
+      { text: "GitHub", link: "https://github.com/paul-motron/zitian" },
     ],
     sidebar: [
       {
         text: "Overview",
         items: [
           { text: "Introduction", link: "/overview/introduction" },
-          { text: "Why Meridian", link: "/overview/why-meridian" },
+          { text: "Why Zitian", link: "/overview/why-zitian" },
           { text: "How It Works", link: "/overview/how-it-works" },
           { text: "Trust Model", link: "/overview/trust-model" },
           { text: "Brand Guidelines", link: "/overview/brand-guidelines" },
@@ -89,7 +88,7 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: "github", link: "https://github.com/drydocs/meridian" },
+      { icon: "github", link: "https://github.com/paul-motron/zitian" },
     ],
     search: {
       provider: "local",

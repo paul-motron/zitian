@@ -4,8 +4,8 @@
 // (packages/stellar-sdk-helpers/src/keeper-state.ts, SubmissionLease).
 //
 // DANGER: accrue and rebalance sign and submit REAL Stellar transactions off
-// the keeper's own funded key (MERIDIAN_KEEPER_SECRET_KEY /
-// MERIDIAN_MIGRATION_KEEPER_SECRET_KEY). Only ever point this at a
+// the keeper's own funded key (ZITIAN_KEEPER_SECRET_KEY /
+// ZITIAN_MIGRATION_KEEPER_SECRET_KEY). Only ever point this at a
 // throwaway testnet deployment configured with its own throwaway keeper
 // keys and its own throwaway CRON_SECRET.
 //   * NEVER run this against a production/mainnet deployment.
@@ -144,7 +144,7 @@ export function invokeConcurrently() {
   }
 
   // Unlike alert/rebalance, accrue has no isConfigured guard in
-  // api/v1/keepers/[action].ts: a missing MERIDIAN_KEEPER_SECRET_KEY makes
+  // api/v1/keepers/[action].ts: a missing ZITIAN_KEEPER_SECRET_KEY makes
   // loadBlendAccrualKeeperConfig throw, which the handler's catch turns into
   // a 500 { error: ... } response — no `status` field, and no `failures`
   // field either (unlike a genuine run failure, which is still a result

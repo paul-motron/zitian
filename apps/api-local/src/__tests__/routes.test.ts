@@ -5,11 +5,11 @@ import { positionsRoute } from "../routes/positions.js";
 import { txRoute } from "../routes/tx.js";
 import { vaultsRoute } from "../routes/vaults.js";
 
-vi.mock("@meridian/stellar-sdk-helpers", async (importOriginal) => {
+vi.mock("@zitian/stellar-sdk-helpers", async (importOriginal) => {
   // Keep the real error classes: api-core narrows on `instanceof`, so a
   // stubbed class would stop behaving like the error it maps to an HTTP status.
   const actual =
-    await importOriginal<typeof import("@meridian/stellar-sdk-helpers")>();
+    await importOriginal<typeof import("@zitian/stellar-sdk-helpers")>();
   return {
     ContractSimulationError: actual.ContractSimulationError,
     MissingTrustlineError: actual.MissingTrustlineError,
@@ -36,7 +36,7 @@ import {
   submitTx,
   fetchAllVaults,
   selectBestVault,
-} from "@meridian/stellar-sdk-helpers";
+} from "@zitian/stellar-sdk-helpers";
 
 const WALLET = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 

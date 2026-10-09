@@ -3,8 +3,8 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { AdminLogin } from "../../pages/AdminLogin";
 import { useWalletStore } from "../../store/wallet";
 import { useWalletConnect } from "../../hooks/useWalletConnect";
-import { fetchVaultAdmin } from "@meridian/stellar-sdk-helpers";
-import { shortenAddress } from "@meridian/shared";
+import { fetchVaultAdmin } from "@zitian/stellar-sdk-helpers";
+import { shortenAddress } from "@zitian/shared";
 
 const handleConnect = vi.fn();
 const ADMIN = "GCKFBEIYTKP6RCZNVPH73XL7XFJVSFAKQR4E4XQD4PGGPCCQTVMWXW6D";
@@ -13,7 +13,7 @@ const OTHER = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 vi.mock("../../hooks/useWalletConnect", () => ({
   useWalletConnect: vi.fn(),
 }));
-vi.mock("@meridian/stellar-sdk-helpers", () => ({
+vi.mock("@zitian/stellar-sdk-helpers", () => ({
   fetchVaultAdmin: vi.fn(),
 }));
 vi.mock("../../pages/AdminDashboard", () => ({

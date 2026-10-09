@@ -26,7 +26,7 @@
 //      against a deployment where it's `strict: true`-gated) to confirm the
 //      distributed limiter holds the line at ~100/min regardless of how
 //      many instances are behind it.
-//   3. Local dev (`pnpm --filter @meridian/api-local dev`) is a single
+//   3. Local dev (`pnpm --filter @zitian/api-local dev`) is a single
 //      process, so it CANNOT reproduce the per-instance issue — a passing
 //      result there proves nothing about the deployed behavior. Always run
 //      this against a real Vercel deployment.

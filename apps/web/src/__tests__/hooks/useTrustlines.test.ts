@@ -6,7 +6,7 @@ import {
 } from "../../hooks/useTrustlines";
 import { useWalletStore } from "../../store/wallet";
 import { useToastStore } from "../../store/toast";
-import { USDC_ISSUER, MUSDC_ISSUER, APP_NETWORK } from "@meridian/shared";
+import { USDC_ISSUER, MUSDC_ISSUER, APP_NETWORK } from "@zitian/shared";
 
 const KEY = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 // Pulled from the source of truth rather than hardcoded, so these fixtures

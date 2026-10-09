@@ -59,7 +59,7 @@ afterEach(() => {
 
 describe("formatAlertMessage", () => {
   const at = (action: RpcAdminAction) =>
-    formatAlertMessage("meridian-usdc", action);
+    formatAlertMessage("zitian-usdc", action);
 
   it("formats a paused event", () => {
     expect(
@@ -112,7 +112,7 @@ describe("formatAlertMessage", () => {
 
 describe("runAlertKeeper", () => {
   const target = {
-    vaultId: "meridian-usdc",
+    vaultId: "zitian-usdc",
     vaultContractId: VAULT_CONTRACT_ID,
   };
 
@@ -189,7 +189,7 @@ describe("runAlertKeeper", () => {
     expect(body.content).toBe(body.text);
 
     expect(result.alertsSent).toEqual([
-      { vaultId: "meridian-usdc", action: "paused", ledgerSequence: 300 },
+      { vaultId: "zitian-usdc", action: "paused", ledgerSequence: 300 },
     ]);
     expect(
       await cursorStore.get(alertCursorKey(VAULT_CONTRACT_ID, "testnet"))
@@ -230,7 +230,7 @@ describe("runAlertKeeper", () => {
     expect(body.content).toBe(body.text);
 
     expect(result.alertsSent).toEqual([
-      { vaultId: "meridian-usdc", action: "mig_begin", ledgerSequence: 300 },
+      { vaultId: "zitian-usdc", action: "mig_begin", ledgerSequence: 300 },
     ]);
     expect(
       await cursorStore.get(alertCursorKey(VAULT_CONTRACT_ID, "testnet"))
@@ -285,11 +285,11 @@ describe("runAlertKeeper", () => {
     });
 
     expect(result.alertsSent).toEqual([
-      { vaultId: "meridian-usdc", action: "paused", ledgerSequence: 300 },
+      { vaultId: "zitian-usdc", action: "paused", ledgerSequence: 300 },
     ]);
     expect(result.failures).toHaveLength(1);
     expect(result.failures[0]).toMatchObject({
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       stage: "send",
     });
     // Cursor stops at 301 (past the succeeded paused event), not 311, so the
@@ -315,7 +315,7 @@ describe("runAlertKeeper", () => {
 
     expect(result.failures).toHaveLength(1);
     expect(result.failures[0]).toMatchObject({
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       stage: "discover",
     });
     expect(
@@ -325,7 +325,7 @@ describe("runAlertKeeper", () => {
 
   it("checks every vault independently", async () => {
     const secondTarget = {
-      vaultId: "meridian-eurc",
+      vaultId: "zitian-eurc",
       vaultContractId:
         "CDIFFERENTVAULTCONTRACTIDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     };

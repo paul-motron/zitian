@@ -9,7 +9,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import Redis from "ioredis";
-import { DEFAULT_ALLOWED_ORIGIN } from "@meridian/shared";
+import { DEFAULT_ALLOWED_ORIGIN } from "@zitian/shared";
 import { vaultsRoute } from "./routes/vaults";
 import { positionsRoute } from "./routes/positions";
 import { txRoute } from "./routes/tx";

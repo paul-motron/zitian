@@ -1,4 +1,4 @@
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 import { useWalletStore } from "../store/wallet";
 import { wallet } from "../lib/wallet";
 import { api } from "../lib/api";

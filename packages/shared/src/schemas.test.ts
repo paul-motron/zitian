@@ -14,7 +14,7 @@ describe("DepositRequestSchema", () => {
   it("accepts a valid deposit request", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.5",
       riskAcknowledged: true,
     });
@@ -24,7 +24,7 @@ describe("DepositRequestSchema", () => {
   it("rejects a malformed wallet address", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: "not-an-address",
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100",
     });
     expect(result.success).toBe(false);
@@ -33,7 +33,7 @@ describe("DepositRequestSchema", () => {
   it("rejects an amount with more than 7 decimal places", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.12345678",
     });
     expect(result.success).toBe(false);
@@ -42,7 +42,7 @@ describe("DepositRequestSchema", () => {
   it("accepts a valid deposit request with min_shares_out", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.5",
       min_shares_out: "99.0",
       riskAcknowledged: true,
@@ -56,7 +56,7 @@ describe("DepositRequestSchema", () => {
   it("rejects a deposit request missing risk acknowledgement", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.5",
     });
     expect(result.success).toBe(false);
@@ -65,7 +65,7 @@ describe("DepositRequestSchema", () => {
   it("rejects a deposit request with risk acknowledgement set to false", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.5",
       riskAcknowledged: false,
     });
@@ -75,7 +75,7 @@ describe("DepositRequestSchema", () => {
   it("defaults min_shares_out to 0 when omitted", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.5",
       riskAcknowledged: true,
     });
@@ -88,7 +88,7 @@ describe("DepositRequestSchema", () => {
   it("rejects min_shares_out with more than 7 decimal places", () => {
     const result = DepositRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       amount: "100.5",
       min_shares_out: "99.12345678",
     });
@@ -100,7 +100,7 @@ describe("WithdrawRequestSchema", () => {
   it("accepts a valid withdraw request", () => {
     const result = WithdrawRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       shares: "50",
     });
     expect(result.success).toBe(true);
@@ -112,7 +112,7 @@ describe("WithdrawRequestSchema", () => {
   it("accepts a valid withdraw request with min_usdc_out", () => {
     const result = WithdrawRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       shares: "50",
       min_usdc_out: "49.5",
     });
@@ -125,7 +125,7 @@ describe("WithdrawRequestSchema", () => {
   it("rejects a non-numeric shares value", () => {
     const result = WithdrawRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       shares: "all of it",
     });
     expect(result.success).toBe(false);
@@ -134,7 +134,7 @@ describe("WithdrawRequestSchema", () => {
   it("rejects min_usdc_out with more than 7 decimal places", () => {
     const result = WithdrawRequestSchema.safeParse({
       walletAddress: VALID_ADDRESS,
-      vaultId: "meridian-usdc",
+      vaultId: "zitian-usdc",
       shares: "50",
       min_usdc_out: "49.12345678",
     });

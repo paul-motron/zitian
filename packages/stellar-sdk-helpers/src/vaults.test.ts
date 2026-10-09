@@ -51,7 +51,7 @@ function stubPools(data: unknown[]) {
 
 // Mocks simulateView's `method` param (5th positional arg after server,
 // contractId, passphrase, method) so different on-chain calls can return
-// different values, matching how fetchMeridianApy actually calls it.
+// different values, matching how fetchZitianApy actually calls it.
 function mockAdapterDiscovery(opts: {
   totalAssets?: bigint;
   protocol?: string;
@@ -114,19 +114,19 @@ describe("fetchAllVaults (mainnet)", () => {
     clearVaultCache();
   });
 
-  it("maps known DeFiLlama pools and includes live Meridian vault with on-chain data", async () => {
+  it("maps known DeFiLlama pools and includes live Zitian vault with on-chain data", async () => {
     stubPools([llamaPool()]);
     const vaults = await fetchAllVaults("mainnet");
 
-    // Both the on-chain Meridian vault and the DeFiLlama Blend pool should be emitted.
+    // Both the on-chain Zitian vault and the DeFiLlama Blend pool should be emitted.
     expect(vaults).toHaveLength(2);
 
-    const meridianVault = vaults.find((v) => v.id === "meridian-usdc");
-    expect(meridianVault).toBeDefined();
-    expect(meridianVault?.protocol).toBe("meridian");
-    expect(meridianVault?.tvl).toBe(1000);
-    expect(meridianVault?.asset).toBe("USDC");
-    expect(meridianVault?.riskLevel).toBe("safe");
+    const zitianVault = vaults.find((v) => v.id === "zitian-usdc");
+    expect(zitianVault).toBeDefined();
+    expect(zitianVault?.protocol).toBe("zitian");
+    expect(zitianVault?.tvl).toBe(1000);
+    expect(zitianVault?.asset).toBe("USDC");
+    expect(zitianVault?.riskLevel).toBe("safe");
 
     const blendVault = vaults.find((v) => v.id === "blend-usdc-fixed");
     expect(blendVault).toBeDefined();
@@ -135,11 +135,11 @@ describe("fetchAllVaults (mainnet)", () => {
     expect(blendVault?.riskLevel).toBe("safe");
   });
 
-  it("skips pools with no known-pool mapping while preserving the live Meridian vault", async () => {
+  it("skips pools with no known-pool mapping while preserving the live Zitian vault", async () => {
     stubPools([llamaPool({ pool: "unrecognised-id" })]);
     const vaults = await fetchAllVaults("mainnet");
     expect(vaults).toHaveLength(1);
-    expect(vaults[0].id).toBe("meridian-usdc");
+    expect(vaults[0].id).toBe("zitian-usdc");
   });
 
   it("no longer emits a placeholder DeFindex vault", async () => {
@@ -166,7 +166,7 @@ describe("fetchAllVaults (mainnet)", () => {
     stubPools([llamaPool()]);
     const first = await fetchAllVaults("mainnet");
     expect(first.some((v) => v.id === "blend-usdc-fixed")).toBe(true);
-    expect(first.some((v) => v.id === "meridian-usdc")).toBe(true);
+    expect(first.some((v) => v.id === "zitian-usdc")).toBe(true);
 
     // After the TTL expires, simulate a DeFiLlama blip that drops every pool.
     vi.useFakeTimers();
@@ -174,9 +174,9 @@ describe("fetchAllVaults (mainnet)", () => {
     stubPools([]);
     const second = await fetchAllVaults("mainnet");
 
-    // Should preserve the previous DeFiLlama pool from cache alongside Meridian vault.
+    // Should preserve the previous DeFiLlama pool from cache alongside Zitian vault.
     expect(second.some((v) => v.id === "blend-usdc-fixed")).toBe(true);
-    expect(second.some((v) => v.id === "meridian-usdc")).toBe(true);
+    expect(second.some((v) => v.id === "zitian-usdc")).toBe(true);
   });
 
   it("re-fetches from DeFiLlama after the 60 s TTL expires", async () => {
@@ -194,7 +194,7 @@ describe("fetchAllVaults (mainnet)", () => {
     expect(mockFetch).toHaveBeenCalledTimes(2);
   });
 
-  it("fetches live Blend APY for Meridian vault on mainnet when adapter wraps Blend", async () => {
+  it("fetches live Blend APY for Zitian vault on mainnet when adapter wraps Blend", async () => {
     mockAdapterDiscovery({ totalAssets: 10_000_000_000n, protocol: "blend" });
     vi.mocked(toBigInt).mockReturnValue(10_000_000_000n);
     const usdcAssetId =
@@ -207,13 +207,13 @@ describe("fetchAllVaults (mainnet)", () => {
     stubPools([]);
 
     const vaults = await fetchAllVaults("mainnet");
-    const meridianVault = vaults.find((v) => v.id === "meridian-usdc");
+    const zitianVault = vaults.find((v) => v.id === "zitian-usdc");
 
     expect(loadSpy).toHaveBeenCalledWith(
       expect.objectContaining({ rpc: expect.any(String) }),
       POOL_ID
     );
-    expect(meridianVault?.apy).toBe(8);
+    expect(zitianVault?.apy).toBe(8);
   });
 
   it("returns 0 APY when the active adapter Blend pool lacks the requested reserve", async () => {
@@ -227,8 +227,8 @@ describe("fetchAllVaults (mainnet)", () => {
     stubPools([]);
 
     const vaults = await fetchAllVaults("mainnet");
-    const meridianVault = vaults.find((v) => v.id === "meridian-usdc");
-    expect(meridianVault?.apy).toBe(0);
+    const zitianVault = vaults.find((v) => v.id === "zitian-usdc");
+    expect(zitianVault?.apy).toBe(0);
   });
 
   it("returns 0 APY when get_adapter returns empty or falsy adapterId", async () => {
@@ -236,16 +236,16 @@ describe("fetchAllVaults (mainnet)", () => {
     stubPools([]);
 
     const vaults = await fetchAllVaults("mainnet");
-    const meridianVault = vaults.find((v) => v.id === "meridian-usdc");
-    expect(meridianVault?.apy).toBe(0);
+    const zitianVault = vaults.find((v) => v.id === "zitian-usdc");
+    expect(zitianVault?.apy).toBe(0);
   });
 
-  it("skips Meridian vaults that lack contractId or assetId", async () => {
-    const incompleteVaultId = "meridian-incomplete";
+  it("skips Zitian vaults that lack contractId or assetId", async () => {
+    const incompleteVaultId = "zitian-incomplete";
     KNOWN_POOLS.mainnet[incompleteVaultId] = {
       id: incompleteVaultId,
       name: "Incomplete Vault",
-      protocol: "meridian",
+      protocol: "zitian",
       label: "Incomplete",
     };
 
@@ -259,11 +259,11 @@ describe("fetchAllVaults (mainnet)", () => {
   });
 
   it("defaults asset to USDC when meta.asset is undefined", async () => {
-    const noAssetVaultId = "meridian-no-asset";
+    const noAssetVaultId = "zitian-no-asset";
     KNOWN_POOLS.mainnet[noAssetVaultId] = {
       id: noAssetVaultId,
       name: "No Asset Vault",
-      protocol: "meridian",
+      protocol: "zitian",
       label: "No Asset",
       contractId: "CNOASSET00000000000000000000000000000000000000000000000000",
       assetId: "CASSET0000000000000000000000000000000000000000000000000000",
@@ -281,7 +281,7 @@ describe("fetchAllVaults (mainnet)", () => {
     }
   });
 
-  it("handles DeFiLlama fetch failure gracefully and still returns on-chain Meridian vault", async () => {
+  it("handles DeFiLlama fetch failure gracefully and still returns on-chain Zitian vault", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => {
@@ -290,16 +290,16 @@ describe("fetchAllVaults (mainnet)", () => {
     );
     const vaults = await fetchAllVaults("mainnet");
     expect(vaults).toHaveLength(1);
-    expect(vaults[0].id).toBe("meridian-usdc");
+    expect(vaults[0].id).toBe("zitian-usdc");
   });
 
-  it("serves the cached Meridian vault when a later on-chain read fails", async () => {
+  it("serves the cached Zitian vault when a later on-chain read fails", async () => {
     // Prime the cache with a healthy on-chain read.
     mockAdapterDiscovery({ totalAssets: 10_000_000_000n, protocol: "none" });
     vi.mocked(toBigInt).mockReturnValue(10_000_000_000n);
     stubPools([llamaPool()]);
     const first = await fetchAllVaults("mainnet");
-    expect(first.find((v) => v.id === "meridian-usdc")?.tvl).toBe(1000);
+    expect(first.find((v) => v.id === "zitian-usdc")?.tvl).toBe(1000);
 
     // After the TTL, the on-chain read rejects; the cached vault stands in.
     vi.useFakeTimers();
@@ -308,42 +308,42 @@ describe("fetchAllVaults (mainnet)", () => {
     stubPools([llamaPool()]);
     const second = await fetchAllVaults("mainnet");
 
-    const cached = second.find((v) => v.id === "meridian-usdc");
+    const cached = second.find((v) => v.id === "zitian-usdc");
     expect(cached).toBeDefined();
     expect(cached?.tvl).toBe(1000);
     expect(second.some((v) => v.id === "blend-usdc-fixed")).toBe(true);
   });
 
-  it("drops a Meridian vault whose on-chain read fails with no cache to fall back on", async () => {
+  it("drops a Zitian vault whose on-chain read fails with no cache to fall back on", async () => {
     vi.mocked(simulateView).mockRejectedValue(new Error("Soroban RPC down"));
     stubPools([llamaPool()]);
     const vaults = await fetchAllVaults("mainnet");
 
-    expect(vaults.find((v) => v.id === "meridian-usdc")).toBeUndefined();
+    expect(vaults.find((v) => v.id === "zitian-usdc")).toBeUndefined();
     expect(vaults.some((v) => v.id === "blend-usdc-fixed")).toBe(true);
   });
 
-  it("prevents duplicates when DeFiLlama returns a pool matching a Meridian vault id", async () => {
+  it("prevents duplicates when DeFiLlama returns a pool matching a Zitian vault id", async () => {
     stubPools([
-      llamaPool({ pool: "meridian-usdc" }),
+      llamaPool({ pool: "zitian-usdc" }),
       llamaPool({ pool: KNOWN_BLEND }),
     ]);
     const vaults = await fetchAllVaults("mainnet");
-    const meridianVaults = vaults.filter((v) => v.id === "meridian-usdc");
-    expect(meridianVaults).toHaveLength(1);
+    const zitianVaults = vaults.filter((v) => v.id === "zitian-usdc");
+    expect(zitianVaults).toHaveLength(1);
     expect(vaults.some((v) => v.id === "blend-usdc-fixed")).toBe(true);
   });
 
   it("returns empty array when no vaults are found and cache is empty", async () => {
-    const origMeridian = KNOWN_POOLS.mainnet["meridian-usdc"];
-    delete KNOWN_POOLS.mainnet["meridian-usdc"];
+    const origZitian = KNOWN_POOLS.mainnet["zitian-usdc"];
+    delete KNOWN_POOLS.mainnet["zitian-usdc"];
 
     try {
       stubPools([]);
       const vaults = await fetchAllVaults("mainnet");
       expect(vaults).toEqual([]);
     } finally {
-      KNOWN_POOLS.mainnet["meridian-usdc"] = origMeridian;
+      KNOWN_POOLS.mainnet["zitian-usdc"] = origZitian;
     }
   });
 });
@@ -358,15 +358,15 @@ describe("fetchAllVaults (testnet)", () => {
     clearVaultCache();
   });
 
-  it("returns meridian vault with TVL derived from get_total_assets", async () => {
+  it("returns zitian vault with TVL derived from get_total_assets", async () => {
     // 1 000 USDC = 10_000_000_000 stroops (7 decimal places).
     mockAdapterDiscovery({ totalAssets: 10_000_000_000n, protocol: "none" });
     vi.mocked(toBigInt).mockReturnValue(10_000_000_000n);
 
     const vaults = await fetchAllVaults("testnet");
     expect(vaults).toHaveLength(1);
-    expect(vaults[0].id).toBe("meridian-usdc");
-    expect(vaults[0].protocol).toBe("meridian");
+    expect(vaults[0].id).toBe("zitian-usdc");
+    expect(vaults[0].protocol).toBe("zitian");
     expect(vaults[0].tvl).toBe(1000);
     expect(vaults[0].riskLevel).toBe("safe");
   });

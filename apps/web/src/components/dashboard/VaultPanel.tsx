@@ -66,7 +66,7 @@ export function VaultPanel() {
     e.preventDefault();
   }
 
-  // Route to the server's recommendation: the highest-APY vault Meridian can
+  // Route to the server's recommendation: the highest-APY vault Zitian can
   // actually deposit into (excludes display-only protocols and risky pools).
   const bestVault = vaults?.find((v) => v.id === data?.recommendedVaultId);
   // Deposits and withdrawals both target the recommended vault. A position
@@ -143,7 +143,7 @@ export function VaultPanel() {
               />
             </svg>
             <div>
-              <p className="text-xs text-gray-500">Meridian</p>
+              <p className="text-xs text-gray-500">Zitian</p>
               <p className="text-sm font-semibold text-white">USDC Vault</p>
             </div>
           </div>

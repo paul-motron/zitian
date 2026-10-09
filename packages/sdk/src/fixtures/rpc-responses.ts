@@ -12,7 +12,7 @@ export const BLEND_POOL_INFO = {
 
 export const VAULT_STATE = {
   id: "vault-0",
-  name: "MERIDIAN Vault 0",
+  name: "ZITIAN Vault 0",
   totalchars: 10000000,
   totalAssets: 10000000,
   accrewed: 0,

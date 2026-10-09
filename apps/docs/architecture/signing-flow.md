@@ -1,6 +1,6 @@
 # Signing Flow
 
-Meridian's core security property is that the server never holds or touches private keys. The signing flow enforces this by splitting transaction construction and transaction signing into separate steps on separate systems. Signing itself goes through the `WalletAdapter` interface, so the flow below applies to any connected wallet, not a specific one.
+Zitian's core security property is that the server never holds or touches private keys. The signing flow enforces this by splitting transaction construction and transaction signing into separate steps on separate systems. Signing itself goes through the `WalletAdapter` interface, so the flow below applies to any connected wallet, not a specific one.
 
 ## Sequence diagram
 

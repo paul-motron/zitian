@@ -9,7 +9,7 @@ beforeEach(() => {
 
 describe("useRiskDisclosure (#814)", () => {
   it("runs the action immediately, with no modal, once already accepted", () => {
-    window.localStorage.setItem("meridian-risk-disclosure-accepted", "true");
+    window.localStorage.setItem("zitian-risk-disclosure-accepted", "true");
     const action = vi.fn();
     const { result } = renderHook(() => useRiskDisclosure());
 

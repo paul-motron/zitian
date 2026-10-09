@@ -21,7 +21,7 @@ function logger(): KeeperLogger {
   return { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 }
 
-const KEY = "meridian:keeper:migration:testnet:meridian-usdc";
+const KEY = "zitian:keeper:migration:testnet:zitian-usdc";
 
 async function seeded(record?: SubmissionRecord) {
   const store = createInMemoryKeeperStateStore();
@@ -37,12 +37,10 @@ describe("submissionStateKey", () => {
   it("namespaces by keeper and network so records can never be read across either", () => {
     // A testnet run blocking a mainnet one, or the accrue keeper reading the
     // migration keeper's record, would both be silent and confusing.
-    expect(submissionStateKey("migration", "testnet", "meridian-usdc")).toBe(
-      KEY
-    );
+    expect(submissionStateKey("migration", "testnet", "zitian-usdc")).toBe(KEY);
     expect(
-      submissionStateKey("accrual", "mainnet", "meridian-usdc", "CADAPTER")
-    ).toBe("meridian:keeper:accrual:mainnet:meridian-usdc:CADAPTER");
+      submissionStateKey("accrual", "mainnet", "zitian-usdc", "CADAPTER")
+    ).toBe("zitian:keeper:accrual:mainnet:zitian-usdc:CADAPTER");
   });
 });
 
@@ -54,7 +52,7 @@ describe("parseSubmissionTtlMs", () => {
 
   it("reads an operator override at or above the validity window", () => {
     expect(
-      parseSubmissionTtlMs({ MERIDIAN_KEEPER_SUBMISSION_TTL_MS: "600000" })
+      parseSubmissionTtlMs({ ZITIAN_KEEPER_SUBMISSION_TTL_MS: "600000" })
     ).toBe(600_000);
   });
 
@@ -62,13 +60,13 @@ describe("parseSubmissionTtlMs", () => {
     // Anything shorter turns "aged out, so provably dead" into a duplicate
     // generator: the record clears while the transaction can still land.
     expect(() =>
-      parseSubmissionTtlMs({ MERIDIAN_KEEPER_SUBMISSION_TTL_MS: "90000" })
+      parseSubmissionTtlMs({ ZITIAN_KEEPER_SUBMISSION_TTL_MS: "90000" })
     ).toThrow(/must be at least 300000/);
   });
 
   it("rejects a non-positive override", () => {
     expect(() =>
-      parseSubmissionTtlMs({ MERIDIAN_KEEPER_SUBMISSION_TTL_MS: "0" })
+      parseSubmissionTtlMs({ ZITIAN_KEEPER_SUBMISSION_TTL_MS: "0" })
     ).toThrow(/must be a positive integer/);
   });
 });

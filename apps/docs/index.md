@@ -10,11 +10,11 @@ hero:
       link: /overview/introduction
     - theme: alt
       text: View on GitHub
-      link: https://github.com/drydocs/meridian
+      link: https://github.com/paul-motron/zitian
 
 features:
   - title: Single vault
-    details: One deposit, one position. Meridian routes your USDC to the highest-yielding protocol at signing time.
+    details: One deposit, one position. Zitian routes your USDC to the highest-yielding protocol at signing time.
   - title: Non-custodial
     details: The server builds an unsigned transaction. You sign with your wallet. Private keys never leave your device.
   - title: Transparent routing

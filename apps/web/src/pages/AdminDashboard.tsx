@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 import { KeeperHealthPanel } from "../components/admin/KeeperHealthPanel";
 import { VaultStatePanel } from "../components/admin/VaultStatePanel";
 import { AdminActionHistory } from "../components/dashboard/AdminActionHistory";
@@ -28,7 +28,7 @@ export function AdminDashboard() {
       </div>
 
       <AdminActionHistory
-        vaultId="meridian-usdc"
+        vaultId="zitian-usdc"
         network={APP_NETWORK.network}
         isAdmin
       />

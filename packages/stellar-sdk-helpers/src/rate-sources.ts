@@ -11,7 +11,7 @@
 // transient failures. Swallowing them here would silently bypass that.
 
 import { PoolV2, type Pool } from "@blend-capital/blend-sdk";
-import { CONTRACT_ADDRESSES, withRaceTimeout } from "@meridian/shared";
+import { CONTRACT_ADDRESSES, withRaceTimeout } from "@zitian/shared";
 import { getRpcServer } from "./internal";
 import { withBlendTimeout } from "./blend";
 import { getDefindexAssetAmountPerShares } from "./defindex";
@@ -219,11 +219,11 @@ export function createUpstashRateSnapshotStore(
 const SECONDS_PER_YEAR = 365 * 24 * 60 * 60;
 
 // get_asset_amounts_per_shares is a pure proportional query (see
-// MeridianDefindexAdapter::total_assets, packages/contracts/defindex-adapter
+// ZitianDefindexAdapter::total_assets, packages/contracts/defindex-adapter
 // /src/lib.rs, which calls it with the adapter's own live share balance to
 // price whatever it happens to hold) — any fixed share count works equally
 // well as a price probe here. 1.0 unit at the 7-decimal stroop scale every
-// other Meridian amount uses keeps a persisted snapshot's magnitude easy to
+// other Zitian amount uses keeps a persisted snapshot's magnitude easy to
 // sanity-check by hand.
 const REFERENCE_SHARES = 10_000_000n;
 
@@ -388,7 +388,7 @@ function upstashSnapshotStoreFromEnv(
  * The real RateSourceFn wired as runMigrationKeeper's default (see
  * migration-keeper.ts), replacing the always-null stub. Dispatches via a
  * protocol -> RateSourceFn registry rather than a switch, since adapter
- * discovery itself is config-driven (scans MERIDIAN_ADAPTER_<PROTOCOL>_ID,
+ * discovery itself is config-driven (scans ZITIAN_ADAPTER_<PROTOCOL>_ID,
  * see loadMigrationKeeperConfig) and can surface a protocol neither source
  * here covers. That still resolves null — the same
  * "current rate unavailable" outcome the keeper already handles for a rate

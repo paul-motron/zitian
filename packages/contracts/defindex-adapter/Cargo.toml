@@ -1,5 +1,5 @@
 [package]
-name = "meridian-defindex-adapter"
+name = "zitian-defindex-adapter"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,4 +12,4 @@ adapter-common = { path = "../adapter-common" }
 
 [dev-dependencies]
 soroban-sdk = { version = "22.0.0", features = ["testutils", "alloc"] }
-meridian-vault = { path = "../vault" }
+zitian-vault = { path = "../vault" }

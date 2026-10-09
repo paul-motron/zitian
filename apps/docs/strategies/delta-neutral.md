@@ -6,7 +6,7 @@ net price exposure. The return comes from carry rather than from price
 direction: one leg pays the other while the price move of either leg cancels.
 
 **Simulation only.** This strategy runs against the deterministic backtest
-harness in `@meridian/strategies`. It is not wired to a live venue, a vault,
+harness in `@zitian/strategies`. It is not wired to a live venue, a vault,
 or mainnet funds. The hedge venue is modeled inside the harness: there is no
 live perpetual or dated-futures venue, no order router, and no key that can
 trade. Every number this page describes is produced by the simulation from a
@@ -121,8 +121,8 @@ any machine. Run the strategy package, which validates the scenario and drives
 the backtest runner and its tests:
 
 ```bash
-pnpm --filter @meridian/strategies test
-pnpm --filter @meridian/strategies typecheck
+pnpm --filter @zitian/strategies test
+pnpm --filter @zitian/strategies typecheck
 ```
 
 The runner advances the clock one fixed step at a time. On each step it

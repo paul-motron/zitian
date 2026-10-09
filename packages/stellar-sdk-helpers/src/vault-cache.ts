@@ -16,7 +16,7 @@
  * cache in `vaults.ts` alone.
  */
 
-import { withRaceTimeout } from "@meridian/shared";
+import { withRaceTimeout } from "@zitian/shared";
 import type { ApiVault } from "./vaults";
 
 /** Aligns with CDN `s-maxage=60` on `/api/v1/vaults`. */

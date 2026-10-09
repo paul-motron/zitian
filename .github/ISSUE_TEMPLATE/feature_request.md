@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Propose a new feature or improvement for Meridian
+about: Propose a new feature or improvement for Zitian
 title: "[Feature] "
 labels: enhancement
 assignees: ""

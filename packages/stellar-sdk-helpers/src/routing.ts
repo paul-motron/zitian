@@ -2,21 +2,21 @@ import type { ApiVault } from "./vaults";
 
 export interface RouteOptions {
   // Retained for backward compatibility. Third-party pools (Blend, DeFindex)
-  // are display-only; all deposits route through the Meridian coordinator vault (#850).
+  // are display-only; all deposits route through the Zitian coordinator vault (#850).
   defindexConfigured?: boolean;
 }
 
-// A vault is routable only if Meridian can build a deposit for its protocol.
-// Only Meridian coordinator vaults can be deposited into; third-party pools
+// A vault is routable only if Zitian can build a deposit for its protocol.
+// Only Zitian coordinator vaults can be deposited into; third-party pools
 // (Blend, DeFindex) are displayed for comparison but cannot be deposited into
 // directly because all deposits route through the coordinator vault (#850).
 function isRoutable(vault: ApiVault, _opts?: RouteOptions): boolean {
-  return vault.protocol === "meridian";
+  return vault.protocol === "zitian";
 }
 
 /**
- * Pick the vault to route a new deposit into: the highest-APY vault Meridian can
- * actually build a deposit for (a Meridian coordinator vault), preferring pools
+ * Pick the vault to route a new deposit into: the highest-APY vault Zitian can
+ * actually build a deposit for (a Zitian coordinator vault), preferring pools
  * not flagged "risky". Falls back to the best routable pool when every option is
  * risky, and returns null when nothing is routable. This function is pure and
  * does no I/O.

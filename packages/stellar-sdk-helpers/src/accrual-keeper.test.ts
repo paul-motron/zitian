@@ -122,9 +122,9 @@ const CONFIG: BlendAccrualKeeperConfig = {
 };
 
 const VAULT: KnownPoolMeta = {
-  id: "meridian-usdc",
-  name: "Meridian",
-  protocol: "meridian",
+  id: "zitian-usdc",
+  name: "Zitian",
+  protocol: "zitian",
   label: "USDC Vault",
   contractId: "CVAULT",
 };
@@ -138,14 +138,14 @@ const DIRECT_BLEND: KnownPoolMeta = {
 };
 
 const BLEND_ADAPTER: DiscoveredAdapter = {
-  vaultId: "meridian-usdc",
+  vaultId: "zitian-usdc",
   vaultContractId: "CVAULT",
   adapterId: "CADAPTERBLEND",
   protocol: "blend",
 };
 
 const DEFINDEX_ADAPTER: DiscoveredAdapter = {
-  vaultId: "meridian-eurc",
+  vaultId: "zitian-eurc",
   vaultContractId: "CVAULT2",
   adapterId: "CADAPTERDFX",
   protocol: "defindex",
@@ -218,16 +218,16 @@ beforeEach(() => {
 describe("loadBlendAccrualKeeperConfig", () => {
   it("requires the signing key from the environment", () => {
     expect(() => loadBlendAccrualKeeperConfig({})).toThrow(
-      "MERIDIAN_KEEPER_SECRET_KEY is required"
+      "ZITIAN_KEEPER_SECRET_KEY is required"
     );
   });
 
   it("loads retry tuning from environment variables", () => {
     const config = loadBlendAccrualKeeperConfig({
-      MERIDIAN_KEEPER_SECRET_KEY: "SECRET",
-      MERIDIAN_KEEPER_MAX_ATTEMPTS: "5",
-      MERIDIAN_KEEPER_RETRY_BASE_DELAY_MS: "250",
-      MERIDIAN_KEEPER_RPC_TIMEOUT_MS: "9000",
+      ZITIAN_KEEPER_SECRET_KEY: "SECRET",
+      ZITIAN_KEEPER_MAX_ATTEMPTS: "5",
+      ZITIAN_KEEPER_RETRY_BASE_DELAY_MS: "250",
+      ZITIAN_KEEPER_RPC_TIMEOUT_MS: "9000",
     });
 
     expect(config.secretKey).toBe("SECRET");
@@ -253,15 +253,15 @@ describe("loadBlendAccrualKeeperConfig", () => {
   it("rejects invalid positive integer environment values", () => {
     expect(() =>
       loadBlendAccrualKeeperConfig({
-        MERIDIAN_KEEPER_SECRET_KEY: "SECRET",
-        MERIDIAN_KEEPER_MAX_ATTEMPTS: "0",
+        ZITIAN_KEEPER_SECRET_KEY: "SECRET",
+        ZITIAN_KEEPER_MAX_ATTEMPTS: "0",
       })
-    ).toThrow("MERIDIAN_KEEPER_MAX_ATTEMPTS must be a positive integer");
+    ).toThrow("ZITIAN_KEEPER_MAX_ATTEMPTS must be a positive integer");
   });
 });
 
 describe("discoverLiveAdapters", () => {
-  it("discovers adapters from Meridian vaults without using direct Blend pool entries", async () => {
+  it("discovers adapters from Zitian vaults without using direct Blend pool entries", async () => {
     const simulate = vi.fn(async (_server, contractId, _passphrase, method) => {
       if (contractId === "CVAULT" && method === "get_adapter")
         return "CADAPTER";
@@ -275,7 +275,7 @@ describe("discoverLiveAdapters", () => {
       server: {} as never,
       simulate: simulate as never,
       pools: {
-        "meridian-usdc": VAULT,
+        "zitian-usdc": VAULT,
         "blend-usdc-fixed": DIRECT_BLEND,
       },
     });
@@ -283,7 +283,7 @@ describe("discoverLiveAdapters", () => {
     expect(result.failures).toEqual([]);
     expect(result.adapters).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         vaultContractId: "CVAULT",
         adapterId: "CADAPTER",
         protocol: "blend",
@@ -340,14 +340,14 @@ describe("discoverLiveAdapters", () => {
       network: NETWORK,
       server: {} as never,
       simulate: simulate as never,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(simulate).toHaveBeenCalledOnce();
     expect(result.adapters).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         error: expect.stringContaining("get_adapter"),
       },
     ]);
@@ -367,7 +367,7 @@ describe("discoverLiveAdapters", () => {
       baseDelayMs: 1,
       logger: log,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(simulate).toHaveBeenCalledTimes(2);
@@ -379,13 +379,13 @@ describe("discoverLiveAdapters", () => {
         delayMs: 1,
         nextAttempt: 2,
         stage: "discover",
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
       })
     );
     expect(result.adapters).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         vaultContractId: "CVAULT",
         stage: "discover",
         attempts: 2,
@@ -410,7 +410,7 @@ describe("discoverLiveAdapters", () => {
       maxAttempts: 3,
       baseDelayMs: 5,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(sleep).toHaveBeenCalledWith(5);
@@ -432,14 +432,14 @@ describe("discoverLiveAdapters", () => {
       maxAttempts: 3,
       baseDelayMs: 5,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(simulate).toHaveBeenCalledOnce();
     expect(sleep).not.toHaveBeenCalled();
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         vaultContractId: "CVAULT",
         stage: "discover",
         attempts: 1,
@@ -464,14 +464,14 @@ describe("discoverLiveAdapters", () => {
       maxAttempts: 3,
       baseDelayMs: 5,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(simulate).toHaveBeenCalledOnce();
     expect(sleep).not.toHaveBeenCalled();
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         transient: false,
         error: "requested amount 1500 exceeds reserve cap",
       },
@@ -494,7 +494,7 @@ describe("discoverLiveAdapters", () => {
       maxAttempts: 2,
       baseDelayMs: 7,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     // get_adapter succeeds once and is cached; only the failing get_protocol
@@ -509,7 +509,7 @@ describe("discoverLiveAdapters", () => {
     expect(result.adapters).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         vaultContractId: "CVAULT",
         stage: "discover",
         attempts: 2,
@@ -536,14 +536,14 @@ describe("discoverLiveAdapters", () => {
       maxAttempts: 3,
       baseDelayMs: 7,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(simulate).toHaveBeenCalledOnce();
     expect(sleep).not.toHaveBeenCalled();
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         transient: false,
         error: "not_found",
       },
@@ -570,13 +570,13 @@ describe("discoverLiveAdapters", () => {
       maxAttempts: 2,
       baseDelayMs: 5,
       sleep,
-      pools: { "meridian-usdc": VAULT },
+      pools: { "zitian-usdc": VAULT },
     });
 
     expect(simulate).toHaveBeenCalledTimes(2);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         attempts: 2,
         transient: false,
         error: "not_found",
@@ -584,7 +584,7 @@ describe("discoverLiveAdapters", () => {
     ]);
   });
 
-  it("returns no adapters or failures when no Meridian vaults are configured", async () => {
+  it("returns no adapters or failures when no Zitian vaults are configured", async () => {
     const simulate = vi.fn();
 
     const result = await discoverLiveAdapters({
@@ -681,7 +681,7 @@ describe("runBlendAccrualKeeper", () => {
     );
     expect(result.successes).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         hash: "HASH",
         ledger: 123,
@@ -715,7 +715,7 @@ describe("runBlendAccrualKeeper", () => {
   it("processes multiple Blend adapters", async () => {
     const secondBlend = {
       ...BLEND_ADAPTER,
-      vaultId: "meridian-xlm",
+      vaultId: "zitian-xlm",
       vaultContractId: "CVAULT3",
       adapterId: "CADAPTERBLEND2",
     };
@@ -736,14 +736,14 @@ describe("runBlendAccrualKeeper", () => {
     expect(submitAccrual).toHaveBeenCalledTimes(2);
     expect(result.successes).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         hash: "HASH1",
         ledger: 101,
         attempts: 1,
       },
       {
-        vaultId: "meridian-xlm",
+        vaultId: "zitian-xlm",
         adapterId: "CADAPTERBLEND2",
         hash: "HASH2",
         ledger: 102,
@@ -831,7 +831,7 @@ describe("runBlendAccrualKeeper", () => {
     expect(result.successes).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         vaultContractId: "CVAULT",
         adapterId: "CADAPTERBLEND",
         protocol: "blend",
@@ -864,7 +864,7 @@ describe("runBlendAccrualKeeper", () => {
     expect(result.successes).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         protocol: "blend",
         stage: "submit",
@@ -876,7 +876,7 @@ describe("runBlendAccrualKeeper", () => {
     expect(log.error).toHaveBeenCalledWith(
       "[accrual-keeper] accrue failed",
       expect.objectContaining({
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
       })
     );
@@ -884,7 +884,7 @@ describe("runBlendAccrualKeeper", () => {
 
   it("keeps discovery failures while submitting successful adapters", async () => {
     const discoveryFailure = {
-      vaultId: "meridian-eurc",
+      vaultId: "zitian-eurc",
       vaultContractId: "CVAULT2",
       stage: "discover" as const,
       attempts: 2,
@@ -909,7 +909,7 @@ describe("runBlendAccrualKeeper", () => {
   it("continues processing Blend adapters after one submission fails", async () => {
     const secondBlend = {
       ...BLEND_ADAPTER,
-      vaultId: "meridian-xlm",
+      vaultId: "zitian-xlm",
       vaultContractId: "CVAULT3",
       adapterId: "CADAPTERBLEND2",
     };
@@ -930,7 +930,7 @@ describe("runBlendAccrualKeeper", () => {
     expect(submitAccrual).toHaveBeenCalledTimes(2);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         stage: "submit",
         attempts: 1,
@@ -940,7 +940,7 @@ describe("runBlendAccrualKeeper", () => {
     ]);
     expect(result.successes).toMatchObject([
       {
-        vaultId: "meridian-xlm",
+        vaultId: "zitian-xlm",
         adapterId: "CADAPTERBLEND2",
         hash: "HASH2",
         attempts: 1,
@@ -1059,7 +1059,7 @@ describe("runBlendAccrualKeeper", () => {
     );
     expect(result.successes).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         hash: "SUBMITTED_HASH",
         ledger: 321,
@@ -1105,7 +1105,7 @@ describe("runBlendAccrualKeeper", () => {
     );
     expect(result.successes).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         hash: "SUBMITTED_HASH",
         ledger: 321,
@@ -1155,7 +1155,7 @@ describe("runBlendAccrualKeeper", () => {
     }
     expect(result.successes).toEqual([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         hash: "SUBMITTED_HASH",
         ledger: 321,
@@ -1195,7 +1195,7 @@ describe("runBlendAccrualKeeper", () => {
     expect(result.successes).toEqual([]);
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         stage: "submit",
         attempts: 1,
@@ -1401,7 +1401,7 @@ describe("runBlendAccrualKeeper", () => {
     expect(submitAccrual).not.toHaveBeenCalled();
     expect(result.failures).toMatchObject([
       {
-        vaultId: "meridian-usdc",
+        vaultId: "zitian-usdc",
         adapterId: "CADAPTERBLEND",
         stage: "submit",
         attempts: 0,

@@ -48,7 +48,7 @@ describe("LobstrWallet — real LOBSTR path (no mock wallet present)", () => {
   // "installed + a public key stored by a prior connect()" as authorized.
   it("isAuthorized returns true when installed and a key was stored by connect", async () => {
     vi.mocked(lobstrIsConnected).mockResolvedValue(true);
-    window.sessionStorage.setItem("meridian-lobstr-public-key", ADDRESS);
+    window.sessionStorage.setItem("zitian-lobstr-public-key", ADDRESS);
     await expect(lobstr.isAuthorized()).resolves.toBe(true);
     expect(lobstrGetPublicKey).not.toHaveBeenCalled();
   });
@@ -74,7 +74,7 @@ describe("LobstrWallet — real LOBSTR path (no mock wallet present)", () => {
   it("connect returns the public key and remembers it for isAuthorized", async () => {
     vi.mocked(lobstrGetPublicKey).mockResolvedValue(ADDRESS);
     await expect(lobstr.connect()).resolves.toBe(ADDRESS);
-    expect(window.sessionStorage.getItem("meridian-lobstr-public-key")).toBe(
+    expect(window.sessionStorage.getItem("zitian-lobstr-public-key")).toBe(
       ADDRESS
     );
 

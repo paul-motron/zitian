@@ -1,5 +1,5 @@
 {
-  "name": "@meridian/api-local",
+  "name": "@zitian/api-local",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,9 +15,9 @@
   "dependencies": {
     "@fastify/cors": "^11.3.0",
     "@fastify/rate-limit": "^11.2.0",
-    "@meridian/api-core": "workspace:*",
-    "@meridian/shared": "workspace:*",
-    "@meridian/stellar-sdk-helpers": "workspace:*",
+    "@zitian/api-core": "workspace:*",
+    "@zitian/shared": "workspace:*",
+    "@zitian/stellar-sdk-helpers": "workspace:*",
     "@stellar/stellar-sdk": "^14.6.1",
     "dotenv": "^18.0.1",
     "fastify": "^5.12.5",

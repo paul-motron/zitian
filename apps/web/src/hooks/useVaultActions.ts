@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQueryClient, type QueryClient } from "@tanstack/react-query";
-import { APP_NETWORK } from "@meridian/shared";
+import { APP_NETWORK } from "@zitian/shared";
 import { useWalletStore } from "../store/wallet";
 import { api, type ApiPosition, type VaultState } from "../lib/api";
 import { useToastStore } from "../store/toast";

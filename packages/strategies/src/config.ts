@@ -64,7 +64,7 @@ export const KNOWN_YIELD_SOURCES = new Set([
   "blend-pool",
   "defindex-vault",
   "stellar-anchor",
-  "meridian-vault",
+  "zitian-vault",
 ]);
 
 export class ConfigValidationError extends Error {

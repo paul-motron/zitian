@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
-import { handleGetVaults, handleGetVaultById } from "@meridian/api-core";
+import { handleGetVaults, handleGetVaultById } from "@zitian/api-core";
 
 export const vaultsRoute: FastifyPluginAsync = async (app) => {
   app.get("/", async (_req, reply) => {

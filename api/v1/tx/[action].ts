@@ -4,7 +4,7 @@ import {
   handleWithdrawRequest,
   handleSubmitRequest,
   handleAddTrustlineRequest,
-} from "@meridian/api-core";
+} from "@zitian/api-core";
 import { applyCors, checkRateLimit } from "../../_lib/middleware.js";
 
 // Consolidated from four separate files (deposit/withdraw/submit/add-trustline)

@@ -75,7 +75,7 @@ describe("computePosition with no recorded cost basis", () => {
     // transferred to them (#504): mUSDC is a Stellar Asset Contract, so the
     // vault never sees the transfer. Treating that missing basis as a basis
     // of zero would show the new holder their entire balance as profit.
-    const [position] = computePosition("meridian-usdc", {
+    const [position] = computePosition("zitian-usdc", {
       shares: 100_0000000n,
       totalShares: 100_0000000n,
       totalAssets: 120_0000000n,
@@ -88,7 +88,7 @@ describe("computePosition with no recorded cost basis", () => {
   });
 
   it("still reports yield for a depositor whose basis is recorded", () => {
-    const [position] = computePosition("meridian-usdc", {
+    const [position] = computePosition("zitian-usdc", {
       shares: 100_0000000n,
       totalShares: 100_0000000n,
       totalAssets: 120_0000000n,

@@ -7,7 +7,7 @@ export interface StrategyEngine {
 }
 
 export const STRATEGY_ENGINE: StrategyEngine = {
-  name: "meridian-strategies",
+  name: "zitian-strategies",
   version: "0.1.0",
 };
 

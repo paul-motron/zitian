@@ -4,17 +4,17 @@
   <svg viewBox="4 4 32 17" width="180" fill="none"><defs><linearGradient id="mg-hero" x1="34" y1="20" x2="17" y2="17" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs><path d="M34 20 A14 14 0 0 0 6 20 A11 11 0 0 1 28 20 A8 8 0 0 0 12 20 A5 5 0 0 1 22 20" stroke="url(#mg-hero)" stroke-width="2.25"/><circle cx="17" cy="17.3" r="2.6" fill="url(#mg-hero)"/></svg>
 </p>
 
-<p align="center" style="font-size:2.5rem;font-weight:800;letter-spacing:-0.02em">Meridian</p>
+<p align="center" style="font-size:2.5rem;font-weight:800;letter-spacing:-0.02em">Zitian</p>
 
-## What Meridian is
+## What Zitian is
 
-A non-custodial USDC yield aggregator on Stellar, built for savers in unstable-currency economies. Deposits are routed across Blend and DeFindex, whichever is paying more, while custody stays with the saver's own wallet (Freighter, xBull, or LOBSTR). Meridian is live on Stellar mainnet. See [Mainnet Deployment](../operations/mainnet-deployment.md) for the current deployment's status. The brand exists to make that trustworthy and legible to people who have every reason to be skeptical of anything claiming to protect their money.
+A non-custodial USDC yield aggregator on Stellar, built for savers in unstable-currency economies. Deposits are routed across Blend and DeFindex, whichever is paying more, while custody stays with the saver's own wallet (Freighter, xBull, or LOBSTR). Zitian is live on Stellar mainnet. See [Mainnet Deployment](../operations/mainnet-deployment.md) for the current deployment's status. The brand exists to make that trustworthy and legible to people who have every reason to be skeptical of anything claiming to protect their money.
 
 **Stability:** dollar-denominated and stablecoin-based. The goal is capital that holds its value first and grows second.
 
-**Convergence:** capital doesn't sit in one place. Meridian continuously finds and settles on whichever protocol is paying more.
+**Convergence:** capital doesn't sit in one place. Zitian continuously finds and settles on whichever protocol is paying more.
 
-**Self-custody:** Meridian never holds user funds. Ownership stays in the saver's own wallet, always.
+**Self-custody:** Zitian never holds user funds. Ownership stays in the saver's own wallet, always.
 
 **Plain language:** built for everyday savers, not crypto natives. No jargon where a plain sentence will do.
 
@@ -100,7 +100,7 @@ The product uses one type family, **Inter**, with no exceptions. It's already th
 
 - **App icon:** the mark on a dark (`#0D1E35`) tile with rounded corners.
 - **Browser tab and favicon:** the mark in green below 24px, the gradient mark at 32px and above, on the same dark tile.
-- **Product header:** the gradient mark at small scale beside the "Meridian" wordmark.
+- **Product header:** the gradient mark at small scale beside the "Zitian" wordmark.
 - **Social avatar:** the mark inverted, a dark stroke on a green circle.
 
 See `apps/web/public/brand/logo-mark.svg` and `logo-mark-solid.svg` for the source files these are generated from.

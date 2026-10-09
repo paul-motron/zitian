@@ -6,18 +6,14 @@ import {
   type DefiLlamaPool,
 } from "./defilamma";
 import { KNOWN_POOLS, type KnownPoolMeta } from "./known-pools";
-import {
-  APP_NETWORK,
-  STELLAR_NETWORKS,
-  withRaceTimeout,
-} from "@meridian/shared";
+import { APP_NETWORK, STELLAR_NETWORKS, withRaceTimeout } from "@zitian/shared";
 import { simulateView } from "./tx";
 import { getRpcServer, toBigInt } from "./internal";
 import { getCachedVaults, setCachedVaults } from "./vault-cache";
 
 export interface ApiVault {
   id: string;
-  protocol: "blend" | "defindex" | "meridian";
+  protocol: "blend" | "defindex" | "zitian";
   asset: string;
   name: string;
   label: string;
@@ -83,7 +79,7 @@ async function fetchBlendApy(
 }
 
 /**
- * Discovers the live APY for a Meridian coordinator vault by reading its
+ * Discovers the live APY for a Zitian coordinator vault by reading its
  * active adapter's underlying protocol on-chain (get_adapter -> get_pool /
  * get_protocol) rather than tracking it in config. This makes rate discovery
  * self-updating if the adapter is ever swapped via `set_adapter`: there is no
@@ -95,7 +91,7 @@ async function fetchBlendApy(
  * so a future protocol degrades gracefully (TVL is unaffected) until its
  * rate-fetching branch is added here.
  */
-async function fetchMeridianApy(
+async function fetchZitianApy(
   server: ReturnType<typeof getRpcServer>,
   network: { rpc: string; passphrase: string },
   vaultId: string,
@@ -123,11 +119,11 @@ async function fetchMeridianApy(
 }
 
 /**
- * Reads the on-chain state for a Meridian coordinator vault: reads
+ * Reads the on-chain state for a Zitian coordinator vault: reads
  * get_total_assets for TVL and discovers its active adapter's APY via
- * fetchMeridianApy. Returns null if contractId or assetId is missing.
+ * fetchZitianApy. Returns null if contractId or assetId is missing.
  */
-async function fetchMeridianVault(
+async function fetchZitianVault(
   server: ReturnType<typeof getRpcServer>,
   network: { rpc: string; passphrase: string },
   meta: KnownPoolMeta
@@ -143,12 +139,12 @@ async function fetchMeridianVault(
           "get_total_assets"
         ),
       10_000,
-      "Meridian RPC"
+      "Zitian RPC"
     ),
     withRaceTimeout(
-      () => fetchMeridianApy(server, network, meta.contractId!, meta.assetId!),
+      () => fetchZitianApy(server, network, meta.contractId!, meta.assetId!),
       10_000,
-      "Meridian adapter RPC"
+      "Zitian adapter RPC"
     ),
   ]);
   const tvl = Math.round(Number(toBigInt(totalAssetsRaw) ?? 0n) / 1e7);
@@ -164,9 +160,9 @@ async function fetchMeridianVault(
 
 /**
  * Query each pool in KNOWN_POOLS.testnet on-chain and return its TVL and APY.
- * Blend pools use PoolV2.load directly; Meridian coordinator vaults read
+ * Blend pools use PoolV2.load directly; Zitian coordinator vaults read
  * get_total_assets for TVL and discover their active adapter's protocol
- * on-chain for APY (see fetchMeridianApy). Adding a new testnet pool only
+ * on-chain for APY (see fetchZitianApy). Adding a new testnet pool only
  * requires a new entry in KNOWN_POOLS.testnet.
  */
 async function fetchTestnetVaults(): Promise<ApiVault[]> {
@@ -185,8 +181,8 @@ async function fetchTestnetVaults(): Promise<ApiVault[]> {
       const tvl = reserve ? Math.round(Number(reserve.totalSupply()) / 1e7) : 0;
       const apy = reserve ? Number((reserve.estSupplyApy * 100).toFixed(2)) : 0;
       vaults.push({ ...meta, apy, tvl, userBalance: 0, riskLevel: "safe" });
-    } else if (meta.protocol === "meridian") {
-      const vault = await fetchMeridianVault(server, network, meta);
+    } else if (meta.protocol === "zitian") {
+      const vault = await fetchZitianVault(server, network, meta);
       if (vault) vaults.push(vault);
     }
   }
@@ -196,7 +192,7 @@ async function fetchTestnetVaults(): Promise<ApiVault[]> {
 
 /**
  * Fetch vaults for the given network. On mainnet, pulls live APY/TVL from
- * DeFiLlama for third-party pools, reads live Meridian coordinator vault(s)
+ * DeFiLlama for third-party pools, reads live Zitian coordinator vault(s)
  * on-chain directly (equivalent to the testnet branch), and matches against
  * KNOWN_POOLS.mainnet. On testnet, queries pools on-chain directly
  * (DeFiLlama does not index testnet).
@@ -221,16 +217,16 @@ export async function fetchAllVaults(
   const net = getNetworkConfig("mainnet");
   const server = getRpcServer(net.rpc, 10_000);
 
-  const meridianMetas = Object.values(KNOWN_POOLS.mainnet).filter(
-    (meta) => meta.protocol === "meridian"
+  const zitianMetas = Object.values(KNOWN_POOLS.mainnet).filter(
+    (meta) => meta.protocol === "zitian"
   );
 
-  const [meridianVaultsRaw, poolsResult] = await Promise.all([
+  const [zitianVaultsRaw, poolsResult] = await Promise.all([
     Promise.all(
-      meridianMetas.map((meta) =>
-        fetchMeridianVault(server, net, meta).catch((err) => {
+      zitianMetas.map((meta) =>
+        fetchZitianVault(server, net, meta).catch((err) => {
           console.warn(
-            "[vaults] failed to read Meridian vault on-chain, serving cached value:",
+            "[vaults] failed to read Zitian vault on-chain, serving cached value:",
             meta.id,
             err
           );
@@ -243,9 +239,7 @@ export async function fetchAllVaults(
       return [] as DefiLlamaPool[];
     }),
   ]);
-  const meridianVaults = meridianVaultsRaw.filter(
-    (v): v is ApiVault => v !== null
-  );
+  const zitianVaults = zitianVaultsRaw.filter((v): v is ApiVault => v !== null);
   const pools = poolsResult;
 
   const llamaVaults: ApiVault[] = [];
@@ -260,8 +254,8 @@ export async function fetchAllVaults(
       );
       continue;
     }
-    // Prevent duplicate if a Meridian vault ever appears in DeFiLlama
-    if (meridianVaults.some((v) => v.id === meta.id)) continue;
+    // Prevent duplicate if a Zitian vault ever appears in DeFiLlama
+    if (zitianVaults.some((v) => v.id === meta.id)) continue;
     llamaVaults.push({
       ...meta,
       asset: pool.symbol,
@@ -277,9 +271,9 @@ export async function fetchAllVaults(
   const resolvedLlamaVaults =
     llamaVaults.length > 0
       ? llamaVaults
-      : (vaultCache?.vaults.filter((v) => v.protocol !== "meridian") ?? []);
+      : (vaultCache?.vaults.filter((v) => v.protocol !== "zitian") ?? []);
 
-  const vaults: ApiVault[] = [...meridianVaults, ...resolvedLlamaVaults];
+  const vaults: ApiVault[] = [...zitianVaults, ...resolvedLlamaVaults];
 
   if (vaults.length > 0) {
     vaultCache = { vaults, expiresAt: now + CACHE_TTL_MS };

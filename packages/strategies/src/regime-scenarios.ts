@@ -1,4 +1,4 @@
-import { SUPPORTED_STABLECOINS } from "@meridian/shared";
+import { SUPPORTED_STABLECOINS } from "@zitian/shared";
 
 import { SimulationClock } from "./clock";
 import type { DeltaNeutralConfig } from "./delta-neutral";

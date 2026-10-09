@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
-import { APP_NETWORK, STELLAR_NETWORKS } from "@meridian/shared";
+import { APP_NETWORK, STELLAR_NETWORKS } from "@zitian/shared";
 import { useSignAndSubmit } from "../../hooks/useSignAndSubmit";
 import { useWalletStore } from "../../store/wallet";
 

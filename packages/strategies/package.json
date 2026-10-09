@@ -1,7 +1,7 @@
 {
-  "name": "@meridian/strategies",
+  "name": "@zitian/strategies",
   "version": "0.1.0",
-  "description": "Strategy engine and simulation library for Meridian",
+  "description": "Strategy engine and simulation library for Zitian",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -25,8 +25,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@meridian/shared": "workspace:*",
-    "@meridian/stellar-sdk-helpers": "workspace:*",
+    "@zitian/shared": "workspace:*",
+    "@zitian/stellar-sdk-helpers": "workspace:*",
     "@stellar/stellar-sdk": "^14.6.1",
     "zod": "^4.6.5"
   },

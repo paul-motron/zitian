@@ -1,6 +1,6 @@
 # API Layer
 
-Meridian has two API implementations that share the same interface:
+Zitian has two API implementations that share the same interface:
 
 | Implementation              | Used in           | Location          |
 | --------------------------- | ----------------- | ----------------- |
@@ -183,11 +183,11 @@ Read-only coordinator vault state for the admin dashboard's Vault State card ([#
 }
 ```
 
-Returns 404 if no Meridian coordinator vault is configured for the current network, or 503 if the on-chain read fails.
+Returns 404 if no Zitian coordinator vault is configured for the current network, or 503 if the on-chain read fails.
 
 ## Serverless vs Fastify
 
-Both implementations share the same handler logic and import from the same workspace packages (`@meridian/shared`, `@meridian/stellar-sdk-helpers`).
+Both implementations share the same handler logic and import from the same workspace packages (`@zitian/shared`, `@zitian/stellar-sdk-helpers`).
 
 The Vercel functions (`api/v1/`) import workspace packages that are pre-built into self-contained JS bundles by `scripts/build-vercel.sh` before deployment. The build script runs esbuild on each package's entry point with `--bundle --packages=external`, inlining all relative imports while leaving npm packages external. Vercel then bundles the resulting `dist/index.js` files alongside the function handlers at deploy time.
 

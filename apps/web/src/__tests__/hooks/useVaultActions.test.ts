@@ -109,7 +109,7 @@ vi.mock("react-i18next", () => {
 
 import { api } from "../../lib/api";
 import { wallet } from "../../lib/wallet";
-import { USDC_ISSUER, MUSDC_ISSUER, APP_NETWORK } from "@meridian/shared";
+import { USDC_ISSUER, MUSDC_ISSUER, APP_NETWORK } from "@zitian/shared";
 
 const KEY = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 

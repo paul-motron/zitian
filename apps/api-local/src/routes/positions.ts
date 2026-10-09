@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
-import { handleGetPositions } from "@meridian/api-core";
+import { handleGetPositions } from "@zitian/api-core";
 
 export const positionsRoute: FastifyPluginAsync = async (app) => {
   app.get("/:publicKey", async (req, reply) => {

@@ -3,14 +3,14 @@
  * sign or submit, so an unlaunched strategy cannot reach real funds.
  *
  * The flag that would lift that boundary is a build-time property rather than a
- * runtime switch. It is read from `MERIDIAN_STRATEGIES_LIVE_EXECUTION`, and any
+ * runtime switch. It is read from `ZITIAN_STRATEGIES_LIVE_EXECUTION`, and any
  * value other than the exact string "true" leaves the engine in simulation
  * mode, so a missing, empty or misspelled value fails closed. There is no
  * setter: the single place a launch flips this is that variable in the
  * deployment that runs strategies.
  */
 
-export const LIVE_EXECUTION_ENV_VAR = "MERIDIAN_STRATEGIES_LIVE_EXECUTION";
+export const LIVE_EXECUTION_ENV_VAR = "ZITIAN_STRATEGIES_LIVE_EXECUTION";
 
 export class StrategyIsolationViolationError extends Error {
   constructor(message: string) {
