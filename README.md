@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="apps/web/public/brand/logo-mark.svg" alt="Zitian"/>
-</p>
-
 # Zitian
 
 **Stablecoin yield aggregator on Stellar, built for emerging market savers.**
